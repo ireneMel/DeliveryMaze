@@ -13,12 +13,12 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         Pane pane = new Pane();
         FileInputStream inputstream = new FileInputStream("pizza_auto_x2.jpg");
         Image image = new Image(inputstream);
@@ -28,30 +28,29 @@ public class Main extends Application {
         pane.setBackground(new Background(myBI));
         pane.setPrefSize(1200, 680);
         Button b = new Button("Play");
-
+        primaryStage.setScene(new Scene(pane));
 
         pane.getChildren().add(b);
         pane.getChildren();
-        primaryStage.setScene(new Scene(root, 1200,700));
+
         primaryStage.show();
 
         b.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                primaryStage.setScene(startGame());
+                try {
+                    firstLevel(primaryStage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    private Scene startGame(){
-        Pane p = new Pane();
-        Pane maze = new Pane();
-
-        p.getChildren().add(maze);
-
-
+    private void firstLevel(Stage stage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         //p.getChildren();
-        return new Scene(p);
+        stage.setScene(new Scene(root, 1200,700));
     }
 
     public static void main(String[] args) {

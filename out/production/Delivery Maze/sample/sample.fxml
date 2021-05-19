@@ -1,15 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
 <Pane fx:id="backPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Pane fx:id="mazePane" prefHeight="700.0" prefWidth="1000.0">
             <children>
-                <Polygon fill="DODGERBLUE" layoutX="113.0" layoutY="126.0" points="887.0, -94.0, 100 ,-94, 98, 67, 87, 54, 43, 54" stroke="#bc1d1d" strokeType="INSIDE" />
+                <Polygon fill="#047c5e" layoutX="113.0" layoutY="126.0" points="887.0, -126.0, -113.0, -126.0, -113.0, -95.0, 853.0, -95.0, 853.0, 546.0, -80.0, 546.0, -80.0, -16.0, -113.0, -16.0, -113.0, 574.0, 887.0, 574.0" stroke="#047c5e" strokeType="INSIDE" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="155.0" layoutX="786.0" layoutY="519.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="592.0" layoutY="519.0" stroke="#047c5e" strokeType="INSIDE" width="200.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="295.0" layoutX="786.0" layoutY="128.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="613.0" layoutY="128.0" stroke="#047c5e" strokeType="INSIDE" width="179.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="200.0" layoutX="582.0" layoutY="28.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="408.0" layoutY="350.0" stroke="#047c5e" strokeType="INSIDE" width="389.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="215.0" layoutX="408.0" layoutY="350.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="259.0" layoutY="525.0" stroke="#047c5e" strokeType="INSIDE" width="157.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="404.0" layoutX="259.0" layoutY="141.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="128.0" layoutY="445.0" stroke="#047c5e" strokeType="INSIDE" width="157.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="84.0" layoutX="582.0" layoutY="475.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="131.0" layoutX="128.0" layoutY="445.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="14.0" layoutY="305.0" stroke="#047c5e" strokeType="INSIDE" width="138.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="152.0" layoutY="199.0" stroke="#047c5e" strokeType="INSIDE" width="138.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutY="108.0" stroke="#047c5e" strokeType="INSIDE" width="130.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="200.0" layoutX="468.0" layoutY="160.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="273.0" layoutY="265.0" stroke="#047c5e" strokeType="INSIDE" width="130.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="92.0" layoutX="351.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="907.0" layoutY="188.0" stroke="#047c5e" strokeType="INSIDE" width="85.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="794.0" layoutY="383.0" stroke="#047c5e" strokeType="INSIDE" width="79.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="48.0" layoutX="500.0" layoutY="638.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
 
             </children>
         </Pane>
+      <Pane fx:id="settings" layoutX="1000.0" layoutY="-7.0" prefHeight="713.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="pause" layoutX="74.0" layoutY="104.0" mnemonicParsing="false" text="Button" />
+            <Text fill="#1dab8f" layoutX="30.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Level 1">
+               <font>
+                  <Font name="MS Outlook" size="48.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
     </children>
 </Pane>
