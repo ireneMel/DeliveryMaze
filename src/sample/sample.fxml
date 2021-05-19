@@ -1,40 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Polyline?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-
-<?import java.lang.Double?>
-<?import javafx.scene.shape.Polygon?>
-<Pane fx:id="backPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="backPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Pane fx:id="mazePane" prefHeight="400.0" prefWidth="477.0">
+        <Pane fx:id="mazePane" prefHeight="700.0" prefWidth="1000.0">
             <children>
-                <Polygon fill="DODGERBLUE" layoutX="108.0" layoutY="121.0" stroke="BLACK" strokeType="INSIDE">
-                    <points>
-
-                        <Double fx:value="-50.0"/>
-                        <Double fx:value="30.0"/>
-
-                        <Double fx:value="0.0"/>
-                        <Double fx:value="60.0"/>
-
-                        <Double fx:value="50.0"/>
-                        <Double fx:value="30.0"/>
-
-                        <Double fx:value="50.0"/>
-                        <Double fx:value="-30.0"/>
-
-                        <Double fx:value="0.0"/>
-                        <Double fx:value="-60.0"/>
-
-                        <Double fx:value="-50.0"/>
-                        <Double fx:value="-30.0"/>
-
-
-                    </points>
-                </Polygon>
+                <Polygon fill="#047c5e" layoutX="113.0" layoutY="126.0" points="887.0, -126.0, -113.0, -126.0, -113.0, -95.0, 853.0, -95.0, 853.0, 546.0, -80.0, 546.0, -80.0, -26.0, -113.0, -26.0, -113.0, 574.0, 887.0, 574.0" stroke="#047c5e" strokeType="INSIDE" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="155.0" layoutX="786.0" layoutY="519.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="592.0" layoutY="519.0" stroke="#047c5e" strokeType="INSIDE" width="200.0" />
 
             </children>
         </Pane>
