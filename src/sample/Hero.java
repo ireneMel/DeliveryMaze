@@ -31,7 +31,7 @@ public class Hero extends Pane {
         for (int i = 0; i < Math.abs(x); i++) {
             if (right) this.setTranslateX(this.getTranslateX() + 1);
             else this.setTranslateX(this.getTranslateX() - 1);
-           // isBonuseEat();
+            isBonuseEat();
         }
     }
 
@@ -40,11 +40,11 @@ public class Hero extends Pane {
         for (int i = 0; i < Math.abs(y); i++) {
             if (down) this.setTranslateY(this.getTranslateY() + 1);
             else this.setTranslateY(this.getTranslateY() - 1);
-/*            isBonuseEat();*/
+            isBonuseEat();
         }
     }
-}
-/*    public void isBonuseEat(){
+
+    public void isBonuseEat(){
         Main.bonuses.forEach((rect) -> {
             if (this.getBoundsInParent().intersects(rect.getBoundsInParent())) {
                 removeRect = rect;
@@ -55,4 +55,5 @@ public class Hero extends Pane {
         });
         Main.bonuses.remove(removeRect);
         Main.root.getChildren().remove(removeRect);
-    }*/
+    }
+}

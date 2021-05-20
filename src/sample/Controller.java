@@ -1,7 +1,14 @@
 package sample;
 
-public class Controller {
-    Controller(){}
+import javafx.fxml.FXML;
+import javafx.scene.layout.Pane;
 
-    public int a;
+public class Controller {
+    @FXML
+    private Pane backPane;
+
+    @FXML
+    private Pane mazePane;
+
+    
 }

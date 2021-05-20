@@ -5,7 +5,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<Pane fx:id="backPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="backPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Main">
     <children>
         <Pane fx:id="mazePane" prefHeight="700.0" prefWidth="1000.0">
             <children>
@@ -32,7 +32,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="794.0" layoutY="383.0" stroke="#047c5e" strokeType="INSIDE" width="79.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="48.0" layoutX="500.0" layoutY="638.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
 
-                </children>
+            </children>
         </Pane>
       <Pane fx:id="settings" layoutX="1000.0" layoutY="-7.0" prefHeight="713.0" prefWidth="200.0">
          <children>
