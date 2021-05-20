@@ -32,7 +32,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="794.0" layoutY="383.0" stroke="#047c5e" strokeType="INSIDE" width="79.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="48.0" layoutX="500.0" layoutY="638.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
 
-            </children>
+                </children>
         </Pane>
       <Pane fx:id="settings" layoutX="1000.0" layoutY="-7.0" prefHeight="713.0" prefWidth="200.0">
          <children>
