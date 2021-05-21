@@ -13,8 +13,8 @@ public class Hero extends Pane {
     int columns = 3;
     int offsetX = 0;
     int offsetY = 0;
-    int width = 32;
-    int height = 40;
+    int width = 90;
+    int height = 60;
     int score = 0;
     Rectangle removeRect = null;
     HeroAnimation animation;
@@ -27,7 +27,7 @@ public class Hero extends Pane {
     }
 
     public void moveX(int x) {
-        boolean right = x > 0 ? true : false;
+        boolean right = x > 0;
         for (int i = 0; i < Math.abs(x); i++) {
             if (right) this.setTranslateX(this.getTranslateX() + 1);
             else this.setTranslateX(this.getTranslateX() - 1);
@@ -36,7 +36,7 @@ public class Hero extends Pane {
     }
 
     public void moveY(int y) {
-        boolean down = y > 0 ? true : false;
+        boolean down = y > 0;
         for (int i = 0; i < Math.abs(y); i++) {
             if (down) this.setTranslateY(this.getTranslateY() + 1);
             else this.setTranslateY(this.getTranslateY() - 1);
@@ -44,7 +44,14 @@ public class Hero extends Pane {
         }
     }
 
-    public void isBonuseEat(){
+    public void finalMoveY(int y) {
+        moveY(y);
+        if (isWall()) {
+            moveY(-1 * y);
+        }
+    }
+
+    public void isBonuseEat() {
         Main.bonuses.forEach((rect) -> {
             if (this.getBoundsInParent().intersects(rect.getBoundsInParent())) {
                 removeRect = rect;
@@ -55,5 +62,16 @@ public class Hero extends Pane {
         });
         Main.bonuses.remove(removeRect);
         Main.root.getChildren().remove(removeRect);
+    }
+
+    public boolean isWall() {
+        check = true;
+        Main.wallsHorizontal.forEach((rect) -> {
+            if (this.getBoundsInParent().intersects(rect.getBoundsInParent())) {
+                check = false;
+            }
+        });
+
+        return !check;
     }
 }
