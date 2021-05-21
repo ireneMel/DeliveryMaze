@@ -16,6 +16,7 @@ public class Hero extends Pane {
     int width = 90;
     int height = 60;
     int score = 0;
+    boolean check;
     Rectangle removeRect = null;
     HeroAnimation animation;
 
@@ -29,18 +30,29 @@ public class Hero extends Pane {
     public void moveX(int x) {
         boolean right = x > 0;
         for (int i = 0; i < Math.abs(x); i++) {
+            // if (!isWall()) {
             if (right) this.setTranslateX(this.getTranslateX() + 1);
             else this.setTranslateX(this.getTranslateX() - 1);
             isBonuseEat();
+            // }
+        }
+    }
+
+    public void finalMoveX(int x) {
+        moveX(x);
+        if (isWall()) {
+            moveX(-1 * x);
         }
     }
 
     public void moveY(int y) {
         boolean down = y > 0;
         for (int i = 0; i < Math.abs(y); i++) {
+            //if (!isWall()) {
             if (down) this.setTranslateY(this.getTranslateY() + 1);
             else this.setTranslateY(this.getTranslateY() - 1);
             isBonuseEat();
+            // }
         }
     }
 

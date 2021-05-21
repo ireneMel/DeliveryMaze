@@ -8,12 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import javafx.scene.effect.DropShadow;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -176,6 +173,11 @@ public class Main extends Application {
         wallsHorizontal.add(r21);
         root.getChildren().add(mazePane);
 
+        player.setLayoutX(877);
+        player.setLayoutY(600);
+        root.getChildren().addAll(player);
+
+        Scene scene = new Scene(root);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
         AnimationTimer timer = new AnimationTimer() {
@@ -209,26 +211,12 @@ public class Main extends Application {
         if (isPressed(KeyCode.UP)) {
             player.animation.play();
             player.animation.setOffsetY(180);
-//            double pos;
-//            int c = 0;
-//            for (Rectangle o : wallsHorizontal) {
-//                c++;
-//                pos = player.getLayoutY() - 2;
-//                if (pos == (o.getY() + o.getHeight())) {
-//                    System.out.println(pos + " " + (o.getY() + o.getHeight()) + " " + c);
-//                    move = false;
-//                    break;
-//                }
-//            }
-//            if (move) {
-                player.finalMoveY(-2);
-                //player.setLayoutY(player.getLayoutY() - 2);
-            //}
+            player.finalMoveY(-2);
 
         } else if (isPressed(KeyCode.DOWN)) {
             player.animation.play();
             player.animation.setOffsetY(0);
-            player.moveY(2);
+            player.finalMoveY(2);
         } else if (isPressed(KeyCode.RIGHT)) {
             player.animation.play();
             player.animation.setOffsetY(120);
