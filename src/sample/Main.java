@@ -1,7 +1,13 @@
 package sample;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,7 +24,9 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -127,54 +135,40 @@ public class Main extends Application {
                 r18 = new Rectangle(351, 0, 40, 92),
                 r19 = new Rectangle(907, 188, 85, 40),
                 r20 = new Rectangle(794, 383, 79, 40),
-                r21 = new Rectangle(500, 683, 40, 48);
-        r1.setFill(Color.rgb(4, 124, 94));
-        r2.setFill(Color.rgb(4, 124, 94));
-        r3.setFill(Color.rgb(4, 124, 94));
-        r4.setFill(Color.rgb(4, 124, 94));
-        r5.setFill(Color.rgb(4, 124, 94));
-        r6.setFill(Color.rgb(4, 124, 94));
-        r7.setFill(Color.rgb(4, 124, 94));
-        r8.setFill(Color.rgb(4, 124, 94));
-        r9.setFill(Color.rgb(4, 124, 94));
-        r10.setFill(Color.rgb(4, 124, 94));
-        r11.setFill(Color.rgb(4, 124, 94));
-        r12.setFill(Color.rgb(4, 124, 94));
-        r13.setFill(Color.rgb(4, 124, 94));
-        r14.setFill(Color.rgb(4, 124, 94));
-        r15.setFill(Color.rgb(4, 124, 94));
-        r16.setFill(Color.rgb(4, 124, 94));
-        r17.setFill(Color.rgb(4, 124, 94));
-        r18.setFill(Color.rgb(4, 124, 94));
-        r19.setFill(Color.rgb(4, 124, 94));
-        r20.setFill(Color.rgb(4, 124, 94));
-        r21.setFill(Color.rgb(4, 124, 94));
-        mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21);
-        wallsHorizontal.add(r1);
-        wallsHorizontal.add(r2);
-        wallsHorizontal.add(r3);
-        wallsHorizontal.add(r4);
-        wallsHorizontal.add(r5);
-        wallsHorizontal.add(r6);
-        wallsHorizontal.add(r7);
-        wallsHorizontal.add(r8);
-        wallsHorizontal.add(r9);
-        wallsHorizontal.add(r10);
-        wallsHorizontal.add(r11);
-        wallsHorizontal.add(r12);
-        wallsHorizontal.add(r13);
-        wallsHorizontal.add(r14);
-        wallsHorizontal.add(r15);
-        wallsHorizontal.add(r16);
-        wallsHorizontal.add(r17);
-        wallsHorizontal.add(r18);
-        wallsHorizontal.add(r19);
-        wallsHorizontal.add(r20);
-        wallsHorizontal.add(r21);
+                r21 = new Rectangle(500, 683, 40, 48),
+                r22=new Rectangle(0,0,40,700),
+                r23= new Rectangle(960,0,40,700),
+                r24=new Rectangle(0,0,1000,40),
+                r25=new Rectangle(0,660,1000,40);
+        mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21,r22,r23,r24,r25);
+        Collections.addAll(wallsHorizontal, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22,r23,r24,r25);
+        timerLabel.textProperty().bind(timeSeconds.asString());
+        timerLabel.setTextFill(Color.RED);
+        timerLabel.setStyle("-fx-font-size: 4em;");
+        timeline = new Timeline(
+                new KeyFrame(Duration.minutes(0.01),
+                        new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent t) {
+                                Duration duration = ((KeyFrame)t.getSource()).getTime();
+                                time = time.subtract(duration);
+                                timeSeconds.set(time.toMinutes());
+                                if(time.equals(Duration.ZERO)){
+                                    timeline.stop();
+                                    JOptionPane.showMessageDialog(null,"Loser","Error",JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
+                        })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        timerLabel.setLayoutX(1100);timerLabel.setLayoutY(500);
+        mazePane.getChildren().add(timerLabel);
         root.getChildren().add(mazePane);
 
         player.setLayoutX(877);
         player.setLayoutY(600);
+        //player.vi
         root.getChildren().addAll(player);
 
         Scene scene = new Scene(root);
@@ -184,7 +178,7 @@ public class Main extends Application {
             @Override
             public void handle(long now) {
                 update();
-                bonus();
+                //bonus();
             }
         };
         timer.start();

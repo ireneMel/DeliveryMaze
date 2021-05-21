@@ -9,7 +9,7 @@
     <children>
         <Pane fx:id="mazePane" prefHeight="700.0" prefWidth="1000.0">
             <children>
-                <Polygon fill="#047c5e" layoutX="113.0" layoutY="126.0" points="887.0, -126.0, -113.0, -126.0, -113.0, -95.0, 853.0, -95.0, 853.0, 546.0, -80.0, 546.0, -80.0, -16.0, -113.0, -16.0, -113.0, 574.0, 887.0, 574.0" stroke="#047c5e" strokeType="INSIDE" />
+
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="155.0" layoutX="786.0" layoutY="519.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="592.0" layoutY="519.0" stroke="#047c5e" strokeType="INSIDE" width="200.0" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="295.0" layoutX="786.0" layoutY="128.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
@@ -31,6 +31,8 @@
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="907.0" layoutY="188.0" stroke="#047c5e" strokeType="INSIDE" width="85.0" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="794.0" layoutY="383.0" stroke="#047c5e" strokeType="INSIDE" width="79.0" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="48.0" layoutX="500.0" layoutY="638.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="700.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="700.0" layoutX="960.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
 
             </children>
         </Pane>
@@ -44,5 +46,6 @@
                 </Text>
             </children>
         </Pane>
+
     </children>
 </Pane>
