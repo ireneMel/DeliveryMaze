@@ -29,13 +29,17 @@ import javafx.util.Duration;
 import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 
 public class Main extends Application {
-   public static ArrayList<Rectangle> wallsHorizontal = new ArrayList<>();
-   public static ArrayList<Rectangle> wallsVertical = new ArrayList<>();
+    boolean finishLevel=false;
+    public static List<Rectangle> wallsHorizontal = new ArrayList<>();
+    public static ArrayList<Enemy> monsters=new ArrayList<>();
+    private Timeline timeline,enemyTimeLine;
+    private Label timerLabel = new Label(), splitTimerLabel = new Label();
+    private DoubleProperty timeSeconds = new SimpleDoubleProperty(5.0);
+    private Duration time = Duration.minutes(5.0);
     Pane pane = new Pane();
     Button b;
     public static int levelVariable = 1,lives=3;
@@ -115,13 +119,6 @@ public class Main extends Application {
         root.setPrefSize(1200, 700);
         Pane mazePane = new Pane();
         mazePane.setPrefSize(1000, 700);
-        Polygon mainBorders = new Polygon();
-        mainBorders.getPoints().addAll(new Double[]{887.0, -126.0, -113.0, -126.0, -113.0, -95.0, 853.0, -95.0, 853.0, 546.0, -80.0, 546.0, -80.0, -16.0, -113.0, -16.0, -113.0, 574.0, 887.0, 574.0});
-        mainBorders.setFill(Color.rgb(4, 124, 94));
-        mainBorders.setLayoutX(113);
-        mainBorders.setLayoutY(126);
-        //walls.add(mainBorders);
-        mazePane.getChildren().add(mainBorders);
         Rectangle r1 = new Rectangle(786, 519, 40, 155),
                 r2 = new Rectangle(592, 519, 200, 40),
                 r3 = new Rectangle(786, 128, 40, 295),
@@ -192,7 +189,11 @@ public class Main extends Application {
         monsters.add(enemy);
         root.getChildren().add(mazePane);
 
-        player.setLayoutX(877);
+        for (Rectangle a : wallsHorizontal) {
+            a.setFill(Color.rgb(4, 124, 94));
+        }
+
+        player.setLayoutX(850);
         player.setLayoutY(600);
         //player.vi
         root.getChildren().addAll(player);
@@ -210,7 +211,6 @@ public class Main extends Application {
         timer.start();
         primaryStage.setTitle("Game");
         primaryStage.setScene(scene);
-        // primaryStage.show();
 
     }
 
