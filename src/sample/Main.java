@@ -38,7 +38,7 @@ public class Main extends Application {
    public static ArrayList<Rectangle> wallsVertical = new ArrayList<>();
     Pane pane = new Pane();
     Button b;
-    private int levelVariable = 1;
+    public static int levelVariable = 1,lives=3;
     private HashMap<KeyCode, Boolean> keys = new HashMap<>();
     public static ArrayList<Rectangle> bonuses = new ArrayList<>();
     FileInputStream inputstream;
@@ -53,8 +53,15 @@ public class Main extends Application {
 
     Image image = new Image(inputstream);
     ImageView imageView = new ImageView(image);
-    Hero player = new Hero(imageView);
+    Hero player = new Hero(imageView,90,60);
+    FileInputStream inputstreamE = new FileInputStream("pizza_auto_x2.jpg");
+    Image imageE = new Image(inputstreamE);
+    ImageView im=new ImageView(imageE);
+    Enemy enemy=new Enemy(im);
     static Pane root = new Pane();
+
+    public Main() throws FileNotFoundException {
+    }
 
     @Override
     public void start(Stage stage) throws FileNotFoundException {
@@ -164,13 +171,32 @@ public class Main extends Application {
         timeline.play();
         timerLabel.setLayoutX(1100);timerLabel.setLayoutY(500);
         mazePane.getChildren().add(timerLabel);
+        enemyTimeLine=new Timeline(
+                new KeyFrame(Duration.seconds(10),
+                new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        if(enemy!=null) {
+                            if (enemy.isVisible()) {
+                                enemy.setVisible(false);
+                            } else enemy.setVisible(true);
+                        }else enemyTimeLine.stop();
+                    }
+                })
+        );
+        enemyTimeLine.setCycleCount(Timeline.INDEFINITE);
+        enemyTimeLine.play();
+
+
+        enemy.setLayoutY(500);enemy.setLayoutX(500);
+        monsters.add(enemy);
         root.getChildren().add(mazePane);
 
         player.setLayoutX(877);
         player.setLayoutY(600);
         //player.vi
         root.getChildren().addAll(player);
-
+        root.getChildren().add(enemy);
         Scene scene = new Scene(root);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));

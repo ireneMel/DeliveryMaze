@@ -16,13 +16,16 @@ public class Hero extends Pane {
     int width = 90;
     int height = 60;
     int score = 0;
-    boolean check;
+    boolean check,checkMonster;
+    Enemy remove;
     Rectangle removeRect = null;
     HeroAnimation animation;
 
-    public Hero(ImageView imageView) {
+    public Hero(ImageView imageView,int width, int height) {
         this.imageView = imageView;
         this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
+        this.width=width;
+        this.height=height;
         animation = new HeroAnimation(imageView, Duration.millis(200), count, columns, offsetX, offsetY, width, height);
         getChildren().addAll(imageView);
     }
@@ -33,7 +36,7 @@ public class Hero extends Pane {
             // if (!isWall()) {
             if (right) this.setTranslateX(this.getTranslateX() + 1);
             else this.setTranslateX(this.getTranslateX() - 1);
-            isBonuseEat();
+            isBonuseEat();isMonster();
             // }
         }
     }
@@ -43,6 +46,7 @@ public class Hero extends Pane {
         if (isWall()) {
             moveX(-1 * x);
         }
+        isMonster();
     }
 
     public void moveY(int y) {
@@ -52,6 +56,7 @@ public class Hero extends Pane {
             if (down) this.setTranslateY(this.getTranslateY() + 1);
             else this.setTranslateY(this.getTranslateY() - 1);
             isBonuseEat();
+            isMonster();
             // }
         }
     }
@@ -61,6 +66,7 @@ public class Hero extends Pane {
         if (isWall()) {
             moveY(-1 * y);
         }
+        isMonster();
     }
 
     public void isBonuseEat() {
@@ -85,5 +91,41 @@ public class Hero extends Pane {
         });
 
         return !check;
+    }
+    public void isMonster() {
+        //checkMonster=false;
+/*        if(Main.monsters.size()!=0) {
+            Main.monsters.forEach((enemy) -> {
+                if (this.getBoundsInParent().intersects(enemy.getBoundsInParent())) {
+                    if (enemy.isVisible()) {
+                        //checkMonster=true;
+                        Main.lives--;
+                        int index = Main.monsters.indexOf(enemy);
+                        int index1 = Main.root.getChildren().indexOf(Main.monsters.get(index));
+                        System.out.println(index + " " + index1);
+                        Main.root.getChildren().remove(index1);
+                        Main.monsters.remove(index);
+                        //System.out.println(Main.lives);
+                    }
+                }
+            });
+        }*/
+        if (Main.monsters.size() > 0) {
+            for (int i = 0; i < Main.monsters.size(); i++) {
+                if (this.getBoundsInParent().intersects(Main.monsters.get(i).getBoundsInParent())) {
+                    if (Main.monsters.get(i).isVisible()) {
+                        //checkMonster=true;
+                        Main.lives--;
+                        int index = Main.monsters.indexOf(Main.monsters.get(i));
+                        int index1 = Main.root.getChildren().indexOf(Main.monsters.get(index));
+                        System.out.println(index + " " + index1);
+                        Main.root.getChildren().remove(index1);
+                        Main.monsters.remove(index);
+                        System.out.println(Main.lives);
+                    }
+                }
+            }
+
+        }
     }
 }
