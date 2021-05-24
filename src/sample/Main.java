@@ -41,19 +41,15 @@ public class Main extends Application {
     private final ArrayList<String> complimentArray = new ArrayList<>();
     private final HashMap<KeyCode, Boolean> keys = new HashMap<>();
 
-    private Timeline timeline, enemyTimeLine;
+    private Timeline timeline, enemyTimeLine,enemy2Timeline,enemy3Timeline,enemy4Timeline;
     private final DoubleProperty timeSeconds = new SimpleDoubleProperty(5.0);
     private Duration time = Duration.minutes(5.0);
     private final Label timerLabel = new Label();
-    FileInputStream chickenS = new FileInputStream("src/86_roastedchicken_dish.png");
-    Image chicken=new Image(chickenS);
-    ImageView ch=new ImageView(chicken);
-    Enemy enemy2=new Enemy(ch);
-    FileInputStream inputStreamE = new FileInputStream("src/17_burger_napkin.png"), grass = new FileInputStream("src/photo_2021-05-24_12-42-00.jpg"), inputStream = new FileInputStream("src/hero.png");
-    Image image = new Image(inputStream), grassImage = new Image(grass), imageE = new Image(inputStreamE);
-    ImageView imageView = new ImageView(image), im = new ImageView(imageE);
+    FileInputStream inputStreamE = new FileInputStream("src/17_burger_napkin.png"), grass = new FileInputStream("src/photo_2021-05-24_12-42-00.jpg"), inputStream = new FileInputStream("src/hero.png"),chickenS = new FileInputStream("src/86_roastedchicken_dish.png"),sushiS = new FileInputStream("src/98_sushi_dish.png"),cakeS = new FileInputStream("src/31_chocolatecake_dish.png"),potatoS = new FileInputStream("src/45_frenchfries_dish.png");
+    Image image = new Image(inputStream), grassImage = new Image(grass), imageE = new Image(inputStreamE),chicken=new Image(chickenS),sushiI = new Image(sushiS),cakeI=new Image(cakeS),potatoI = new Image(potatoS);
+    ImageView imageView = new ImageView(image), im = new ImageView(imageE),ch=new ImageView(chicken),sushi = new ImageView(sushiI),cake = new ImageView(cakeI),potato = new ImageView(potatoI);
     Hero player = new Hero(imageView, 90, 60);
-    Enemy enemy = new Enemy(im);
+    Enemy enemy = new Enemy(im),enemy2=new Enemy(ch),enemy3 = new Enemy(sushi),enemy4 = new Enemy(cake),enemy5 = new Enemy(potato);
 
     Pane pane = new Pane();
     static Pane root = new Pane();
@@ -157,7 +153,7 @@ public class Main extends Application {
                         t -> {
                             Duration duration = ((KeyFrame) t.getSource()).getTime();
                             time = time.subtract(duration);
-                            if (time.equals(Duration.seconds(10))) {
+                            if (time.lessThan(Duration.minutes(0.5))) {
                                 timerLabel.setTextFill(Color.RED);
                             }
                             timeSeconds.set(time.toMinutes());
@@ -181,16 +177,31 @@ public class Main extends Application {
                             if (enemy2 != null) {
                                 enemy2.setVisible(!enemy2.isVisible());
                             } //else enemyTimeLine.stop();
-                        })
-        );
-        enemyTimeLine.setCycleCount(Timeline.INDEFINITE);
-        enemyTimeLine.play();
+                        }));
+        enemy2Timeline=new Timeline(
+          new KeyFrame(Duration.seconds(7),
+                  actionEvent -> {
+                      if (enemy4 != null) {
+                          enemy4.setVisible(!enemy4.isVisible());
+                      } else enemy2Timeline.stop();
+                  }));
+        enemy3Timeline=new Timeline(
+                new KeyFrame(Duration.seconds(12),
+                        actionEvent -> {
+                            if (enemy3 != null) {
+                                enemy3.setVisible(!enemy3.isVisible());
+                            } else enemy3Timeline.stop();
+                        }));
+        enemyTimeLine.setCycleCount(Timeline.INDEFINITE);enemy2Timeline.setCycleCount(Timeline.INDEFINITE);enemy3Timeline.setCycleCount(Timeline.INDEFINITE);
+        enemyTimeLine.play();enemy2Timeline.play();enemy3Timeline.play();
         enemy.setLayoutY(500);
         enemy.setLayoutX(500);
-        monsters.add(enemy);
+        monsters.add(enemy);monsters.add(enemy2);monsters.add(enemy3);monsters.add(enemy4);
         enemy2.setVisible(false);
-        enemy2.setLayoutX(200);enemy2.setLayoutY(200);monsters.add(enemy2);
-
+        enemy2.setLayoutX(225);enemy2.setLayoutY(80);
+        enemy3.setLayoutX(75);enemy3.setLayoutY(400);
+        enemy4.setLayoutX(500);enemy4.setLayoutY(75);
+        enemy3.setVisible(false);
         root.getChildren().add(mazePane);
 
         for (Rectangle a : wallsHorizontal) {
@@ -201,7 +212,7 @@ public class Main extends Application {
         player.setLayoutY(600);
         //player.vi
         root.getChildren().addAll(player);
-        root.getChildren().addAll(enemy,enemy2);
+        root.getChildren().addAll(enemy,enemy2,enemy3,enemy4);
         Scene scene = new Scene(root);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
