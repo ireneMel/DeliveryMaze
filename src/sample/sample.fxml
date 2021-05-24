@@ -28,7 +28,7 @@
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="200.0" layoutX="468.0" layoutY="160.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="273.0" layoutY="265.0" stroke="#047c5e" strokeType="INSIDE" width="130.0" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="92.0" layoutX="351.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
-                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="907.0" layoutY="188.0" stroke="#047c5e" strokeType="INSIDE" width="85.0" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="907.0" layoutY="188.0" stroke="#047c5e" strokeType="INSIDE" width="61.0" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="40.0" layoutX="794.0" layoutY="383.0" stroke="#047c5e" strokeType="INSIDE" width="79.0" />
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#047c5e" height="48.0" layoutX="500.0" layoutY="638.0" stroke="#047c5e" strokeType="INSIDE" width="40.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="700.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />

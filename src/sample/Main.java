@@ -14,7 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.effect.DropShadow;
@@ -41,28 +41,12 @@ public class Main extends Application {
     private DoubleProperty timeSeconds = new SimpleDoubleProperty(5.0);
     private Duration time = Duration.minutes(5.0);
     Pane pane = new Pane();
-    Button b;
-    public static int levelVariable = 1,lives=3;
-    private HashMap<KeyCode, Boolean> keys = new HashMap<>();
-    public static ArrayList<Rectangle> bonuses = new ArrayList<>();
-    FileInputStream inputstream;
-
-    {
-        try {
-            inputstream = new FileInputStream("src/hero.png");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    Image image = new Image(inputstream);
-    ImageView imageView = new ImageView(image);
-    Hero player = new Hero(imageView,90,60);
-    FileInputStream inputstreamE = new FileInputStream("pizza_auto_x2.jpg");
-    Image imageE = new Image(inputstreamE);
-    ImageView im=new ImageView(imageE);
-    Enemy enemy=new Enemy(im);
     static Pane root = new Pane();
+    Button play = new Button(), instruction = new Button(), compliment = new Button(), music = new Button();
+
+    Random random = new Random();
+    private int randomNum;
+    public static int levelVariable = 1, lives = 3;
 
     public Main() throws FileNotFoundException {
     }
@@ -84,18 +68,18 @@ public class Main extends Application {
 
     }
 
-    private void startWindow() throws FileNotFoundException {
-        FileInputStream inputstream = new FileInputStream("pizza_auto_x2.jpg");
-        Image image = new Image(inputstream);
+    private void setUpStartWindow() throws FileNotFoundException {
+        String bip = "src/data/fjordmusic.mp3";
+        // Media hit= new Media
+        FileInputStream inputStream = new FileInputStream("src/photo_2021-05-24_15-17-36_auto_x2.jpg");
+        Image image = new Image(inputStream);
         BackgroundImage myBI = new BackgroundImage(image,
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         pane.setBackground(new Background(myBI));
         pane.setPrefSize(1200, 680);
-        b = new Button("Play");
-        Text name = new Text(325, 250, "Delivery maze");
-        name.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 80));
-        // name.setFill(Color.rgb(243,164,139));
+        Text name = new Text(50, 160, "Delivery maze");
+        name.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 60));
         name.setFill(Color.WHITE);
         DropShadow is = new DropShadow();
         is.setOffsetY(3.0f);
@@ -105,50 +89,25 @@ public class Main extends Application {
         pane.getChildren().add(name);
     }
 
-    public void firstLevel(Stage primaryStage) {
-        Pane settingsPane = new Pane();
-        settingsPane.setPrefSize(200, 700);
-        settingsPane.setLayoutX(1000);
-        Button pause = new Button("Pause");
-        pause.setLayoutX(80);
-        pause.setLayoutY(200);
+    public void firstLevel(Stage primaryStage) throws FileNotFoundException {
         Label level = new Label("Level " + levelVariable);
-        level.setLayoutX(10);
+        level.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 60));
+        level.setLayoutX(1010);
         level.setLayoutY(50);
-        settingsPane.getChildren().addAll(pause, level);
         root.setPrefSize(1200, 700);
         Pane mazePane = new Pane();
         mazePane.setPrefSize(1000, 700);
-        Rectangle r1 = new Rectangle(786, 519, 40, 155),
-                r2 = new Rectangle(592, 519, 200, 40),
-                r3 = new Rectangle(786, 128, 40, 295),
-                r4 = new Rectangle(613, 128, 179, 40),
-                r5 = new Rectangle(582, 28, 40, 200),
-                r6 = new Rectangle(408, 350, 389, 40),
-                r7 = new Rectangle(408, 350, 40, 215),
-                r8 = new Rectangle(259, 525, 157, 40),
-                r9 = new Rectangle(259, 141, 40, 404),
-                r10 = new Rectangle(128, 445, 157, 40),
-                r11 = new Rectangle(582, 475, 40, 84),
-                r12 = new Rectangle(128, 445, 40, 131),
-                r13 = new Rectangle(14, 305, 138, 40),
-                r14 = new Rectangle(152, 199, 138, 40),
-                r15 = new Rectangle(0, 108, 130, 40),
-                r16 = new Rectangle(468, 160, 40, 200),
-                r17 = new Rectangle(273, 265, 130, 40),
-                r18 = new Rectangle(351, 0, 40, 92),
-                r19 = new Rectangle(907, 188, 85, 40),
-                r20 = new Rectangle(794, 383, 79, 40),
-                r21 = new Rectangle(500, 683, 40, 48),
-                r22=new Rectangle(0,0,40,700),
-                r23= new Rectangle(960,0,40,700),
-                r24=new Rectangle(0,0,1000,40),
-                r25=new Rectangle(0,660,1000,40);
-        mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21,r22,r23,r24,r25);
-        Collections.addAll(wallsHorizontal, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22,r23,r24,r25);
+        addRectangles(mazePane, level);
+        Image groundImage = new Image("https://static.wikia.nocookie.net/oxygen-not-included/images/0/04/%D0%97%D0%B5%D0%BC%D0%BB%D1%8F.png/revision/latest?cb=20200301161904&path-prefix=ru");
+        BackgroundImage myBI = new BackgroundImage(groundImage,
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        mazePane.setBackground(new Background(myBI));
+
         timerLabel.textProperty().bind(timeSeconds.asString());
         timerLabel.setTextFill(Color.RED);
         timerLabel.setStyle("-fx-font-size: 4em;");
+        timerLabel.setTextFill(Color.rgb(75, 124, 23));
         timeline = new Timeline(
                 new KeyFrame(Duration.minutes(0.01),
                         new EventHandler<ActionEvent>() {
@@ -187,17 +146,21 @@ public class Main extends Application {
 
         enemy.setLayoutY(500);enemy.setLayoutX(500);
         monsters.add(enemy);
+        enemy2.setVisible(false);
+        enemy2.setLayoutX(200);enemy2.setLayoutY(200);monsters.add(enemy2);
+
         root.getChildren().add(mazePane);
 
         for (Rectangle a : wallsHorizontal) {
-            a.setFill(Color.rgb(4, 124, 94));
+            a.setFill(new ImagePattern(grassImage, 0, 0, 1, 1, true));
+            // a.setFill(Color.rgb(4, 124, 94));
         }
 
         player.setLayoutX(850);
         player.setLayoutY(600);
         //player.vi
         root.getChildren().addAll(player);
-        root.getChildren().add(enemy);
+        root.getChildren().addAll(enemy,enemy2);
         Scene scene = new Scene(root);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
