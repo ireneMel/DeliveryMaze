@@ -46,6 +46,7 @@ public class Main extends Application {
     private final DoubleProperty timeSeconds = new SimpleDoubleProperty(5.0);
     private Duration time = Duration.minutes(5.0);
     private final Label timerLabel = new Label();
+    public static Music playlist = new Music(), sideSounds = new Music();
     FileInputStream inputStreamE = new FileInputStream("src/17_burger_napkin.png"),
             grass = new FileInputStream("src/unnamed.jpg"),
             inputStream = new FileInputStream("src/MyCollages__3_-removebg-preview (1).png"),
@@ -84,6 +85,7 @@ public class Main extends Application {
     Random random = new Random();
     private int randomNum;
     public static int levelVariable = 1, lives = 3;
+    boolean musicStatus = true;
 
     public Main() throws FileNotFoundException {
     }
@@ -105,7 +107,22 @@ public class Main extends Application {
         });
 
         music.setOnAction(actionEvent -> {
+            musicStatus = !musicStatus;
+            if (musicStatus) {
+                try {
+                    setBackgroundForButton("src/music_on.png", music);
+                } catch (FileNotFoundException f) {
 
+                }
+                playlist.getMusicPlayer().play();
+            } else {
+                try {
+                    setBackgroundForButton("src/music_off.png", music);
+                } catch (FileNotFoundException f) {
+
+                }
+                playlist.getMusicPlayer().stop();
+            }
         });
 
         generateCompliment();
@@ -150,10 +167,15 @@ public class Main extends Application {
         setBackgroundForButton("src/info_2.png", instruction);
         setBackgroundForButton("src/unfavourited.png", compliment);
 
+        playlist.background("src/Komiku_-_04_-_Shopping_List.mp3");
         pane.getChildren().addAll(play, name, compliment, instruction, music);
     }
 
     public void firstLevel(Stage primaryStage) throws FileNotFoundException {
+        playlist.getMusicPlayer().stop();
+        if (musicStatus) {
+            playlist.background("src/Komiku_-_04_-_The_weekly_fair.mp3");
+        }
         Label level = new Label("Level " + levelVariable);
         level.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 60));
         level.setLayoutX(1010);
@@ -198,6 +220,7 @@ public class Main extends Application {
                     update();
                 } else {
                     timer.stop();
+                    playlist.getMusicPlayer().stop();
                     try {
                         betweenLevelScene(primaryStage);
                     } catch (FileNotFoundException e) {
@@ -214,6 +237,7 @@ public class Main extends Application {
     }
 
     private void betweenLevelScene(Stage stage) throws FileNotFoundException {
+        playlist.playEffectSound("src/mixkit-ethereal-fairy-win-sound-2019.wav");
         FileInputStream str = new FileInputStream("src/manyPizzas_digital_art_x4.jpg");
         Image image = new Image(str);
         BackgroundImage myBI = new BackgroundImage(image,
