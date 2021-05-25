@@ -38,12 +38,13 @@ public class Main extends Application {
     public static boolean finishLevel = false;
     public static List<Character> energyBonuses = new ArrayList<>();
     public static List<Rectangle> wallsHorizontal = new ArrayList<>();
-    public static ArrayList<Enemy> monsters = new ArrayList<>();
+    static List<Rectangle> lines=new ArrayList<>();
+    public static ArrayList<Character> monsters = new ArrayList<>();
     public static ArrayList<Rectangle> bonuses = new ArrayList<>();
     private final ArrayList<String> complimentArray = new ArrayList<>();
     private final HashMap<KeyCode, Boolean> keys = new HashMap<>();
-
-    private Timeline timeline, enemyTimeLine,enemy2Timeline,enemy3Timeline,enemy4Timeline;
+    AnimationTimer timer;
+    private Timeline timeline, enemyTimeLine, enemy2Timeline, enemy3Timeline, enemy4Timeline, energyTimeLine;
     private final DoubleProperty timeSeconds = new SimpleDoubleProperty(5.0);
     private Duration time = Duration.minutes(5.0);
     private final Label timerLabel = new Label();
@@ -165,7 +166,8 @@ public class Main extends Application {
         Pane mazePane = new Pane();
         mazePane.setPrefSize(1000, 700);
         addRectangles(mazePane, level);
-        Image groundImage = new Image("https://static.wikia.nocookie.net/oxygen-not-included/images/0/04/%D0%97%D0%B5%D0%BC%D0%BB%D1%8F.png/revision/latest?cb=20200301161904&path-prefix=ru");
+        FileInputStream inputStreamE = new FileInputStream("src/grass_auto_x2.jpg");
+        Image groundImage = new Image(inputStreamE);
         BackgroundImage myBI = new BackgroundImage(groundImage,
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
@@ -177,14 +179,19 @@ public class Main extends Application {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         for (Rectangle a : wallsHorizontal) {
-            a.setFill(new ImagePattern(grassImage, 0, 0, 1, 1, true));
-            // a.setFill(Color.rgb(4, 124, 94));
+//            ImagePattern ip=new ImagePattern(grassImage);
+//            a.setFill(new ImagePattern(grassImage));
+            a.setFill(Color.rgb(132, 134, 241));
+            a.setStroke(Color.WHITE);
         }
-        player.setLayoutX(850);
-        player.setLayoutY(600);
-        //player.vi
-        root.getChildren().addAll(player);
-        root.getChildren().addAll(enemy,enemy2,enemy3,enemy4);
+        for (Rectangle l:lines){
+            l.setFill(Color.rgb(132, 134, 241));
+            l.setStroke(Color.rgb(132, 134, 241));
+        }
+
+        setLayout(player, 850, 600);
+
+        root.getChildren().addAll(player, enemy, enemy2, enemy3, enemy4, energydrink, energydrink1, houseIm);
         Scene scene = new Scene(root);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
@@ -315,7 +322,7 @@ public class Main extends Application {
         b.setLayoutY(yLayout);
     }
 
-    private void addRectangles(Pane mazePane, Label level){
+    private void addRectangles(Pane mazePane, Label level) {
         Rectangle r1 = new Rectangle(786, 519, 40, 155),
                 r2 = new Rectangle(622, 519, 164, 40),
                 r3 = new Rectangle(786, 128, 40, 295),
@@ -344,6 +351,99 @@ public class Main extends Application {
         Rectangle l0=new Rectangle(960,655,40,10);
         mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, level,l0);
         Collections.addAll(wallsHorizontal, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25);
+        Collections.addAll(lines,l0);
+    }
+
+    private void setLayout(Character ch, double x, double y) {
+        ch.setLayoutX(x);
+        ch.setLayoutY(y);
+    }
+
+    private void setUpCharacters(Pane mazePane) {
+        setLayout(enemy, 500, 500);
+
+        Collections.addAll(monsters, enemy, enemy2, enemy3, enemy4);
+
+        enemy2.setVisible(false);
+        setLayout(enemy2, 225, 80);
+        setLayout(enemy3, 75, 400);
+        setLayout(enemy4, 500, 75);
+        setLayout(energydrink, 650, 75);
+        setLayout(energydrink1, 340, 470);
+
+        houseIm.setX(650);
+        houseIm.setLayoutY(200);
+        houseIm.setFitWidth(100);
+        houseIm.setFitHeight(100);
+        Collections.addAll(energyBonuses, energydrink, energydrink1);
+
+        enemy3.setVisible(false);
+        root.getChildren().add(mazePane);
+    }
+
+    private void setUpTimeLines(Pane mazePane) {
+        timerLabel.textProperty().bind(timeSeconds.asString());
+        timerLabel.setTextFill(Color.RED);
+        timerLabel.setStyle("-fx-font-size: 4em;");
+        timerLabel.setTextFill(Color.rgb(75, 124, 23));
+        timeline = new Timeline(
+                new KeyFrame(Duration.minutes(0.01),
+                        t -> {
+                            if (!finishLevel) {
+                                Duration duration = ((KeyFrame) t.getSource()).getTime();
+                                time = time.subtract(duration);
+                                if (time.lessThan(Duration.minutes(0.5))) {
+                                    timerLabel.setTextFill(Color.RED);
+                                }
+                                timeSeconds.set(time.toMinutes());
+                                if (time.equals(Duration.ZERO)) {
+                                    timeline.stop();
+                                    JOptionPane.showMessageDialog(null, "Loser", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                            } else timeline.stop();
+                        })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        timerLabel.setLayoutX(1100);
+        timerLabel.setLayoutY(500);
+        mazePane.getChildren().add(timerLabel);
+        enemyTimeLine = new Timeline(
+                new KeyFrame(Duration.seconds(10),
+                        actionEvent -> {
+                            if (!finishLevel) {
+                                if (enemy != null) {
+                                    enemy.setVisible(!enemy.isVisible());
+                                }
+                                if (enemy2 != null) {
+                                    enemy2.setVisible(!enemy2.isVisible());
+                                }
+                            } else enemyTimeLine.stop();
+                        }));
+        enemy2Timeline = new Timeline(
+                new KeyFrame(Duration.seconds(7),
+                        actionEvent -> {
+                            if (!finishLevel) {
+                                if (enemy4 != null) {
+                                    enemy4.setVisible(!enemy4.isVisible());
+                                } else enemy2Timeline.stop();
+                            } else enemy2Timeline.stop();
+                        }));
+        enemy3Timeline = new Timeline(
+                new KeyFrame(Duration.seconds(12),
+                        actionEvent -> {
+                            if (!finishLevel) {
+                                if (enemy3 != null) {
+                                    enemy3.setVisible(!enemy3.isVisible());
+                                } else enemy3Timeline.stop();
+                            } else enemy3Timeline.stop();
+                        }));
+        enemyTimeLine.setCycleCount(Timeline.INDEFINITE);
+        enemy2Timeline.setCycleCount(Timeline.INDEFINITE);
+        enemy3Timeline.setCycleCount(Timeline.INDEFINITE);
+        enemyTimeLine.play();
+        enemy2Timeline.play();
+        enemy3Timeline.play();
     }
 
 }
