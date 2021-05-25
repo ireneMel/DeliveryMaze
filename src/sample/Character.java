@@ -16,7 +16,7 @@ public class Character extends Pane {
     int width = 90;
     int height = 60;
     int score = 0;
-    boolean check,checkMonster;
+    boolean check;
     Rectangle removeRect = null;
     CharacterAnimation animation;
 
@@ -29,13 +29,19 @@ public class Character extends Pane {
         getChildren().addAll(imageView);
     }
 
+    public Character(ImageView imageView) {
+        this.imageView = imageView;
+        this.imageView.setViewport(new Rectangle2D(0, 0, 50, 60));
+        getChildren().addAll(imageView);
+    }
+
     public void moveX(int x) {
         boolean right = x > 0;
         for (int i = 0; i < Math.abs(x); i++) {
             // if (!isWall()) {
             if (right) this.setTranslateX(this.getTranslateX() + 1);
             else this.setTranslateX(this.getTranslateX() - 1);
-            isBonuseEat();isMonster();isEnergy();isFinish();
+            isBonusEat();isMonster();isEnergy();isFinish();
             // }
         }
     }
@@ -54,7 +60,7 @@ public class Character extends Pane {
             //if (!isWall()) {
             if (down) this.setTranslateY(this.getTranslateY() + 1);
             else this.setTranslateY(this.getTranslateY() - 1);
-            isBonuseEat();
+            isBonusEat();
             isMonster();isEnergy();isFinish();
             // }
         }
@@ -68,7 +74,7 @@ public class Character extends Pane {
         isMonster();isEnergy();isFinish();
     }
 
-    public void isBonuseEat() {
+    public void isBonusEat() {
         Main.bonuses.forEach((rect) -> {
             if (this.getBoundsInParent().intersects(rect.getBoundsInParent())) {
                 removeRect = rect;
@@ -96,11 +102,11 @@ public class Character extends Pane {
             for (int i = 0; i < Main.monsters.size(); i++) {
                 if (this.getBoundsInParent().intersects(Main.monsters.get(i).getBoundsInParent())) {
                     if (Main.monsters.get(i).isVisible()) {
-                        //checkMonster=true;
+                        Main.sideSounds.playEffectSound("src/mixkit-ethereal-fairy-win-sound-2019.wav");
+                        Main.playlist.getMusicPlayer().play();
                         Main.lives--;
                         int index = Main.monsters.indexOf(Main.monsters.get(i));
-                        int index1 = Main.root.getChildren().indexOf(Main.monsters.get(index));
-                        Main.root.getChildren().remove(index1);
+                        Main.root.getChildren().remove(Main.monsters.get(index));
                         Main.monsters.remove(index);
                         System.out.println(Main.lives);
                     }
@@ -114,11 +120,11 @@ public class Character extends Pane {
             for (int i = 0; i < Main.energyBonuses.size(); i++) {
                 if (this.getBoundsInParent().intersects(Main.energyBonuses.get(i).getBoundsInParent())) {
                     if (Main.energyBonuses.get(i).isVisible()) {
-                        //checkMonster=true;
+                        Main.sideSounds.playEffectSound("src/mixkit-melodic-bonus-collect-1938.wav");
+                        Main.playlist.getMusicPlayer().play();
                         Main.lives++;
                         int index = Main.energyBonuses.indexOf(Main.energyBonuses.get(i));
-                        int index1 = Main.root.getChildren().indexOf(Main.energyBonuses.get(index));
-                        Main.root.getChildren().remove(index1);
+                        Main.root.getChildren().remove(Main.energyBonuses.get(index));
                         Main.energyBonuses.remove(index);
                         System.out.println(Main.lives);
                     }

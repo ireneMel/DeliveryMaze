@@ -12,8 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.effect.DropShadow;
@@ -38,7 +36,7 @@ public class Main extends Application {
     public static boolean finishLevel = false;
     public static List<Character> energyBonuses = new ArrayList<>();
     public static List<Rectangle> wallsHorizontal = new ArrayList<>();
-    static List<Rectangle> lines=new ArrayList<>();
+    static List<Rectangle> lines = new ArrayList<>();
     public static ArrayList<Character> monsters = new ArrayList<>();
     public static ArrayList<Rectangle> bonuses = new ArrayList<>();
     private final ArrayList<String> complimentArray = new ArrayList<>();
@@ -127,8 +125,6 @@ public class Main extends Application {
     }
 
     private void setUpStartWindow() throws FileNotFoundException {
-        String bip = "src/data/fjordmusic.mp3";
-        // Media hit= new Media
         FileInputStream inputStream = new FileInputStream("src/photo_2021-05-24_15-17-36_auto_x2.jpg");
         Image image = new Image(inputStream);
         BackgroundImage myBI = new BackgroundImage(image,
@@ -184,7 +180,7 @@ public class Main extends Application {
             a.setFill(Color.rgb(132, 134, 241));
             a.setStroke(Color.WHITE);
         }
-        for (Rectangle l:lines){
+        for (Rectangle l : lines) {
             l.setFill(Color.rgb(132, 134, 241));
             l.setStroke(Color.rgb(132, 134, 241));
         }
@@ -235,7 +231,8 @@ public class Main extends Application {
         text.setLayoutX(275);
         text1.setLayoutX(375);
         text1.setLayoutY(400);
-        text.setFill(Color.WHITE);text1.setFill(Color.WHITE);
+        text.setFill(Color.WHITE);
+        text1.setFill(Color.WHITE);
         Button back = new Button(), nextLevel = new Button(), sound = new Button();
         setButton(back, 70, 70, 465, 500);
         setButton(nextLevel, 100, 100, 565, 485);
@@ -245,7 +242,7 @@ public class Main extends Application {
         setBackgroundForButton("src/fast_forward.png", nextLevel);
         setBackgroundForButton("src/music_on.png", sound);
 
-        pane.getChildren().addAll(text, text1,back,nextLevel,sound);
+        pane.getChildren().addAll(text, text1, back, nextLevel, sound);
         Scene scene = new Scene(pane);
         stage.setScene(scene);
     }
@@ -348,10 +345,10 @@ public class Main extends Application {
                 r23 = new Rectangle(960, 0, 40, 700),
                 r24 = new Rectangle(0, 0, 1000, 40),
                 r25 = new Rectangle(0, 660, 1000, 40);
-        Rectangle l0=new Rectangle(960,655,40,10);
-        mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, level,l0);
+        Rectangle l0 = new Rectangle(960, 655, 40, 10);
+        mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, level, l0);
         Collections.addAll(wallsHorizontal, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25);
-        Collections.addAll(lines,l0);
+        Collections.addAll(lines, l0);
     }
 
     private void setLayout(Character ch, double x, double y) {
