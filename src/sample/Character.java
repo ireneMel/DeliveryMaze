@@ -40,7 +40,7 @@ public class Character extends Pane {
         for (int i = 0; i < Math.abs(x); i++) {
             if (right) this.setTranslateX(this.getTranslateX() + 1);
             else this.setTranslateX(this.getTranslateX() - 1);
-            isBonusEat();isMonster();isEnergy();isFinish();
+            isBonusEat();isFinish();isEnergy();
         }
     }
 
@@ -49,7 +49,8 @@ public class Character extends Pane {
         if (isWall()) {
             moveX(-1 * x);
         }
-        isMonster();isEnergy();isFinish();
+        isFinish();
+        isMonster();
     }
 
     public void moveY(int y) {
@@ -57,8 +58,7 @@ public class Character extends Pane {
         for (int i = 0; i < Math.abs(y); i++) {
             if (down) this.setTranslateY(this.getTranslateY() + 1);
             else this.setTranslateY(this.getTranslateY() - 1);
-            isBonusEat();
-            isMonster();isEnergy();isFinish();
+            isBonusEat();isFinish();isEnergy();
         }
     }
 
@@ -67,7 +67,8 @@ public class Character extends Pane {
         if (isWall()) {
             moveY(-1 * y);
         }
-        isMonster();isEnergy();isFinish();
+        isFinish();
+        isMonster();
     }
 
     public void isBonusEat() {

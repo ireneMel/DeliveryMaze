@@ -44,9 +44,9 @@ public class Main extends Application {
     private  HashMap<KeyCode, Boolean> keys;
     AnimationTimer timer;
     private Timeline timeline, enemyTimeLine, enemy2Timeline, enemy3Timeline, enemy4Timeline;
-    private final DoubleProperty timeSeconds = new SimpleDoubleProperty(5.0);
-    private Duration time = Duration.minutes(5.0);
-    private final Label timerLabel = new Label();
+    private DoubleProperty timeSeconds;
+    private Duration time ;
+    private Label timerLabel;
     public static Music playlist = new Music(), sideSounds = new Music();
     FileInputStream inputStreamE = new FileInputStream("src/17_burger_napkin.png"),
             grass = new FileInputStream("src/unnamed.jpg"),
@@ -71,7 +71,7 @@ public class Main extends Application {
         }
     }
 
-    Scene scene, sceneFirstLevel;
+    Scene scene;
     public static Image house = new Image(houseS);
     public static ImageView houseIm = new ImageView(house);
     ImageView imageView = new ImageView(image), im = new ImageView(imageE), ch = new ImageView(chicken),
@@ -99,7 +99,6 @@ public class Main extends Application {
         play.setOnAction(actionEvent -> {
             try {
                 firstLevel(stage);
-                stage.setScene(sceneFirstLevel);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -145,9 +144,10 @@ public class Main extends Application {
         stage.show();
     }
 
-    public void firstLevel(Stage primaryStage) throws FileNotFoundException {
-        Main.fail = false;
-        Main.lives = 3;
+    public void firstLevel(Stage primaryStage){
+        fail = false;
+        finishLevel=false;
+      //  lives = 3;
         root = new Pane();
         Main.playlist.getMusicPlayer().stop();
         if (Main.musicStatus) {
@@ -181,7 +181,7 @@ public class Main extends Application {
         setLayout(player, 862, 545);
         keys = new HashMap<>();
 
-        sceneFirstLevel = new Scene(root);
+        Scene sceneFirstLevel = new Scene(root);
 
         sceneFirstLevel.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         sceneFirstLevel.setOnKeyReleased(event -> keys.put(event.getCode(), false));
@@ -196,6 +196,7 @@ public class Main extends Application {
                 } else if (finishLevel) {
                     timer.stop();
                     playlist.getMusicPlayer().stop();
+                    player.animation.stop();
                     try {
                         betweenLevelScene(primaryStage);
                     } catch (FileNotFoundException e) {
@@ -204,6 +205,7 @@ public class Main extends Application {
                 } else if (fail) {
                     timer.stop();
                     playlist.getMusicPlayer().stop();
+                    player.animation.stop();
                     try {
                         failScene(primaryStage);
                     } catch (FileNotFoundException e) {
@@ -325,9 +327,7 @@ public class Main extends Application {
         text1.setLayoutY(400);
         text.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 60));
         text1.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 60));
-        text.setFill(Color.ORANGE);
-        text1.setFill(Color.ORANGE);
-        Button back = new Button();
+        back = new Button();
         setButton(back, 100, 100, 500, 500);
         back.setOnAction(actionEvent ->{lives=3; stage.setScene(scene);});
 
@@ -471,6 +471,9 @@ public class Main extends Application {
     }
 
     private void setUpTimeLines(Pane mazePane) {
+        timeSeconds = new SimpleDoubleProperty(5.0);
+        time = Duration.minutes(5.0);
+        timerLabel = new Label();
         timerLabel.textProperty().bind(timeSeconds.asString());
         timerLabel.setTextFill(Color.RED);
         timerLabel.setStyle("-fx-font-size: 4em;");
