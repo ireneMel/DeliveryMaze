@@ -6,6 +6,8 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Slider;
@@ -14,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.effect.DropShadow;
@@ -47,6 +50,7 @@ public class Main extends Application {
     private DoubleProperty timeSeconds;
     private Duration time;
     private Label timerLabel;
+    public static Label energyLabel2;
     public static Music playlist = new Music(), sideSounds = new Music();
     FileInputStream inputStreamE = new FileInputStream("src/17_burger_napkin.png"),
             inputStream = new FileInputStream("src/MyCollages__7_-removebg-preview (1).png"),
@@ -145,6 +149,7 @@ public class Main extends Application {
         stage.setTitle("Delivery Maze by Melnyk Iryna and Zhelizniak Anna");
         scene = new Scene(pane);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -352,7 +357,7 @@ public class Main extends Application {
             }
         };
         timer.start();
-        root.getChildren().addAll(player, enemy, enemy2, enemy3, enemy4, energydrink, energydrink1, houseIm);
+        root.getChildren().addAll(player, enemy, enemy2, enemy3, enemy4, energydrink, energydrink1, houseIm, imageEnergy);
         primaryStage.setTitle("Delivery Maze");
         primaryStage.setScene(sceneFirstLevel);
 
@@ -589,16 +594,16 @@ public class Main extends Application {
 
     private void setUpTimeLines(Pane mazePane) {
         timeSeconds = new SimpleDoubleProperty(5.0);
-        time = Duration.minutes(5.0);
+        time = Duration.minutes(5.00);
         timerLabel = new Label();
         timerLabel.textProperty().bind(timeSeconds.asString());
         timerLabel.setTextFill(Color.RED);
-        timerLabel.setStyle("-fx-font-size: 4em;");
-        timerLabel.setTextFill(Color.rgb(75, 124, 23));
+        timerLabel.setFont(Font.font("Bauhaus 93", FontWeight.BOLD, 30));
+        timerLabel.setTextFill(Color.BLACK);
         timeline = new Timeline(
                 new KeyFrame(Duration.minutes(0.01),
                         t -> {
-                            if (!finishLevel) {
+                            if (!finishLevel && !fail) {
                                 Duration duration = ((KeyFrame) t.getSource()).getTime();
                                 time = time.subtract(duration);
                                 if (time.lessThan(Duration.minutes(0.5))) {
@@ -614,8 +619,8 @@ public class Main extends Application {
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-        timerLabel.setLayoutX(1100);
-        timerLabel.setLayoutY(500);
+        timerLabel.setLayoutX(1050);
+        timerLabel.setLayoutY(450);
         mazePane.getChildren().add(timerLabel);
         enemyTimeLine = new Timeline(
                 new KeyFrame(Duration.seconds(10),

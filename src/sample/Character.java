@@ -122,6 +122,7 @@ public class Character extends Pane {
                 if (this.getBoundsInParent().intersects(Main.energyBonuses.get(i).getBoundsInParent())) {
                     if (Main.energyBonuses.get(i).isVisible()) {
                         Main.lives++;
+                        Main.energyLabel2.setText("x" + Main.lives);
                         int index = Main.energyBonuses.indexOf(Main.energyBonuses.get(i));
                         Main.root.getChildren().remove(Main.energyBonuses.get(index));
                         Main.energyBonuses.remove(index);
