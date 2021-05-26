@@ -38,11 +38,9 @@ public class Character extends Pane {
     public void moveX(int x) {
         boolean right = x > 0;
         for (int i = 0; i < Math.abs(x); i++) {
-            // if (!isWall()) {
             if (right) this.setTranslateX(this.getTranslateX() + 1);
             else this.setTranslateX(this.getTranslateX() - 1);
             isBonusEat();isMonster();isEnergy();isFinish();
-            // }
         }
     }
 
@@ -57,12 +55,10 @@ public class Character extends Pane {
     public void moveY(int y) {
         boolean down = y > 0;
         for (int i = 0; i < Math.abs(y); i++) {
-            //if (!isWall()) {
             if (down) this.setTranslateY(this.getTranslateY() + 1);
             else this.setTranslateY(this.getTranslateY() - 1);
             isBonusEat();
             isMonster();isEnergy();isFinish();
-            // }
         }
     }
 
@@ -81,7 +77,6 @@ public class Character extends Pane {
                 score++;
                 System.out.println(score);
             }
-
         });
         Main.bonuses.remove(removeRect);
         Main.root.getChildren().remove(removeRect);
@@ -97,6 +92,7 @@ public class Character extends Pane {
 
         return !check;
     }
+
     public void isMonster() {
         if (Main.monsters.size() > 0) {
             for (int i = 0; i < Main.monsters.size(); i++) {
@@ -115,6 +111,7 @@ public class Character extends Pane {
 
         }
     }
+
     public void isEnergy() {
         if (Main.energyBonuses.size() > 0) {
             for (int i = 0; i < Main.energyBonuses.size(); i++) {
@@ -133,6 +130,7 @@ public class Character extends Pane {
 
         }
     }
+
     public void isFinish() {
         if(this.getBoundsInParent().intersects(Main.houseIm.getBoundsInParent())){
             Main.finishLevel=true;
