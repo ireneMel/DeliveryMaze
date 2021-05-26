@@ -76,6 +76,7 @@ public class Character extends Pane {
             if (this.getBoundsInParent().intersects(rect.getBoundsInParent())) {
                 removeRect = rect;
                 score++;
+                Main.lives--;
                 System.out.println(score);
             }
         });
@@ -100,6 +101,7 @@ public class Character extends Pane {
                 if (this.getBoundsInParent().intersects(Main.monsters.get(i).getBoundsInParent())) {
                     if (Main.monsters.get(i).isVisible()) {
                         Main.lives--;
+                        Main.energyLabel2.setText("x" + Main.lives);
                         int index = Main.monsters.indexOf(Main.monsters.get(i));
                         Main.root.getChildren().remove(Main.monsters.get(index));
                         Main.monsters.remove(index);
