@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -60,6 +61,7 @@ public class Main extends Application {
             chicken = new Image(chickenS), sushiI = new Image(sushiS), cakeI = new Image(cakeS), potatoI = new Image(potatoS),
             energyDrinkI = new Image(energyDrink), energyDrinkI1 = new Image(energyDrink1);
     public static FileInputStream houseS;
+    Button back;
 
     static {
         try {
@@ -161,28 +163,23 @@ public class Main extends Application {
         Pane mazePane = new Pane();
         mazePane.setPrefSize(1000, 700);
         addRectangles(mazePane, level);
-        FileInputStream inputStreamE = new FileInputStream("src/grass_auto_x2.jpg");
-        Image groundImage = new Image(inputStreamE);
-        BackgroundImage myBI = new BackgroundImage(groundImage,
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT);
-        mazePane.setBackground(new Background(myBI));
+
+        mazePane.setBackground(new Background(new BackgroundFill(Color.rgb(113,217,140), CornerRadii.EMPTY, Insets.EMPTY)));
 
         setUpTimeLines(mazePane);
         setUpCharacters(mazePane);
 
         for (Rectangle a : wallsHorizontal) {
             a.setFill(Color.rgb(132, 134, 241));
-            a.setStroke(Color.WHITE);
+           // a.setStroke(Color.WHITE);
         }
         for (Rectangle l : lines) {
             l.setFill(Color.rgb(132, 134, 241));
         }
 
         player = new Character(imageView, 50, 60);
-        setLayout(player, 850, 600);
+        setLayout(player, 862, 545);
         keys = new HashMap<>();
-        root.getChildren().addAll(player, enemy, enemy2, enemy3, enemy4, energydrink, energydrink1, houseIm);
 
         sceneFirstLevel = new Scene(root);
 
@@ -217,8 +214,9 @@ public class Main extends Application {
             }
         };
         timer.start();
+        root.getChildren().addAll(player, enemy, enemy2, enemy3, enemy4, energydrink, energydrink1, houseIm);
         primaryStage.setTitle("Delivery Maze");
-
+        primaryStage.setScene(sceneFirstLevel);
     }
 
     private void addRectangles(Pane mazePane, Label level) {
@@ -311,7 +309,7 @@ public class Main extends Application {
 
     private void failScene(Stage stage) throws FileNotFoundException {
         Pane pane = new Pane();
-        FileInputStream str = new FileInputStream("src/failure_auto_x2.jpg");
+        FileInputStream str = new FileInputStream("src/pizza2.jpg");
         Image image = new Image(str);
         BackgroundImage myBI = new BackgroundImage(image,
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
@@ -331,11 +329,8 @@ public class Main extends Application {
         text1.setFill(Color.ORANGE);
         Button back = new Button();
         setButton(back, 100, 100, 500, 500);
+        back.setOnAction(actionEvent ->{lives=3; stage.setScene(scene);});
 
-        back.setOnAction(actionEvent -> {
-            stage.setScene(scene);
-
-        });
         setBackgroundForButton("src/home.png", back);
         pane.getChildren().addAll(text, text1, back);
         Scene scene = new Scene(pane);
@@ -343,9 +338,10 @@ public class Main extends Application {
 
     }
 
+
     private void betweenLevelScene(Stage stage) throws FileNotFoundException {
         playlist.playEffectSound("src/mixkit-ethereal-fairy-win-sound-2019.wav");
-        FileInputStream str = new FileInputStream("src/manyPizzas_digital_art_x4.jpg");
+        FileInputStream str = new FileInputStream("src/pizza1.jpg");
         Image image = new Image(str);
         BackgroundImage myBI = new BackgroundImage(image,
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
@@ -363,7 +359,9 @@ public class Main extends Application {
         text1.setLayoutY(400);
         text.setFill(Color.WHITE);
         text1.setFill(Color.WHITE);
-        Button back = new Button(), nextLevel = new Button(), sound = new Button();
+        Button nextLevel = new Button(), sound = new Button();
+        back = new Button();
+        back.setOnAction(actionEvent -> {lives=3; stage.setScene(scene);});
         setButton(back, 70, 70, 465, 500);
         setButton(nextLevel, 100, 100, 565, 485);
         setButton(sound, 70, 70, 665, 500);
@@ -448,8 +446,6 @@ public class Main extends Application {
         b.setLayoutX(xLayout);
         b.setLayoutY(yLayout);
     }
-
-
 
     private void setLayout(Character ch, double x, double y) {
         ch.setLayoutX(x);
