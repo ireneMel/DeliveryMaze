@@ -31,7 +31,7 @@ public class Character extends Pane {
 
     public Character(ImageView imageView) {
         this.imageView = imageView;
-        this.imageView.setViewport(new Rectangle2D(0, 0, 50, 60));
+        this.imageView.setViewport(new Rectangle2D(0, 0, 32, 32));
         getChildren().addAll(imageView);
     }
 
@@ -98,12 +98,13 @@ public class Character extends Pane {
             for (int i = 0; i < Main.monsters.size(); i++) {
                 if (this.getBoundsInParent().intersects(Main.monsters.get(i).getBoundsInParent())) {
                     if (Main.monsters.get(i).isVisible()) {
-                        Main.sideSounds.playEffectSound("src/mixkit-ethereal-fairy-win-sound-2019.wav");
-                        Main.playlist.getMusicPlayer().play();
                         Main.lives--;
                         int index = Main.monsters.indexOf(Main.monsters.get(i));
                         Main.root.getChildren().remove(Main.monsters.get(index));
                         Main.monsters.remove(index);
+                        Main.sideSounds.playEffectSound("src/mixkit-ethereal-fairy-win-sound-2019.wav");
+                        if(Main.musicStatus){
+                            Main.playlist.getMusicPlayer().play();}
                         System.out.println(Main.lives);
                     }
                 }
@@ -117,12 +118,13 @@ public class Character extends Pane {
             for (int i = 0; i < Main.energyBonuses.size(); i++) {
                 if (this.getBoundsInParent().intersects(Main.energyBonuses.get(i).getBoundsInParent())) {
                     if (Main.energyBonuses.get(i).isVisible()) {
-                        Main.sideSounds.playEffectSound("src/mixkit-melodic-bonus-collect-1938.wav");
-                        Main.playlist.getMusicPlayer().play();
                         Main.lives++;
                         int index = Main.energyBonuses.indexOf(Main.energyBonuses.get(i));
                         Main.root.getChildren().remove(Main.energyBonuses.get(index));
                         Main.energyBonuses.remove(index);
+                        Main.sideSounds.playEffectSound("src/mixkit-melodic-bonus-collect-1938.wav");
+                        if(Main.musicStatus){
+                        Main.playlist.getMusicPlayer().play();}
                         System.out.println(Main.lives);
                     }
                 }

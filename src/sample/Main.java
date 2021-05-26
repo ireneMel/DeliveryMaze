@@ -32,7 +32,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 public class Main extends Application {
-
+    public static boolean fail = false;
     public static boolean finishLevel = false;
     public static List<Character> energyBonuses = new ArrayList<>();
     public static List<Rectangle> wallsHorizontal = new ArrayList<>();
@@ -40,7 +40,7 @@ public class Main extends Application {
     public static ArrayList<Character> monsters = new ArrayList<>();
     public static ArrayList<Rectangle> bonuses = new ArrayList<>();
     private final ArrayList<String> complimentArray = new ArrayList<>();
-    private final HashMap<KeyCode, Boolean> keys = new HashMap<>();
+    private  HashMap<KeyCode, Boolean> keys;
     AnimationTimer timer;
     private Timeline timeline, enemyTimeLine, enemy2Timeline, enemy3Timeline, enemy4Timeline;
     private final DoubleProperty timeSeconds = new SimpleDoubleProperty(5.0);
@@ -69,6 +69,7 @@ public class Main extends Application {
         }
     }
 
+    Scene scene, sceneFirstLevel;
     public static Image house = new Image(houseS);
     public static ImageView houseIm = new ImageView(house);
     ImageView imageView = new ImageView(image), im = new ImageView(imageE), ch = new ImageView(chicken),
@@ -85,7 +86,7 @@ public class Main extends Application {
     Random random = new Random();
     private int randomNum;
     public static int levelVariable = 1, lives = 3;
-    boolean musicStatus = true;
+    static boolean musicStatus = true;
 
     public Main() throws FileNotFoundException {
     }
@@ -96,6 +97,7 @@ public class Main extends Application {
         play.setOnAction(actionEvent -> {
             try {
                 firstLevel(stage);
+                stage.setScene(sceneFirstLevel);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -447,37 +449,7 @@ public class Main extends Application {
         b.setLayoutY(yLayout);
     }
 
-    private void addRectangles(Pane mazePane, Label level) {
-        Rectangle r1 = new Rectangle(786, 519, 40, 155),
-                r2 = new Rectangle(622, 519, 164, 40),
-                r3 = new Rectangle(786, 128, 40, 295),
-                r4 = new Rectangle(622, 128, 164, 40),
-                r5 = new Rectangle(582, 40, 40, 200),
-                r6 = new Rectangle(408, 350, 378, 40),
-                r7 = new Rectangle(408, 390, 40, 175),
-                r8 = new Rectangle(259, 525, 149, 40),
-                r9 = new Rectangle(259, 141, 40, 384),
-                r10 = new Rectangle(128, 445, 131, 40),
-                r11 = new Rectangle(582, 475, 40, 84),
-                r12 = new Rectangle(128, 485, 40, 91),
-                r13 = new Rectangle(14, 305, 138, 40),
-                r14 = new Rectangle(172, 199, 87, 40),
-                r15 = new Rectangle(0, 108, 110, 40),
-                r16 = new Rectangle(468, 160, 40, 190),
-                r17 = new Rectangle(299, 265, 54, 40),
-                r18 = new Rectangle(351, 40, 40, 92),
-                r19 = new Rectangle(907, 188, 53, 40),
-                r20 = new Rectangle(826, 383, 47, 40),
-                r21 = new Rectangle(500, 683, 40, 48),
-                r22 = new Rectangle(0, 0, 40, 700),
-                r23 = new Rectangle(960, 0, 40, 700),
-                r24 = new Rectangle(0, 0, 1000, 40),
-                r25 = new Rectangle(0, 660, 1000, 40);
-        Rectangle l0 = new Rectangle(960, 655, 40, 10);
-        mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, level, l0);
-        Collections.addAll(wallsHorizontal, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25);
-        Collections.addAll(lines, l0);
-    }
+
 
     private void setLayout(Character ch, double x, double y) {
         ch.setLayoutX(x);
@@ -519,7 +491,7 @@ public class Main extends Application {
                                 timeSeconds.set(time.toMinutes());
                                 if (time.equals(Duration.ZERO)) {
                                     timeline.stop();
-                                    JOptionPane.showMessageDialog(null, "Loser", "Error", JOptionPane.ERROR_MESSAGE);
+                                    fail = true;
                                 }
                             } else timeline.stop();
                         })
