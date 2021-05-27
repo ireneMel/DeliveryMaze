@@ -6,8 +6,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Slider;
@@ -33,9 +32,6 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-
 public class Main extends Application {
     public static boolean fail = false;
     public static boolean finishLevel = false;
@@ -47,52 +43,39 @@ public class Main extends Application {
     private HashMap<KeyCode, Boolean> keys;
     AnimationTimer timer;
     private Timeline timeline, enemyTimeLine, enemy2Timeline, enemy3Timeline, enemy4Timeline;
-    private DoubleProperty timeSeconds;
     private Duration time;
-    private Label timerLabel;
     public static Label energyLabel2;
     public static Music playlist = new Music(), sideSounds = new Music();
-    FileInputStream inputStreamE = new FileInputStream("src/17_burger_napkin.png"),
-            inputStream = new FileInputStream("src/MyCollages__7_-removebg-preview (1).png"),
-            chickenS = new FileInputStream("src/86_roastedchicken_dish.png"),
-            sushiS = new FileInputStream("src/98_sushi_dish.png"),
-            cakeS = new FileInputStream("src/31_chocolatecake_dish.png"),
-            potatoS = new FileInputStream("src/45_frenchfries_dish.png"),
-            energyDrink = new FileInputStream("src/soft_drink_red.png"),
-            energyDrink1 = new FileInputStream("src/soft_drink_blue.png"),
-            battery = new FileInputStream("src/battery3-removebg-preview.png");
-    Image enIm = new Image(battery);
-    ImageView imageEnergy = new ImageView(enIm);
-    Image image = new Image(inputStream), imageE = new Image(inputStreamE),
-            chicken = new Image(chickenS), sushiI = new Image(sushiS), cakeI = new Image(cakeS), potatoI = new Image(potatoS),
-            energyDrinkI = new Image(energyDrink), energyDrinkI1 = new Image(energyDrink1);
-    public static FileInputStream houseS;
-    Button back;
+
+    ImageView imageView = new ImageView(new Image(new FileInputStream("src/MyCollages__11_-removebg-preview (1).png"))),
+            imageEnergy = new ImageView(new Image(new FileInputStream("src/Battery.png"))),
+            imageEnergy2 = new ImageView(new Image(new FileInputStream("src/Battery3.png"))),
+            pizzaBoxIV1 = new ImageView(new Image(new FileInputStream("src/New_Piskel__2_-removebg-preview2.png")));
+    Character player,
+            enemy = new Character(new ImageView(new Image(new FileInputStream("src/17_burger_napkin.png")))),
+            enemy2 = new Character(new ImageView(new Image(new FileInputStream("src/86_roastedchicken_dish.png")))),
+            enemy3 = new Character(new ImageView(new Image(new FileInputStream("src/98_sushi_dish.png")))),
+            enemy4 = new Character(new ImageView(new Image(new FileInputStream("src/31_chocolatecake_dish.png")))),
+            enemy5 = new Character(new ImageView(new Image(new FileInputStream("src/45_frenchfries_dish.png")))),
+            energyDrink = new Character(new ImageView(new Image(new FileInputStream("src/soft_drink_red.png")))),
+            energyDrink1 = new Character(new ImageView(new Image(new FileInputStream("src/soft_drink_blue.png")))),
+            pizza = new Character(70, 30, new ImageView(new Image(new FileInputStream("src/New_Piskel__2_-removebg-preview.png"))));
+
+    Pane pane = new Pane();
+    static Pane root;
+    Button play = new Button(), instruction = new Button(), compliment = new Button(), music = new Button(), back;
+    public static ImageView houseIm, houseIm2;
 
     static {
         try {
-            houseS = new FileInputStream("src/photo_2021-05-25_12-02-30-removebg-preview.png");
+            houseIm = new ImageView(new Image(new FileInputStream("src/photo_2021-05-25_12-02-30-removebg-preview.png")));
+            houseIm2 = new ImageView(new Image(new FileInputStream("src/IMG_20210527_181324.png")));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     Scene scene;
-    public static Image house = new Image(houseS);
-    public static ImageView houseIm = new ImageView(house);
-    ImageView imageView = new ImageView(image), im = new ImageView(imageE), ch = new ImageView(chicken),
-            sushi = new ImageView(sushiI), cake = new ImageView(cakeI), potato = new ImageView(potatoI),
-            energy = new ImageView(energyDrinkI), energy1 = new ImageView(energyDrinkI1);
-    Character player;
-    Character enemy = new Character(im), enemy2 = new Character(ch), enemy3 = new Character(sushi), enemy4 = new Character(cake),
-            enemy5 = new Character(potato), energydrink = new Character(energy), energydrink1 = new Character(energy1);
-
-    Pane pane = new Pane();
-    static Pane root;
-    Button play = new Button(), instruction = new Button(), compliment = new Button(), music = new Button();
-
-    Random random = new Random();
-    private int randomNum;
     public static int levelVariable = 1, lives = 3;
     static boolean musicStatus = true;
 
@@ -103,13 +86,14 @@ public class Main extends Application {
     public void start(Stage stage) throws FileNotFoundException {
         sideSounds.playEffectSound("src/silent.wav");
         setUpStartWindow();
+
         play.setOnAction(actionEvent -> {
             try {
-                firstLevel(stage);
+               firstLevel(stage);
+                //secondLevel(stage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         });
 
         instruction.setOnAction(actionEvent -> {
@@ -120,31 +104,25 @@ public class Main extends Application {
             musicStatus = !musicStatus;
             if (musicStatus) {
                 try {
-                    setBackgroundForButton("src/music_on.png", music);
+                    controller.setBackgroundForButton("src/music_on.png", music);
                 } catch (FileNotFoundException f) {
-
+                    f.printStackTrace();
                 }
-                playlist.getMusicPlayer().play();
+                //playlist.getMusicPlayer().play();
+                playlist.getMusicPlayer().setVolume(1);
             } else {
                 try {
-                    setBackgroundForButton("src/music_off.png", music);
+                    controller.setBackgroundForButton("src/music_off.png", music);
                 } catch (FileNotFoundException f) {
-
+                    f.printStackTrace();
                 }
-                playlist.getMusicPlayer().stop();
                 playlist.getMusicPlayer().setVolume(0);
             }
         });
 
-        generateCompliment();
-        compliment.setOnAction(actionEvent -> {
-            randomNum = random.nextInt(complimentArray.size());
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Important message");
-            alert.setHeaderText("Here is a message for you");
-            alert.setContentText(complimentArray.get(randomNum));
-            alert.showAndWait();
-        });
+        controller.generateCompliment(complimentArray);
+
+        compliment.setOnAction(actionEvent -> controller.setOnComplimentButton(complimentArray));
 
         stage.setTitle("Delivery Maze by Melnyk Iryna and Zhelizniak Anna");
         scene = new Scene(pane);
@@ -153,179 +131,160 @@ public class Main extends Application {
         stage.show();
     }
 
-    public void firstLevel(Stage primaryStage) throws FileNotFoundException {
+    private void settingsForLevels(Stage primaryStage, Pane mazePane, Color color) throws FileNotFoundException {
         fail = false;
         finishLevel = false;
-        //  lives = 3;
         root = new Pane();
-        Main.playlist.getMusicPlayer().stop();
-        if (Main.musicStatus) {
-            Main.playlist.background("src/Komiku_-_04_-_The_weekly_fair.mp3");
-        }
-
-        Pane mazePane = new Pane();
+        initialize();
+        player = new Character(imageView, 50, 60);
         Rectangle settings = new Rectangle(200, 700);
         settings.setLayoutX(1000);
-        settings.setFill(Color.rgb(230, 222, 202));
-        Random r = new Random();
-
-        Label numOfOrder = new Label("O.N. " + (r.nextInt(9999999) + 1000000));
-        setLabel(numOfOrder, 1040, 140, "Bauhaus 93", 17, FontWeight.NORMAL);
-
-        Label data = new Label(new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime()));
-        setLabel(data, 1060, 50, "Bauhaus 93", 13, FontWeight.BOLD);
-
-        Label str = new Label("-------------------------------------------------");
-        setLabel(str, 1000, 160, "Bauhaus 93", 25, FontWeight.BOLD);
-
-        Label energyLabel = new Label("   ..................");
-        setLabel(energyLabel, 1035, 195, "Bauhaus 93", 15, FontWeight.BOLD);
-
-        energyLabel2 = new Label("x" + lives);
-        setLabel(energyLabel2, 1160, 192, "Bauhaus 93", 25, FontWeight.NORMAL);
-
-        imageEnergy.setFitWidth(40);
-        imageEnergy.setFitHeight(50);
-        imageEnergy.setLayoutX(1005);
-        imageEnergy.setLayoutY(185);
-        Rectangle rec = new Rectangle(1050, 500, 100, 100);
+        settings.setFill(color);
+        keys = new HashMap<>();
+        Rectangle rec = new Rectangle(1050, 550, 100, 100);
         rec.setFill(new ImagePattern(new Image(new FileInputStream("src/pause.png"))));
+        rec.setOnMouseClicked(mouseEvent -> pauseWindow(primaryStage, color));
+        root.setPrefSize(1200, 700);
+        mazePane.setPrefSize(1000, 700);
+        setLabelsForSideMenu(mazePane, settings);
+        mazePane.getChildren().add(rec);
+        mazePane.setBackground(new Background(new BackgroundFill(Color.rgb(113, 217, 140), CornerRadii.EMPTY, Insets.EMPTY)));
+        primaryStage.setTitle("Delivery Maze");
+    }
 
-        rec.setOnMouseClicked(mouseEvent -> {
-            timeline.stop();
-            enemyTimeLine.stop();
-            enemy2Timeline.stop();
-            enemy3Timeline.stop();
-            timer.stop();
-            Button homeButton = new Button(), playButton = new Button(), info = new Button();
-            try {
-                setBackgroundForButton("src/cursor_right.png", playButton);
-                setBackgroundForButton("src/home.png", homeButton);
-                setBackgroundForButton("src/info_2.png", info);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+    private void pauseWindow(Stage primaryStage, Color color) {
+        timeline.stop();
+        enemyTimeLine.stop();
+        enemy2Timeline.stop();
+        enemy3Timeline.stop();
+        Pane pane = new Pane();
+        timer.stop();
+        Button homeButton = new Button(), playButton = new Button(), info = new Button();
+        try {
+            controller.setBackgroundForButton("src/cursor_right.png", playButton);
+            controller.setBackgroundForButton("src/home.png", homeButton);
+            controller.setBackgroundForButton("src/info_2.png", info);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        controller.setButton(playButton, 150, 150, 240, 90);
+        controller.setButton(homeButton, 70, 70, 190, 127);
+        controller.setButton(info, 70, 70, 370, 130);
 
-            setButton(playButton, 150, 150, 240, 90);
-            setButton(homeButton, 70, 70, 190, 127);
-            setButton(info, 70, 70, 370, 130);
-            Slider music = new Slider(0.0, 1.0, playlist.getMusicPlayer().getVolume()),
-                    sound = new Slider(0.0, 1.0, 1);
-            music.setShowTickMarks(true);
-            music.setMajorTickUnit(0.2);
-            music.setShowTickLabels(true);
-            music.setValue(playlist.musicPlayer.getVolume());
-            music.valueProperty().addListener(observable -> {
-                playlist.musicPlayer.setVolume(music.getValue());
-                if(music.getValue()==0) musicStatus=false;
-            });
+        Slider musicSlider = setMusicSliders(playlist.getMusicPlayer().getVolume(), playlist),
+                sound = setMusicSliders(1.0, sideSounds);
 
-            sound.setShowTickMarks(true);
-            sound.setMajorTickUnit(0.2);
-            sound.setShowTickLabels(true);
-            sound.setValue(sideSounds.musicPlayer.getVolume());
-            sound.valueProperty().addListener(observable -> {
-                sideSounds.musicPlayer.setVolume(sound.getValue());
-                //if(sound.getValue()==0) sound=false;
-            });
+        musicSlider.valueProperty().addListener(observable -> {
+            playlist.musicPlayer.setVolume(musicSlider.getValue());
+            if (musicSlider.getValue() == 0) musicStatus = false;
+            else musicStatus =true;
 
-
-
-            music.setLayoutY(240);
-            music.setLayoutX(235);
-            sound.setLayoutY(290);
-            sound.setLayoutX(235);
-
-            Pane pane = new Pane();
-
-            try {
-
-                ImageView soundSliderOff = new ImageView(new Image(new FileInputStream("src/sound_off.png"))),
-                        musicSliderOn = new ImageView(new Image(new FileInputStream("src/music_on.png"))),
-                        musicSliderOff = new ImageView(new Image(new FileInputStream("src/music_off.png"))),
-                        soundSliderOn = new ImageView(new Image(new FileInputStream("src/sound_on.png")));
-                soundSliderOff.setLayoutX(200);
-                musicSliderOff.setLayoutX(200);
-                soundSliderOff.setLayoutY(285);
-                musicSliderOff.setLayoutY(240);
-
-                soundSliderOn.setLayoutX(380);
-                musicSliderOn.setLayoutX(380);
-                soundSliderOn.setLayoutY(285);
-                musicSliderOn.setLayoutY(240);
-
-                soundSliderOn.setFitHeight(30);
-                soundSliderOn.setFitWidth(30);
-
-                soundSliderOff.setFitHeight(30);
-                soundSliderOff.setFitWidth(30);
-
-                musicSliderOff.setFitHeight(30);
-                musicSliderOff.setFitWidth(30);
-
-                musicSliderOn.setFitHeight(30);
-                musicSliderOn.setFitWidth(30);
-                pane.getChildren().addAll(musicSliderOff, musicSliderOn, soundSliderOff, soundSliderOn);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            Stage pauseStage = new Stage();
-
-            homeButton.setOnAction(actionEvent -> {
-                pauseStage.close();
-                lives = 3;
-                primaryStage.setScene(scene);
-            } );
-
-
-            playButton.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    pauseStage.close();
-                    timeline.play();
-                    enemyTimeLine.play();
-                    enemy2Timeline.play();
-                    enemy3Timeline.play();
-                    timer.start();
-                }
-            });
-            pane.setBackground(new Background(new BackgroundFill(Color.rgb(230, 222, 202), CornerRadii.EMPTY, Insets.EMPTY)));
-            pane.setPrefSize(600, 350);
-            Label text = new Label("PAUSE");
-            setLabel(text, 225, 10, "Bauhaus 93", 60, FontWeight.NORMAL);
-            text.setTextFill(Color.WHITE);
-            pane.getChildren().addAll(text, music, sound, info, homeButton, playButton);
-            Scene scene = new Scene(pane);
-            pauseStage.setScene(scene);
-            pauseStage.setTitle("Pause");
-            pauseStage.setResizable(false);
-            pauseStage.show();
         });
 
-        Label level = new Label("Level " + Main.levelVariable);
-        setLabel(level, 1012, 80, "Bauhaus 93", 60, FontWeight.NORMAL);
+        sound.valueProperty().addListener(observable -> {
+            sideSounds.musicPlayer.setVolume(sound.getValue());
+            if (sound.getValue() == 0) soundStatus = false;
+        });
 
-        root.setPrefSize(1200, 700);
+        musicSlider.setLayoutY(240);
+        musicSlider.setLayoutX(235);
+        sound.setLayoutY(290);
+        sound.setLayoutX(235);
 
-        mazePane.setPrefSize(1000, 700);
-        mazePane.getChildren().addAll(settings, energy, data, numOfOrder, str, energyLabel, energyLabel2, rec);
-        addRectangles(mazePane, level);
-        mazePane.setBackground(new Background(new BackgroundFill(Color.rgb(113, 217, 140), CornerRadii.EMPTY, Insets.EMPTY)));
+        try {
+            controller.configureSlidersImage(pane);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Stage pauseStage = new Stage();
+        pauseStage.setMaximized(false);
+        pauseStage.setOnCloseRequest(Event::consume);
+
+        homeButton.setOnAction(actionEvent -> {
+            pauseStage.close();
+            lives = 3;
+            try {
+                setUpStartWindow();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            primaryStage.setScene(scene);
+        });
+
+        playButton.setOnAction(actionEvent -> {
+            pauseStage.close();
+            timeline.play();
+            enemyTimeLine.play();
+            enemy2Timeline.play();
+            enemy3Timeline.play();
+            timer.start();
+        });
+
+        pane.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
+        pane.setPrefSize(600, 350);
+        Label text = new Label("PAUSE");
+        controller.setLabel(text, 225, 10, 60, FontWeight.NORMAL);
+        text.setTextFill(Color.WHITE);
+        pane.getChildren().addAll(text, musicSlider, sound, info, homeButton, playButton);
+        Scene scene = new Scene(pane);
+        pauseStage.setScene(scene);
+        pauseStage.setTitle("Pause");
+        pauseStage.setResizable(false);
+        pauseStage.show();
+    }
+
+    private void firstLevel(Stage primaryStage) throws FileNotFoundException {
+        playlist.getMusicPlayer().stop();
+        houseIm = new ImageView(new Image(new FileInputStream("src/photo_2021-05-25_12-02-30-removebg-preview.png")));
+        Pane mazePane = new Pane();
+        levelVariable=1;
+        settingsForLevels(primaryStage, mazePane,Color.rgb(230, 222, 202));
+        if (!musicStatus) playlist.setVolume(0);
+        playlist.background("src/Komiku_-_04_-_The_weekly_fair.mp3");
+        if (!musicStatus) playlist.setVolume(0);
+        playlist.getMusicPlayer().play();
         setUpTimeLines(mazePane);
         setUpCharacters(mazePane);
+        controller.setLayout(player, 862, 555);
+        Scene sceneFirstLevel = new Scene(root);
+        sceneFirstLevel.setOnKeyPressed(event -> keys.put(event.getCode(), true));
+        sceneFirstLevel.setOnKeyReleased(event -> keys.put(event.getCode(), false));
 
-        for (Rectangle a : wallsHorizontal) {
-            a.setFill(Color.rgb(133, 147, 208));
-            // a.setStroke(Color.WHITE);
-        }
-        player = new Character(imageView, 50, 60);
-        setLayout(player, 862, 545);
-        keys = new HashMap<>();
+        generateTimer(primaryStage);
+        timer.start();
+        controller.addRectanglesFirstLevel(mazePane);
+        root.getChildren().addAll(player, enemy, enemy2, enemy3, enemy4, energyDrink, energyDrink1, houseIm, imageEnergy, pizza);
+
+        primaryStage.setScene(sceneFirstLevel);
+    }
+
+    private void secondLevel(Stage primaryStage) throws FileNotFoundException {
+        Pane mazePane = new Pane();
+        houseIm=houseIm2;
+
+        settingsForLevels(primaryStage, mazePane,Color.rgb(245, 210, 227));//Color.rgb(255, 210, 227)
+        playlist.background("src/Komiku_-_04_-_The_weekly_fair.mp3");
+        playlist.getMusicPlayer().play();
+        setUpTimeLines(mazePane);
+        setUpCharacters2(mazePane);
+
+        controller.setLayout(player, 50, 605);
+//        keys = new HashMap<>();
         Scene sceneFirstLevel = new Scene(root);
 
         sceneFirstLevel.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         sceneFirstLevel.setOnKeyReleased(event -> keys.put(event.getCode(), false));
+        numOfOrder.setText("O.N. " + (r.nextInt(9999999) + 1000000));
+        generateTimer(primaryStage);
+        timer.start();
+        controller.addRectanglesSecondLevel(mazePane);
+        root.getChildren().addAll(player, enemy, enemy2, enemy3, enemy4, energyDrink, energyDrink1, houseIm2, imageEnergy2, pizza);
+        primaryStage.setScene(sceneFirstLevel);
+    }
+
+    private void generateTimer(Stage primaryStage) {
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -336,7 +295,6 @@ public class Main extends Application {
                     update();
                 } else if (finishLevel) {
                     timer.stop();
-                    playlist.getMusicPlayer().stop();
                     player.animation.stop();
                     try {
                         betweenLevelScene(primaryStage);
@@ -345,7 +303,6 @@ public class Main extends Application {
                     }
                 } else {
                     timer.stop();
-                    playlist.getMusicPlayer().stop();
                     player.animation.stop();
                     try {
                         failScene(primaryStage);
@@ -356,70 +313,47 @@ public class Main extends Application {
                 //bonus();
             }
         };
-        timer.start();
-        root.getChildren().addAll(player, enemy, enemy2, enemy3, enemy4, energydrink, energydrink1, houseIm, imageEnergy);
-        primaryStage.setTitle("Delivery Maze");
-        primaryStage.setScene(sceneFirstLevel);
-
     }
 
-    private void addRectangles(Pane mazePane, Label level) {
-        Rectangle r1 = new Rectangle(786, 519, 40, 155),
-                r2 = new Rectangle(622, 519, 164, 40),
-                r3 = new Rectangle(786, 128, 40, 295),
-                r4 = new Rectangle(622, 128, 164, 40),
-                r5 = new Rectangle(582, 40, 40, 200),
-                r6 = new Rectangle(408, 350, 378, 40),
-                r7 = new Rectangle(408, 390, 40, 175),
-                r8 = new Rectangle(259, 525, 149, 40),
-                r9 = new Rectangle(259, 141, 40, 384),
-                r10 = new Rectangle(128, 445, 131, 40),
-                r11 = new Rectangle(582, 475, 40, 84),
-                r12 = new Rectangle(128, 485, 40, 91),
-                r13 = new Rectangle(14, 305, 138, 40),
-                r14 = new Rectangle(172, 199, 87, 40),
-                r15 = new Rectangle(0, 108, 110, 40),
-                r16 = new Rectangle(468, 160, 40, 190),
-                r17 = new Rectangle(299, 265, 54, 40),
-                r18 = new Rectangle(351, 40, 40, 92),
-                r19 = new Rectangle(907, 188, 53, 40),
-                r20 = new Rectangle(826, 383, 47, 40),
-                r21 = new Rectangle(500, 683, 40, 48),
-                r22 = new Rectangle(0, 0, 40, 700),
-                r23 = new Rectangle(960, 0, 40, 700),
-                r24 = new Rectangle(0, 0, 1000, 40),
-                r25 = new Rectangle(0, 660, 1000, 40);
-        mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, level);
-        Collections.addAll(wallsHorizontal, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25);
+    public static void drawCross() {
+        Rectangle h = new Rectangle(1160, 260, 25, 5),
+                v = new Rectangle(1170, 250, 5, 25);
+        h.setFill(Color.DARKGREEN);
+        v.setFill(Color.DARKGREEN);
+        root.getChildren().addAll(h, v);
     }
 
     private void setUpStartWindow() throws FileNotFoundException {
-        FileInputStream inputStream = new FileInputStream("src/photo_2021-05-24_15-17-36_auto_x2.jpg");
-        Image image = new Image(inputStream);
-        BackgroundImage myBI = new BackgroundImage(image,
+        if (playlist.getMusicPlayer() != null) playlist.getMusicPlayer().stop();
+        pane.setBackground(new Background(new BackgroundImage(new Image(new FileInputStream("src/photo_2021-05-24_15-17-36_auto_x2.jpg")),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT);
-        pane.setBackground(new Background(myBI));
+                BackgroundSize.DEFAULT)));
         pane.setPrefSize(1200, 680);
         Text name = new Text(50, 160, "Delivery maze");
         name.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 60));
         name.setFill(Color.WHITE);
+
         DropShadow is = new DropShadow();
         is.setOffsetY(3.0f);
         name.setEffect(is);
         name.setCache(true);
 
-        setButton(play, 150, 150, 150, 200);
-        setButton(instruction, 70, 70, 175, 360);
-        setButton(compliment, 70, 70, 175, 470);
-        setButton(music, 70, 70, 175, 570);
-
-        setBackgroundForButton("src/music_on.png", music);
-        setBackgroundForButton("src/cursor_right.png", play);
-        setBackgroundForButton("src/info_2.png", instruction);
-        setBackgroundForButton("src/unfavourited.png", compliment);
-
+        controller.setButton(play, 150, 150, 150, 200);
+        controller.setButton(instruction, 70, 70, 175, 360);
+        controller.setButton(compliment, 70, 70, 175, 470);
+        controller.setButton(music, 70, 70, 175, 570);
+        if (musicStatus) {
+            controller.setBackgroundForButton("src/music_on.png", music);
+        } else {
+            controller.setBackgroundForButton("src/music_off.png", music);
+        }
+        controller.setBackgroundForButton("src/cursor_right.png", play);
+        controller.setBackgroundForButton("src/info_2.png", instruction);
+        controller.setBackgroundForButton("src/unfavourited.png", compliment);
         playlist.background("src/Komiku_-_04_-_Shopping_List.mp3");
+        if (musicStatus) playlist.setVolume(1);
+        else playlist.setVolume(0);
+        playlist.getMusicPlayer().play();
         if (!pane.getChildren().contains(play) && !pane.getChildren().contains(name) && !pane.getChildren().contains(compliment)
                 && !pane.getChildren().contains(instruction) && !pane.getChildren().contains(music)) {
             pane.getChildren().addAll(play, name, compliment, instruction, music);
@@ -428,73 +362,91 @@ public class Main extends Application {
 
     private void failScene(Stage stage) throws FileNotFoundException {
         Pane pane = new Pane();
-        FileInputStream str = new FileInputStream("src/pizza2.jpg");
-        Image image = new Image(str);
-        BackgroundImage myBI = new BackgroundImage(image,
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT);
-        pane.setPrefSize(1200, 700);
-        pane.setBackground(new Background(myBI));
+        playlist.getMusicPlayer().stop();
+        controller.middleScene("src/pizza2.jpg", "src/mixkit-player-losing-or-failing-2042.wav", pane);
+        Rectangle r = new Rectangle(1000, 360);
+        r.setFill(Color.rgb(185, 185, 185));
+        r.setLayoutX(120);
+        r.setLayoutY(200);
+        pane.getChildren().add(r);
+        Label fail1 = new Label("You have failed this level");
+        Label fail2 = new Label("There is no chance to get a job here");
+        fail1.setTextFill(Color.WHITE);
+        fail2.setTextFill(Color.WHITE);
+        controller.setLabel(fail1, 275, 230, 60, FontWeight.BOLD);
+        controller.setLabel(fail2, 150, 330, 60, FontWeight.BOLD);
+        actionOnBack(stage);
+        controller.setButton(back, 100, 100, 530, 450);
+        controller.setBackgroundForButton("src/home.png", back);
 
-        Text text = new Text("You have failed this level");
-        Text text1 = new Text("There is no chance to get a job here");
-        text.setLayoutY(300);
-        text.setLayoutX(275);
-        text1.setLayoutX(150);
-        text1.setLayoutY(400);
-        text.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 60));
-        text1.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 60));
-        back = new Button();
-        setButton(back, 100, 100, 500, 500);
-        back.setOnAction(actionEvent -> {
-            lives = 3;
-            stage.setScene(scene);
-        });
-
-        setBackgroundForButton("src/home.png", back);
-        pane.getChildren().addAll(text, text1, back);
+        pane.getChildren().addAll(fail1, fail2, back);
         Scene scene = new Scene(pane);
         stage.setScene(scene);
-
     }
 
     private void betweenLevelScene(Stage stage) throws FileNotFoundException {
-        playlist.playEffectSound("src/mixkit-ethereal-fairy-win-sound-2019.wav");
-        FileInputStream str = new FileInputStream("src/pizza1.jpg");
-        Image image = new Image(str);
-        BackgroundImage myBI = new BackgroundImage(image,
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT);
+        levelVariable++;
         Pane pane = new Pane();
-        pane.setBackground(new Background(myBI));
-        pane.setPrefSize(1200, 700);
-        Text text = new Text("You have finished " + levelVariable + " level");
-        Text text1 = new Text("Congratulations!");
-        text.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 60));
-        text1.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 60));
-        text.setLayoutY(300);
-        text.setLayoutX(275);
-        text1.setLayoutX(375);
-        text1.setLayoutY(400);
-        text.setFill(Color.WHITE);
-        text1.setFill(Color.WHITE);
+        playlist.getMusicPlayer().stop();
+        controller.middleScene("src/pizza1.jpg", "src/mixkit-ethereal-fairy-win-sound-2019.wav", pane);
+        Rectangle r = new Rectangle(960, 360);
+        r.setFill(Color.rgb(69, 191, 202));
+        r.setLayoutX(160);
+        r.setLayoutY(200);
+        pane.getChildren().add(r);
+
+        Label win1 = new Label("You have finished " + levelVariable + " level");
+        Label win2 = new Label("Congratulations!");
+        win1.setTextFill(Color.WHITE);
+        win2.setTextFill(Color.WHITE);
+        controller.setLabel(win1, 275, 250, 60, FontWeight.BOLD);
+        controller.setLabel(win2, 375, 350, 60, FontWeight.BOLD);
+
         Button nextLevel = new Button(), sound = new Button();
-        back = new Button();
-        back.setOnAction(actionEvent -> {
-            lives = 3;
-            stage.setScene(scene);
+        actionOnBack(stage);
+
+        controller.setButton(back, 70, 70, 465, 475);
+        controller.setButton(nextLevel, 100, 100, 565, 460);
+        controller.setButton(sound, 70, 70, 665, 475);
+
+        controller.setBackgroundForButton("src/home.png", back);
+        controller.setBackgroundForButton("src/fast_forward.png", nextLevel);
+        controller.setBackgroundForButton("src/music_on.png", sound);
+        nextLevel.setOnAction(actionEvent -> {
+
+            if (levelVariable == 2) {
+                try {
+                    secondLevel(stage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else if (levelVariable == 3) {
+
+            } else if (levelVariable == 4) {
+
+            } else if (levelVariable == 5) {
+
+            } else if (levelVariable == 6) {
+
+            }
         });
-        setButton(back, 70, 70, 465, 500);
-        setButton(nextLevel, 100, 100, 565, 485);
-        setButton(sound, 70, 70, 665, 500);
-
-        setBackgroundForButton("src/home.png", back);
-        setBackgroundForButton("src/fast_forward.png", nextLevel);
-        setBackgroundForButton("src/music_on.png", sound);
-
-        pane.getChildren().addAll(text, text1, back, nextLevel, sound);
+        pane.getChildren().addAll(win1, win2, back, nextLevel, sound);
         Scene scene = new Scene(pane);
         stage.setScene(scene);
+    }
+
+    private void actionOnBack(Stage stage) throws FileNotFoundException {
+        back = new Button();
+        controller.setBackgroundForButton("src/home.png", back);
+        back.setOnAction(actionEvent -> {
+            lives = 3;
+            try {
+                setUpStartWindow();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(scene);
+        });
     }
 
     public void bonus() {
@@ -508,21 +460,6 @@ public class Main extends Application {
             bonuses.add(rect);
             root.getChildren().addAll(rect);
         }
-    }
-
-    private void generateCompliment() {
-        complimentArray.add("You're someone's reason to smile :)");
-        complimentArray.add("You're strong!");
-        complimentArray.add("Is that your picture next to \"charming\" in the dictionary?");
-        complimentArray.add("You're inspiring :)");
-        complimentArray.add("You're always learning new things and trying to better yourself. That's awesome!");
-        complimentArray.add("You should be proud of yourself");
-        complimentArray.add("You look great today!");
-        complimentArray.add("Follow what calls you");
-        complimentArray.add("You’re intoxicating when you do what you love");
-        complimentArray.add("To be found, stop hiding.");
-        complimentArray.add("All you need is love.");
-        complimentArray.add("If music be the food of love, play on");
     }
 
     public void update() {
@@ -555,50 +492,52 @@ public class Main extends Application {
         launch(args);
     }
 
-    private void setBackgroundForButton(String path, Button button) throws FileNotFoundException {
-        FileInputStream fis = new FileInputStream(path);
-        Image im = new Image(fis);
-        BackgroundImage bi = new BackgroundImage(im, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(play.getWidth(), play.getHeight(), true, true, true, false));
-        Background bg = new Background(bi);
-        button.setBackground(bg);
-    }
-
-    private void setButton(Button b, double width, double height, double xLayout, double yLayout) {
-        b.setPrefSize(width, height);
-        b.setLayoutX(xLayout);
-        b.setLayoutY(yLayout);
-    }
-
-    private void setLayout(Character ch, double x, double y) {
-        ch.setLayoutX(x);
-        ch.setLayoutY(y);
-    }
-
     private void setUpCharacters(Pane mazePane) {
-        setLayout(enemy, 500, 500);
+        controller.setLayout(enemy, 500, 500);
         Collections.addAll(monsters, enemy, enemy2, enemy3, enemy4);
         enemy2.setVisible(false);
-        setLayout(enemy2, 225, 80);
-        setLayout(enemy3, 75, 400);
-        setLayout(enemy4, 500, 75);
-        setLayout(energydrink, 650, 75);
-        setLayout(energydrink1, 340, 470);
+        controller.setLayout(enemy2, 225, 80);
+        controller.setLayout(enemy3, 75, 400);
+        controller.setLayout(enemy4, 500, 75);
+        controller.setLayout(energyDrink, 650, 75);
+        controller.setLayout(energyDrink1, 340, 470);
+        controller.setLayout(pizza, 700, 600);
+        pizzas.add(pizza);
         houseIm.setX(650);
         houseIm.setLayoutY(200);
         houseIm.setFitWidth(100);
         houseIm.setFitHeight(100);
-        Collections.addAll(energyBonuses, energydrink, energydrink1);
+        Collections.addAll(energyBonuses, energyDrink, energyDrink1);
+        enemy3.setVisible(false);
+        root.getChildren().add(mazePane);
+    }
+
+    private void setUpCharacters2(Pane mazePane) {
+        controller.setLayout(enemy, 500, 500);
+        Collections.addAll(monsters, enemy, enemy2, enemy3, enemy4);
+        enemy2.setVisible(false);
+        controller.setLayout(enemy2, 225, 80);
+        controller.setLayout(enemy3, 75, 400);
+        controller.setLayout(enemy4, 500, 75);
+        controller.setLayout(energyDrink, 50, 175);
+        controller.setLayout(energyDrink1, 700, 160);
+        controller.setLayout(pizza, 705, 530);
+        pizzas.add(pizza);
+        houseIm2.setX(265);
+        houseIm2.setLayoutY(100);
+        houseIm2.setFitWidth(100);
+        houseIm2.setFitHeight(100);
+        Collections.addAll(energyBonuses, energyDrink, energyDrink1);
         enemy3.setVisible(false);
         root.getChildren().add(mazePane);
     }
 
     private void setUpTimeLines(Pane mazePane) {
-        timeSeconds = new SimpleDoubleProperty(5.0);
+        DoubleProperty timeSeconds = new SimpleDoubleProperty(5.0);
         time = Duration.minutes(5.00);
-        timerLabel = new Label();
+        Label timerLabel = new Label();
+        controller.setLabel(timerLabel, 1130, 445, 30, FontWeight.BOLD);
         timerLabel.textProperty().bind(timeSeconds.asString());
-        timerLabel.setTextFill(Color.RED);
-        timerLabel.setFont(Font.font("Bauhaus 93", FontWeight.BOLD, 30));
         timerLabel.setTextFill(Color.BLACK);
         timeline = new Timeline(
                 new KeyFrame(Duration.minutes(0.01),
@@ -660,10 +599,61 @@ public class Main extends Application {
         enemy3Timeline.play();
     }
 
-    private void setLabel(Label label, double layoutX, double layoutY, String font, int fontSize, FontWeight fontweigth) {
-        label.setFont(Font.font(font, fontweigth, fontSize));
-        label.setLayoutX(layoutX);
-        label.setLayoutY(layoutY);
+    static Controller controller = new Controller();
+    Label numOfOrder;
+    Random r = new Random();
+
+    private void setLabelsForSideMenu(Pane mazePane, Rectangle settings) {
+        numOfOrder = new Label("O.N. " + (r.nextInt(9999999) + 1000000));
+        controller.setLabel(numOfOrder, 1043, 140, 17, FontWeight.NORMAL);
+        Label data = new Label(new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime()));
+        controller.setLabel(data, 1060, 50, 13, FontWeight.BOLD);
+        Label str = new Label("-------------------------------------------------");
+        controller.setLabel(str, 1000, 160, 25, FontWeight.BOLD);
+        Label energyLabel = new Label("   ..................");
+        controller.setLabel(energyLabel, 1035, 195, 15, FontWeight.BOLD);
+        Label pizzaLabel = new Label("   ..............");
+        controller.setLabel(pizzaLabel, 1060, 260, 15, FontWeight.BOLD);
+        energyLabel2 = new Label("x" + lives);
+        controller.setLabel(energyLabel2, 1160, 192, 25, FontWeight.NORMAL);
+        Rectangle check = new Rectangle(1160, 250, 25, 25);
+        check.setFill(Color.TRANSPARENT);
+        check.setStroke(Color.BLACK);
+        if(levelVariable==1) {
+            imageEnergy.setFitWidth(40);
+            imageEnergy.setFitHeight(50);
+            imageEnergy.setLayoutX(1005);
+            imageEnergy.setLayoutY(185);
+        }else if(levelVariable==2){
+            imageEnergy2.setFitWidth(40);
+            imageEnergy2.setFitHeight(50);
+            imageEnergy2.setLayoutX(1005);
+            imageEnergy2.setLayoutY(185);
+        }
+        pizzaBoxIV1.setLayoutY(250);
+        pizzaBoxIV1.setLayoutX(1005);
+        pizzaBoxIV1.setFitWidth(65);
+        Label str1 = new Label("-------------------------------------------------");
+        controller.setLabel(str1, 1000, 500, 25, FontWeight.BOLD);
+        Label str2 = new Label("-------------------------------------------------");
+        controller.setLabel(str2, 1000, 400, 25, FontWeight.BOLD);
+        Label timeLeft = new Label("Time left ");
+        controller.setLabel(timeLeft, 1005, 450, 25, FontWeight.NORMAL);
+        Label timeStr = new Label("     ....");
+        controller.setLabel(timeStr, 1085, 455, 15, FontWeight.BOLD);
+        Label level = new Label("Level " + Main.levelVariable);
+        controller.setLabel(level, 1012, 80, 60, FontWeight.NORMAL);
+
+        mazePane.getChildren().addAll(settings, level, data, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr,pizzaBoxIV1, pizzaLabel, check);
+    }
+
+    private Slider setMusicSliders(Double getVolume, Music musicList) {
+        Slider music = new Slider(0.0, 1.0, getVolume);
+        music.setShowTickMarks(true);
+        music.setMajorTickUnit(0.2);
+        music.setShowTickLabels(true);
+        music.setValue(musicList.musicPlayer.getVolume());
+        return music;
     }
 
 }
