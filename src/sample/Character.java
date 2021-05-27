@@ -24,8 +24,8 @@ public class Character extends Pane {
     public Character(ImageView imageView, int width, int height) {
         this.imageView = imageView;
         this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
-        this.width=width;
-        this.height=height;
+        this.width = width;
+        this.height = height;
         animation = new CharacterAnimation(imageView, Duration.millis(200), count, columns, offsetX, offsetY, width, height);
         getChildren().addAll(imageView);
     }
@@ -36,12 +36,20 @@ public class Character extends Pane {
         getChildren().addAll(imageView);
     }
 
+    public Character(int width, int height, ImageView imageView) {
+        this.imageView = imageView;
+        this.imageView.setViewport(new Rectangle2D(0, 0, width, height));
+        getChildren().addAll(imageView);
+    }
+
     public void moveX(int x) {
         boolean right = x > 0;
         for (int i = 0; i < Math.abs(x); i++) {
             if (right) this.setTranslateX(this.getTranslateX() + 1);
             else this.setTranslateX(this.getTranslateX() - 1);
-            isBonusEat();isFinish();isEnergy();
+            isBonusEat();
+            isFinish();
+            isEnergy();
         }
     }
 
@@ -51,7 +59,7 @@ public class Character extends Pane {
             moveX(-1 * x);
         }
         isFinish();
-        isMonster();
+        isMonster();isPizza();
     }
 
     public void moveY(int y) {
@@ -59,7 +67,9 @@ public class Character extends Pane {
         for (int i = 0; i < Math.abs(y); i++) {
             if (down) this.setTranslateY(this.getTranslateY() + 1);
             else this.setTranslateY(this.getTranslateY() - 1);
-            isBonusEat();isFinish();isEnergy();
+            isBonusEat();
+            isFinish();
+            isEnergy();
         }
     }
 
@@ -69,7 +79,7 @@ public class Character extends Pane {
             moveY(-1 * y);
         }
         isFinish();
-        isMonster();
+        isMonster();isPizza();
     }
 
     public void isBonusEat() {
@@ -87,7 +97,7 @@ public class Character extends Pane {
 
     public boolean isWall() {
         check = true;
-        Main.wallsHorizontal.forEach((rect) -> {
+        Main.walls.forEach((rect) -> {
             if (this.getBoundsInParent().intersects(rect.getBoundsInParent())) {
                 check = false;
             }
@@ -106,9 +116,10 @@ public class Character extends Pane {
                         int index = Main.monsters.indexOf(Main.monsters.get(i));
                         Main.root.getChildren().remove(Main.monsters.get(index));
                         Main.monsters.remove(index);
-                        Main.sideSounds.playEffectSound("src/mixkit-ethereal-fairy-win-sound-2019.wav");
-                        if(Main.musicStatus){
-                            Main.playlist.getMusicPlayer().play();}
+                        Main.sideSounds.playEffectSound("src/lose_energy.mp3");
+                        if (Main.musicStatus) {
+                            Main.playlist.getMusicPlayer().play();
+                        }
                         System.out.println(Main.lives);
                     }
                 }
@@ -128,10 +139,28 @@ public class Character extends Pane {
                         Main.root.getChildren().remove(Main.energyBonuses.get(index));
                         Main.energyBonuses.remove(index);
                         Main.sideSounds.playEffectSound("src/mixkit-melodic-bonus-collect-1938.wav");
-                        if(Main.musicStatus){
-                        Main.playlist.getMusicPlayer().play();}
+                        if (Main.musicStatus) {
+                            Main.playlist.getMusicPlayer().play();
+                        }
                         System.out.println(Main.lives);
                     }
+                }
+            }
+
+        }
+    }
+
+    public void isPizza() {
+        if (Main.pizzas.size() > 0) {
+            for (int i = 0; i < Main.pizzas.size(); i++) {
+                if (this.getBoundsInParent().intersects(Main.pizzas.get(i).getBoundsInParent())) {
+                        int index = Main.pizzas.indexOf(Main.pizzas.get(i));
+                        Main.root.getChildren().remove(Main.pizzas.get(index));
+                        Main.pizzas.remove(index);
+                        Main.sideSounds.playEffectSound("src/for_pizza.mp3");
+                        Main.drawCross();
+                        if(Main.musicStatus){
+                            Main.playlist.getMusicPlayer().play();}
                 }
             }
 

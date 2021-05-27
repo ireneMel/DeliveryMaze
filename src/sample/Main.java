@@ -33,11 +33,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Main extends Application {
-    public static boolean fail = false;
-    public static boolean finishLevel = false;
-    public static List<Character> energyBonuses = new ArrayList<>();
-    public static List<Rectangle> wallsHorizontal = new ArrayList<>();
-    public static ArrayList<Character> monsters = new ArrayList<>();
+    public static boolean fail = false, musicStatus = true, soundStatus = true, finishLevel = false;
+    public static ArrayList<Character> energyBonuses, monsters, pizzas;
+    public static List<Rectangle> walls;
     public static ArrayList<Rectangle> bonuses = new ArrayList<>();
     private final ArrayList<String> complimentArray = new ArrayList<>();
     private HashMap<KeyCode, Boolean> keys;
@@ -77,9 +75,15 @@ public class Main extends Application {
 
     Scene scene;
     public static int levelVariable = 1, lives = 3;
-    static boolean musicStatus = true;
 
     public Main() throws FileNotFoundException {
+    }
+
+    private void initialize() {
+        monsters = new ArrayList<>();
+        walls = new ArrayList<>();
+        energyBonuses = new ArrayList<>();
+        pizzas = new ArrayList<>();
     }
 
     @Override
@@ -558,8 +562,6 @@ public class Main extends Application {
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-        timerLabel.setLayoutX(1050);
-        timerLabel.setLayoutY(450);
         mazePane.getChildren().add(timerLabel);
         enemyTimeLine = new Timeline(
                 new KeyFrame(Duration.seconds(10),
