@@ -94,7 +94,7 @@ public class Controller {
                 r13=new Rectangle(162,569,68,30),
                 r14=new Rectangle(200,463,30,106),
                 r15=new Rectangle(132,463,68,30),
-                r16=new Rectangle(327,327,30,280),
+                r16=new Rectangle(327,364,30,243),
                 r17=new Rectangle(357,577,200,30),
                 r18=new Rectangle(557,562,30,45),
                 r19=new Rectangle(427,484,30,30),
@@ -112,7 +112,7 @@ public class Controller {
                 r31=new Rectangle(639,112,30,145),
                 r32=new Rectangle(639,108,225,30),
                 r33=new Rectangle(849,108,30,63),
-                r35=new Rectangle(209,93,30,198),
+                r35=new Rectangle(209,93,30,139),
                 r36=new Rectangle(209,203,200,30),
                 r37=new Rectangle(389,94,30,139),
                 r38=new Rectangle(389,93,143,30);

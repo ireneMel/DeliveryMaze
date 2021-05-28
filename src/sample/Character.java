@@ -51,6 +51,14 @@ public class Character extends Pane {
             isEnergy();
         }
     }
+    public void moveVanX(double x) {
+        boolean right = x > 0;
+        for (int i = 0; i < Math.abs(x); i++) {
+            if (right) this.setTranslateX(this.getTranslateX() + 1);
+            else this.setTranslateX(this.getTranslateX() - 1);
+        }
+        isPlayer();
+    }
 
     public void finalMoveX(double x) {
         moveX(x);
@@ -118,6 +126,8 @@ public class Character extends Pane {
                         Main.root.getChildren().remove(Main.monsters.get(index));
                         Main.monsters.remove(index);
                         Main.sideSounds.playEffectSound("src/lose_energy.mp3");
+
+                        Main.sideSounds.getMusicPlayer().setVolume(Main.sound.getValue());
                         if (Main.musicStatus) {
                             Main.playlist.getMusicPlayer().play();
                         }
@@ -126,6 +136,30 @@ public class Character extends Pane {
                 }
             }
         }
+    }
+    public void isPlayer(){
+        if (Main.players.size() > 0) {
+            for (int i = 0; i < Main.players.size(); i++) {
+                if (this.getBoundsInParent().intersects(Main.players.get(i).getBoundsInParent())) {
+                    if (Main.players.get(i).isVisible()) {
+                        Main.lives--;
+                        Main.energyLabel2.setText("x" + Main.lives);
+                        int index = Main.players.indexOf(Main.players.get(i));
+                        int index1 = Main.players.indexOf(this);
+                        Main.root.getChildren().remove(this);
+                        Main.players.remove(index);Main.monsters.remove(this);
+                        Main.sideSounds.playEffectSound("src/lose_energy.mp3");
+
+                        Main.sideSounds.getMusicPlayer().setVolume(Main.sound.getValue());
+                        if (Main.musicStatus) {
+                            Main.playlist.getMusicPlayer().play();
+                        }
+                        System.out.println(Main.lives);
+                    }
+                }
+            }
+        }
+
     }
 
     public void isEnergy() {
@@ -139,6 +173,7 @@ public class Character extends Pane {
                         Main.root.getChildren().remove(Main.energyBonuses.get(index));
                         Main.energyBonuses.remove(index);
                         Main.sideSounds.playEffectSound("src/mixkit-melodic-bonus-collect-1938.wav");
+                        Main.sideSounds.getMusicPlayer().setVolume(Main.sound.getValue());
                         if (Main.musicStatus) {
                             Main.playlist.getMusicPlayer().play();
                         }

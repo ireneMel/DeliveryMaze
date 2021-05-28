@@ -40,8 +40,8 @@ public class Main extends Application {
     public static ArrayList<Rectangle> bonuses = new ArrayList<>();
     private final ArrayList<String> complimentArray = new ArrayList<>();
     private HashMap<KeyCode, Boolean> keys;
-    AnimationTimer timer;
-    private Timeline timeline, enemyTimeLine, enemy2Timeline, enemy3Timeline, enemy4Timeline;
+    AnimationTimer timer, vanTimer;
+    private Timeline timeline, enemyTimeLine, enemy2Timeline, enemy3Timeline, enemy4Timeline, vanTimeLine;
     private Duration time;
     public static Label energyLabel2;
     public static Music playlist = new Music(), sideSounds = new Music();
@@ -93,6 +93,7 @@ public class Main extends Application {
         walls = new ArrayList<>();
         energyBonuses = new ArrayList<>();
         pizzas = new ArrayList<>();
+        players=new ArrayList<>();
     }
 
     @Override
@@ -157,7 +158,7 @@ public class Main extends Application {
         settingsForLevels(primaryStage, mazePane, Color.rgb(230, 222, 202), "src/Farming-By-Moonlight.mp3");
         setUpTimeLines(mazePane);
         setUpCharacters(mazePane);
-        controller.setLayout(player, 862, 555);
+        controller.setLayout(player, 862, 555);players.add(player);
         Scene sceneFirstLevel = new Scene(root);
         sceneFirstLevel.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         sceneFirstLevel.setOnKeyReleased(event -> keys.put(event.getCode(), false));
@@ -167,6 +168,8 @@ public class Main extends Application {
         root.getChildren().addAll(player, burger, chicken, sushi, chocolate, energyDrinkRed, energyDrinkBlue, houseIm, imageEnergy, pizza);
         primaryStage.setScene(sceneFirstLevel);
     }
+
+    double x = 0.7, property = 1;
 
     private void secondLevel(Stage primaryStage) throws FileNotFoundException {
         Pane mazePane = new Pane();
@@ -181,7 +184,23 @@ public class Main extends Application {
         sceneFirstLevel.setOnKeyReleased(event -> keys.put(event.getCode(), false));
         numOfOrder.setText("O.N. " + (r.nextInt(9999999) + 1000000));
         generateTimer(primaryStage);
+
+        vanTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (vanLeft.isWall()) {
+                    x = -1 * x;
+                    if (property > 0) property = -1;
+                    else property = 1;
+                    vanLeft.setScaleX(property);
+                }
+                vanLeft.animation.play();
+                vanLeft.animation.setOffsetY(0);
+                vanLeft.moveVanX(x);
+            }
+        };
         timer.start();
+        vanTimer.start();
         controller.addRectanglesSecondLevel(mazePane);
         root.getChildren().addAll(player, burger, chicken, sushi, chocolate, energyDrinkRed, energyDrinkBlue, houseIm2, imageEnergy2, pizza, vanLeft);
         primaryStage.setScene(sceneFirstLevel);
@@ -199,6 +218,7 @@ public class Main extends Application {
                 } else if (finishLevel) {
                     timer.stop();
                     player.animation.stop();
+                    vanLeft.animation.stop();
                     try {
                         betweenLevelScene(primaryStage);
                     } catch (FileNotFoundException e) {
@@ -207,6 +227,7 @@ public class Main extends Application {
                 } else {
                     timer.stop();
                     player.animation.stop();
+                    vanLeft.animation.stop();
                     try {
                         failScene(primaryStage);
                     } catch (FileNotFoundException e) {
@@ -285,7 +306,6 @@ public class Main extends Application {
     }
 
     private void betweenLevelScene(Stage stage) throws FileNotFoundException {
-        levelVariable++;
         Pane pane = new Pane();
         playlist.getMusicPlayer().stop();
         controller.middleScene("src/pizza1.jpg", "src/mixkit-ethereal-fairy-win-sound-2019.wav", pane);
@@ -295,6 +315,7 @@ public class Main extends Application {
         r.setLayoutY(200);
         pane.getChildren().add(r);
         Label win1 = new Label("You have finished " + levelVariable + " level");
+        levelVariable++;
         Label win2 = new Label("Congratulations!");
         controller.setLabel(win1, 275, 240);
         controller.setLabel(win2, 375, 340);
@@ -538,7 +559,9 @@ public class Main extends Application {
         music.setShowTickMarks(true);
         music.setMajorTickUnit(0.2);
         music.setShowTickLabels(true);
-        music.setValue(musicList.musicPlayer.getVolume());
+        if (musicList.musicPlayer != null)
+            music.setValue(musicList.musicPlayer.getVolume());
+        else music.setValue(1.0);
         return music;
     }
 
