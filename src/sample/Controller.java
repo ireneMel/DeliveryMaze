@@ -21,8 +21,15 @@ import static sample.Main.playlist;
 
 public class Controller {
 
-    protected void setLabel(Label label, double layoutX, double layoutY, int fontSize, FontWeight fontweigth) {
-        label.setFont(Font.font("Bauhaus 93", fontweigth, fontSize));
+    protected void setLabel(Label label, double layoutX, double layoutY, int fontSize, FontWeight fontWeigh) {
+        label.setFont(Font.font("Bauhaus 93", fontWeigh, fontSize));
+        label.setLayoutX(layoutX);
+        label.setLayoutY(layoutY);
+    }
+
+    protected void setLabel(Label label, double layoutX, double layoutY) {
+        label.setFont(Font.font("Bauhaus 93", FontWeight.BOLD, 60));
+        label.setTextFill(Color.WHITE);
         label.setLayoutX(layoutX);
         label.setLayoutY(layoutY);
     }
@@ -64,7 +71,6 @@ public class Controller {
                 r23 = new Rectangle(960, 0, 40, 700),
                 r24 = new Rectangle(0, 0, 1000, 40),
                 r25 = new Rectangle(0, 660, 1000, 40);
-
         mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25);
         Collections.addAll(Main.walls, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25);
 
@@ -108,10 +114,8 @@ public class Controller {
                 r33=new Rectangle(849,108,30,63),
                 r35=new Rectangle(209,93,30,198),
                 r36=new Rectangle(209,203,200,30),
-                r37=new Rectangle(389,92,30,167),
-                r38=new Rectangle(389,93,143,30)
-
-        ;
+                r37=new Rectangle(389,94,30,139),
+                r38=new Rectangle(389,93,143,30);
         mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r35,r36,r37,r38);
         Collections.addAll(Main.walls, r1, r2, r3, r4, r5, r6, r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r35,r36,r37,r38);
         for (Rectangle a : Main.walls) {

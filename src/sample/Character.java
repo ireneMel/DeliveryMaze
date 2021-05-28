@@ -3,7 +3,6 @@ package sample;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
@@ -42,7 +41,7 @@ public class Character extends Pane {
         getChildren().addAll(imageView);
     }
 
-    public void moveX(int x) {
+    public void moveX(double x) {
         boolean right = x > 0;
         for (int i = 0; i < Math.abs(x); i++) {
             if (right) this.setTranslateX(this.getTranslateX() + 1);
@@ -53,16 +52,17 @@ public class Character extends Pane {
         }
     }
 
-    public void finalMoveX(int x) {
+    public void finalMoveX(double x) {
         moveX(x);
         if (isWall()) {
             moveX(-1 * x);
         }
         isFinish();
-        isMonster();isPizza();
+        isMonster();
+        isPizza();
     }
 
-    public void moveY(int y) {
+    public void moveY(double y) {
         boolean down = y > 0;
         for (int i = 0; i < Math.abs(y); i++) {
             if (down) this.setTranslateY(this.getTranslateY() + 1);
@@ -73,13 +73,14 @@ public class Character extends Pane {
         }
     }
 
-    public void finalMoveY(int y) {
+    public void finalMoveY(double y) {
         moveY(y);
         if (isWall()) {
             moveY(-1 * y);
         }
         isFinish();
-        isMonster();isPizza();
+        isMonster();
+        isPizza();
     }
 
     public void isBonusEat() {
@@ -124,7 +125,6 @@ public class Character extends Pane {
                     }
                 }
             }
-
         }
     }
 
@@ -146,7 +146,6 @@ public class Character extends Pane {
                     }
                 }
             }
-
         }
     }
 
@@ -154,13 +153,15 @@ public class Character extends Pane {
         if (Main.pizzas.size() > 0) {
             for (int i = 0; i < Main.pizzas.size(); i++) {
                 if (this.getBoundsInParent().intersects(Main.pizzas.get(i).getBoundsInParent())) {
-                        int index = Main.pizzas.indexOf(Main.pizzas.get(i));
-                        Main.root.getChildren().remove(Main.pizzas.get(index));
-                        Main.pizzas.remove(index);
-                        Main.sideSounds.playEffectSound("src/for_pizza.mp3");
-                        Main.drawCross();
-                        if(Main.musicStatus){
-                            Main.playlist.getMusicPlayer().play();}
+                    int index = Main.pizzas.indexOf(Main.pizzas.get(i));
+                    Main.root.getChildren().remove(Main.pizzas.get(index));
+                    Main.pizzas.remove(index);
+                    Main.sideSounds.playEffectSound("src/for_pizza.mp3");
+                    Main.sideSounds.getMusicPlayer().setVolume(Main.sound.getValue());
+                    Main.drawCross();
+                    if (Main.musicStatus) {
+                        Main.playlist.getMusicPlayer().play();
+                    }
                 }
             }
 
@@ -168,8 +169,8 @@ public class Character extends Pane {
     }
 
     public void isFinish() {
-        if(this.getBoundsInParent().intersects(Main.houseIm.getBoundsInParent())){
-            Main.finishLevel=true;
+        if (this.getBoundsInParent().intersects(Main.houseIm.getBoundsInParent())) {
+            Main.finishLevel = true;
         }
     }
 
