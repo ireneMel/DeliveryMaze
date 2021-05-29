@@ -144,8 +144,7 @@ public class Character extends Pane {
                     if (Main.players.get(i).isVisible()) {
                         Main.lives--;
                         Main.energyLabel2.setText("x" + Main.lives);
-                        int index = Main.players.indexOf(Main.players.get(i));
-                        int index1 = Main.players.indexOf(this);
+                        int index = this.al.indexOf(Main.players.get(i));
                         Main.root.getChildren().remove(this);
                         Main.players.remove(index);Main.monsters.remove(this);
                         Main.sideSounds.playEffectSound("src/lose_energy.mp3");
