@@ -6,6 +6,8 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 public class Character extends Pane {
 
     ImageView imageView;
@@ -16,6 +18,7 @@ public class Character extends Pane {
     int width = 90;
     int height = 60;
     int score = 0;
+    ArrayList<Character> al;
     boolean check;
     Rectangle removeRect = null;
     CharacterAnimation animation;
@@ -25,6 +28,7 @@ public class Character extends Pane {
         this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
         this.width = width;
         this.height = height;
+        al=new ArrayList<>();
         animation = new CharacterAnimation(imageView, Duration.millis(200), count, columns, offsetX, offsetY, width, height);
         getChildren().addAll(imageView);
     }
@@ -138,15 +142,15 @@ public class Character extends Pane {
         }
     }
     public void isPlayer(){
-        if (Main.players.size() > 0) {
-            for (int i = 0; i < Main.players.size(); i++) {
+        if (this.al.size() > 0) {
+            for (int i = 0; i < this.al.size(); i++) {
                 if (this.getBoundsInParent().intersects(Main.players.get(i).getBoundsInParent())) {
-                    if (Main.players.get(i).isVisible()) {
+                    if (this.al.get(i).isVisible()) {
                         Main.lives--;
                         Main.energyLabel2.setText("x" + Main.lives);
                         int index = this.al.indexOf(Main.players.get(i));
                         Main.root.getChildren().remove(this);
-                        Main.players.remove(index);Main.monsters.remove(this);
+                        this.al.remove(index);Main.monsters.remove(this);
                         Main.sideSounds.playEffectSound("src/lose_energy.mp3");
 
                         Main.sideSounds.getMusicPlayer().setVolume(Main.sound.getValue());
