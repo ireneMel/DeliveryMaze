@@ -148,6 +148,7 @@ public class Main extends Application {
 
     private void settingsForLevels(Stage primaryStage, Pane mazePane, Color color, String path) throws FileNotFoundException {
         playlist.getMusicPlayer().stop();
+        sideSounds.setVolume(0.5);
         fail = false;
         finishLevel = false;
         root = new Pane();
@@ -170,8 +171,7 @@ public class Main extends Application {
         playlist.background(path);
         playlist.getMusicPlayer().play();
         if (!musicStatus) playlist.setVolume(0);
-        else
-            playlist.setVolume(0.5);
+        else playlist.setVolume(0.5);
     }
 
     private void firstLevel(Stage primaryStage) throws FileNotFoundException {
@@ -555,7 +555,7 @@ public class Main extends Application {
             alert.setHeaderText("If you return to main menu, your progress will not be saved");
             alert.setContentText("Are you sure?");
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
+            if (result.get() == ButtonType.OK) {
                 lives = 3;
                 try {
                     setUpStartWindow();
@@ -659,7 +659,7 @@ public class Main extends Application {
             alert.setContentText("Are you sure?");
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
+            if (result.get() == ButtonType.OK) {
                 pauseStage.close();
                 lives = 3;
                 try {
