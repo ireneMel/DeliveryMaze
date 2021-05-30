@@ -148,11 +148,13 @@ public class Character extends Pane {
                     if (this.al.get(i).isVisible()) {
                         Main.lives--;
                         Main.energyLabel2.setText("x" + Main.lives);
-                        int index = this.al.indexOf(Main.players.get(i));
-                        Main.root.getChildren().remove(this);
-                        this.al.remove(index);Main.monsters.remove(this);
-                        Main.sideSounds.playEffectSound("src/lose_energy.mp3");
-
+                        if(al!=null) {
+                            int index = this.al.indexOf(Main.players.get(i));
+                            Main.root.getChildren().remove(this);
+                            this.al.remove(index);
+                            Main.monsters.remove(this);
+                            Main.sideSounds.playEffectSound("src/lose_energy.mp3");
+                        }
                         Main.sideSounds.getMusicPlayer().setVolume(Main.sound.getValue());
                         if (Main.musicStatus) {
                             Main.playlist.getMusicPlayer().play();

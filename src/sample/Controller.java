@@ -97,9 +97,9 @@ public class Controller {
                 r31 = new Rectangle(784, 570, 93, 20),
                 r32 = new Rectangle(588, 590, 20, 110),
                 r33 = new Rectangle(131, 590, 20, 110),
-                r34= new Rectangle(131,590,301,20);
-        mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25,r26,r27,r28,r29,r30,r31,r32,r33,r34);
-        Collections.addAll(Main.walls, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25,r26,r27,r28,r29,r30,r31,r32,r33,r34);
+                r34 = new Rectangle(131, 590, 301, 20);
+        mazePane.getChildren().addAll(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, r32, r33, r34);
+        Collections.addAll(Main.walls, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, r32, r33, r34);
 
         for (Rectangle a : Main.walls) {
             a.setFill(Color.rgb(133, 147, 208));
@@ -145,6 +145,71 @@ public class Controller {
         }
     }
 
+    protected void addRectanglesFourthLevel(Pane mazePane) {
+        Rectangle r1 = new Rectangle(0, 0, 1000, 20),
+                r2 = new Rectangle(0, 0, 20, 700),
+                r3 = new Rectangle(0, 680, 1000, 20),
+                r4 = new Rectangle(980, 0, 20, 700),
+                r5 = new Rectangle(144, 0, 20, 187),
+                r6 = new Rectangle(216, 85, 20, 105),
+                r8 = new Rectangle(288, 0, 20, 275),
+                r9 = new Rectangle(360, 0, 20, 105),
+                r10 = new Rectangle(432, 170, 20, 169),
+                r11 = new Rectangle(72, 255, 20, 95),
+                r12 = new Rectangle(144, 340, 20, 105),
+                r13 = new Rectangle(288, 340, 20, 187),
+                r14 = new Rectangle(360, 285, 20, 131),
+                r15 = new Rectangle(72, 425, 20, 105),
+                r17 = new Rectangle(216, 510, 20, 187),
+                r18 = new Rectangle(360, 511, 20, 187),
+                r19 = new Rectangle(432, 404, 20, 206),
+                r20 = new Rectangle(500, 285, 20, 137),
+                r16 = new Rectangle(576, 0, 20, 105),
+                r21 = new Rectangle(576, 342, 20, 187),
+                r22 = new Rectangle(648, 0, 20, 347),
+                r23 = new Rectangle(648, 425, 20, 105),
+                r24 = new Rectangle(720, 172, 20, 177),
+                r25 = new Rectangle(723, 425, 20, 275),
+                r26 = new Rectangle(792, 0, 20, 105),
+                r27 = new Rectangle(792, 175, 20, 341),
+                r28 = new Rectangle(874, 85, 20, 105),
+                r31 = new Rectangle(874, 274, 20, 169),
+                r34 = new Rectangle(792, 85, 92, 20),
+                r33 = new Rectangle(792, 511, 102, 20),
+                r29 = new Rectangle(795, 595, 199, 20),
+                r30 = new Rectangle(946, 70, 54, 20),
+                r35 = new Rectangle(720, 170, 92, 20),
+
+                r36 = new Rectangle(648, 85, 92, 20),
+                r37 = new Rectangle(648, 337, 92, 20),
+                r38 = new Rectangle(648, 424, 92, 20),
+
+                r39 = new Rectangle(576, 255, 92, 20),
+                r40 = new Rectangle(432, 85, 164, 20),
+                r41 = new Rectangle(360, 170, 236, 20),
+                r42 = new Rectangle(360, 285, 157, 20),
+                r44 = new Rectangle(432, 594, 236, 20),
+                r45 = new Rectangle(144, 85, 92, 20),
+                r47 = new Rectangle(0, 170, 92, 20),
+                r48 = new Rectangle(144, 255, 157, 20),
+                r49 = new Rectangle(0, 340, 92, 20),
+                r50 = new Rectangle(216, 340, 92, 20),
+                r51 = new Rectangle(72, 425, 164, 20),
+                r52 = new Rectangle(72, 510, 164, 20),
+                r53 = new Rectangle(0, 595, 164, 20),
+                r54 = new Rectangle(504, 510, 92, 20),
+                r56 = new Rectangle(360, 511, 20, 187),
+                r57 = new Rectangle(288, 595, 92, 20),
+                r58 = new Rectangle(874, 426, 112, 20),
+                r55 = new Rectangle(874, 274, 54, 20)
+        ;
+        mazePane.getChildren().addAll(r1, r54, r19, r56,r57,r55, r58,r2, r3, r53, r4, r5, r34, r6, r8, r9, r10, r11, r44, r12, r13, r14, r15, r16, r17, r18, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, r33, r36, r35, r37, r38, r39, r40, r41, r42, r45, r47, r48, r49, r50, r51, r52);
+        Collections.addAll(Main.walls, r1,r54, r2,r19, r56,r57,r55, r58, r3, r4, r53, r5, r6,r34, r8, r9, r10, r11, r12, r44, r13, r14, r15, r16, r17, r18, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, r33, r36, r35, r37, r38, r39, r40, r41, r42, r45, r47, r48, r49, r50, r51, r52);
+        for (Rectangle a : Main.walls) {
+            a.setFill(Color.rgb(74, 137, 55));
+        }
+    }
+
     protected void generateCompliment(ArrayList<String> complimentArray) {
         complimentArray.add("You're someone's reason to smile :)");
         complimentArray.add("You're strong!");
@@ -171,6 +236,7 @@ public class Controller {
     protected void middleScene(String pathImg, String pathMusic, Pane pane) throws FileNotFoundException {
         playlist.playEffectSound(pathMusic);
         playlist.getMusicPlayer().play();
+        playlist.setVolume(0.3);
         FileInputStream str = new FileInputStream(pathImg);
         Image image = new Image(str);
         BackgroundImage myBI = new BackgroundImage(image,
