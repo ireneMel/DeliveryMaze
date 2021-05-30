@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -19,8 +19,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -552,13 +550,21 @@ public class Main extends Application {
         back = new Button();
         controller.setBackgroundForButton("src/home.png", back);
         back.setOnAction(actionEvent -> {
-            lives = 3;
-            try {
-                setUpStartWindow();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("If you return to main menu, your progress will not be saved");
+            alert.setContentText("Are you sure?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                lives = 3;
+                try {
+                    setUpStartWindow();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                stage.setScene(scene);
             }
-            stage.setScene(scene);
+
         });
     }
 
@@ -627,8 +633,7 @@ public class Main extends Application {
             if (sideSounds.musicPlayer != null)
                 sideSounds.musicPlayer.setVolume(sound.getValue());
             else {
-                assert false;
-                sideSounds.musicPlayer.setVolume(1.0);
+                sideSounds.musicPlayer.setVolume(0.5);
             }
         });
         musicSlider.setLayoutY(240);
@@ -647,14 +652,23 @@ public class Main extends Application {
         pauseStage.setOnCloseRequest(Event::consume);
 
         homeButton.setOnAction(actionEvent -> {
-            pauseStage.close();
-            lives = 3;
-            try {
-                setUpStartWindow();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("If you return to main menu, your progress will not be saved");
+            alert.setContentText("Are you sure?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                pauseStage.close();
+                lives = 3;
+                try {
+                    setUpStartWindow();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                primaryStage.setScene(scene);
             }
-            primaryStage.setScene(scene);
         });
 
         playButton.setOnAction(actionEvent -> {
