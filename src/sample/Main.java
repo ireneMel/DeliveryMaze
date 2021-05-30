@@ -126,7 +126,7 @@ public class Main extends Application {
         play.setOnAction(actionEvent -> {
             try {
                 firstLevel(stage);
-                //fourthLevel(stage);
+                //fifthLevel(stage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -154,16 +154,26 @@ public class Main extends Application {
         root = new Pane();
         initialize();
         player = new Character(imageView, 41, 54);
-        Rectangle settings = new Rectangle(200, 700);
-        settings.setLayoutX(1000);
+        Rectangle settings;
+        if(levelVariable!=5){
+        settings = new Rectangle(200, 700);
+        settings.setLayoutX(1000);}
+        else{
+            settings = new Rectangle(200, 900);
+            settings.setLayoutX(1200);
+        }
         settings.setFill(color);
         keys = new HashMap<>();
         numOfOrder.setText("O.N. " + (r.nextInt(9999999) + 1000000));
-        Rectangle rec = new Rectangle(1050, 550, 100, 100);
+        Rectangle rec;
+        if(levelVariable!=5)rec = new Rectangle(1050, 550, 100, 100);
+        else rec = new Rectangle(1250, 550, 100, 100);
         rec.setFill(new ImagePattern(new Image(new FileInputStream("src/pause.png"))));
         rec.setOnMouseClicked(mouseEvent -> pauseWindow(primaryStage, color));
-        root.setPrefSize(1200, 700);
-        mazePane.setPrefSize(1000, 700);
+        if(levelVariable==5) root.setPrefSize(1400, 900);
+        else root.setPrefSize(1200, 700);
+        if(levelVariable==5) mazePane.setPrefSize(1200, 900);
+        else mazePane.setPrefSize(1000, 700);
         setLabelsForSideMenu(mazePane, settings);
         mazePane.getChildren().add(rec);
         mazePane.setBackground(new Background(new BackgroundFill(Color.rgb(113, 217, 140), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -242,6 +252,32 @@ public class Main extends Application {
         controller.addRectanglesThirdLevel(mazePane);
         root.getChildren().addAll(player, energyDrinkGreen, energyDrinkYellow, energyDrinkRed, houseIm3, imageEnergy3, sandwich, pizza, cheeseCake, taco, applePie, enemy5, van, van2, van3);
     }
+    private void fourthLevel(Stage primaryStage) throws FileNotFoundException {
+        houseIm4 = new ImageView(new Image(new FileInputStream("src/house.png")));
+        Pane mazePane = new Pane();
+        houseIm = houseIm4;
+        settingsForLevels(primaryStage, mazePane, Color.rgb(196, 232, 184), "src/Loyalty_Freak_Music_-_05_-_Ice_Cream_with_you.mp3");
+        setUpTimeLines(mazePane);
+        setUpCharacters4(mazePane);
+        controller.setLayout(player, 674, 278);
+        settingsForLevels2(primaryStage);
+        controller.addRectanglesFourthLevel(mazePane);
+        root.getChildren().addAll(player, energyDrinkGreen, nacho, pudding, hotDog, energyDrinkYellow, houseIm4 /*,imageEnergy4*/, sandwich, pizza, pizza1, taco, applePie, enemy5);
+    }
+
+    private void fifthLevel(Stage primaryStage) throws FileNotFoundException {
+        houseIm5 = new ImageView(new Image(new FileInputStream("src/house_blue.png")));
+        Pane mazePane = new Pane();
+        houseIm = houseIm5;
+        settingsForLevels(primaryStage, mazePane, Color.rgb(147, 205, 221), "src/Loyalty_Freak_Music_-_05_-_Ice_Cream_with_you.mp3");
+        setUpTimeLines(mazePane);
+        setUpCharacters5(mazePane);
+        controller.setLayout(player, 1127, 29);
+        settingsForLevels2(primaryStage);
+        controller.addRectanglesFifthLevel(mazePane);
+        root.getChildren().addAll(player, energyDrinkRed, baconDish, cheesePuff, chocolate, energyDrinkYellow, houseIm5 , burger, pizza, cheeseCake);
+        primaryStage.setHeight(935);primaryStage.setWidth(1420);
+    }
 
     private void startVanTimers() {
         vanTimer = new AnimationTimer() {
@@ -276,19 +312,6 @@ public class Main extends Application {
             }
         };
         vanTimer2.start();
-    }
-
-    private void fourthLevel(Stage primaryStage) throws FileNotFoundException {
-        houseIm4 = new ImageView(new Image(new FileInputStream("src/house.png")));
-        Pane mazePane = new Pane();
-        houseIm = houseIm4;
-        settingsForLevels(primaryStage, mazePane, Color.rgb(196, 232, 184), "src/Loyalty_Freak_Music_-_05_-_Ice_Cream_with_you.mp3");
-        setUpTimeLines(mazePane);
-        setUpCharacters4(mazePane);
-        controller.setLayout(player, 674, 278);
-        settingsForLevels2(primaryStage);
-        controller.addRectanglesFourthLevel(mazePane);
-        root.getChildren().addAll(player, energyDrinkGreen, nacho, pudding, hotDog, energyDrinkYellow, houseIm4 /*,imageEnergy4*/, sandwich, pizza, pizza1, taco, applePie, enemy5);
     }
 
     private void settingsForLevels2(Stage primaryStage) {
@@ -401,13 +424,42 @@ public class Main extends Application {
         sushi.setVisible(false);
         root.getChildren().add(mazePane);
     }
+    private void setUpCharacters5(Pane mazePane) {
+        controller.setLayout(taco, 362, 125);
+        Collections.addAll(monsters, cheeseCake, baconDish, cheesePuff, chocolate, burger);
+        taco.setVisible(false);
+        cheeseCake.setVisible(false);
+        enemy5.setVisible(false);
+        controller.setLayout(baconDish, 395, 350);
+        controller.setLayout(cheeseCake, 580, 530);
+        controller.setLayout(cheesePuff, 780, 530);
+        controller.setLayout(energyDrinkYellow, 803, 306);
+        controller.setLayout(energyDrinkRed, 120, 575);
+        controller.setLayout(pizza, 512, 47);
+        controller.setLayout(van, 170, 519);
+        controller.setLayout(van2, 308, 353);
+        controller.setLayout(van3, 30, 104);
+        van.al.add(player);
+        van2.al.add(player);
+        van3.al.add(player);
+        controller.setLayout(chocolate, 655, 125);
+        pizzas.add(pizza);
+        houseIm5.setX(242);
+        houseIm5.setLayoutY(263);
+        houseIm5.setFitWidth(100);
+        houseIm5.setFitHeight(100);
+        Collections.addAll(energyBonuses, energyDrinkGreen, energyDrinkYellow, energyDrinkRed);
+        root.getChildren().add(mazePane);
+    }
+
 
     private void setUpTimeLines(Pane mazePane) {
         stopTimeLines();
         DoubleProperty timeSeconds = new SimpleDoubleProperty(5.0);
         time = Duration.minutes(5.00);
         Label timerLabel = new Label();
-        controller.setLabel(timerLabel, 1130, 445, 30, FontWeight.BOLD);
+        if(levelVariable!=5) controller.setLabel(timerLabel, 1130, 445, 30, FontWeight.BOLD);
+        else controller.setLabel(timerLabel, 1330, 445, 30, FontWeight.BOLD);
         timerLabel.textProperty().bind(timeSeconds.asString());
         timerLabel.setTextFill(Color.BLACK);
         timeline = new Timeline(
@@ -468,51 +520,96 @@ public class Main extends Application {
     }
 
     private void setLabelsForSideMenu(Pane mazePane, Rectangle settings) {
-        controller.setLabel(numOfOrder, 1043, 140, 17, FontWeight.NORMAL);
-        Label data = new Label(new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime()));
-        controller.setLabel(data, 1063, 50, 13, FontWeight.BOLD);
-        Label str = new Label("-------------------------------------------------");
-        controller.setLabel(str, 1000, 160, 25, FontWeight.BOLD);
-        Label energyLabel = new Label("   ..................");
-        controller.setLabel(energyLabel, 1035, 195, 15, FontWeight.BOLD);
-        Label pizzaLabel = new Label("   ..............");
-        controller.setLabel(pizzaLabel, 1060, 260, 15, FontWeight.BOLD);
-        energyLabel2 = new Label("x" + lives);
-        controller.setLabel(energyLabel2, 1160, 192, 25, FontWeight.NORMAL);
-        Rectangle check = new Rectangle(1160, 250, 25, 25);
-        check.setFill(Color.TRANSPARENT);
-        check.setStroke(Color.BLACK);
-        if (levelVariable == 1) {
-            setUpImageEnergy(imageEnergy);
-        } else if (levelVariable == 2) {
-            setUpImageEnergy(imageEnergy2);
-        } else if (levelVariable == 3) {
-            setUpImageEnergy(imageEnergy3);
-        } else if (levelVariable == 4) {
-            setUpImageEnergy(imageEnergy4);
+        if(levelVariable!=5) {
+            controller.setLabel(numOfOrder, 1043, 140, 17, FontWeight.NORMAL);
+            Label data = new Label(new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime()));
+            controller.setLabel(data, 1063, 50, 13, FontWeight.BOLD);
+            Label str = new Label("-------------------------------------------------");
+            controller.setLabel(str, 1000, 160, 25, FontWeight.BOLD);
+            Label energyLabel = new Label("   ..................");
+            controller.setLabel(energyLabel, 1035, 195, 15, FontWeight.BOLD);
+            Label pizzaLabel = new Label("   ..............");
+            controller.setLabel(pizzaLabel, 1060, 260, 15, FontWeight.BOLD);
+            energyLabel2 = new Label("x" + lives);
+            controller.setLabel(energyLabel2, 1160, 192, 25, FontWeight.NORMAL);
+            Rectangle check = new Rectangle(1160, 250, 25, 25);
+            check.setFill(Color.TRANSPARENT);
+            check.setStroke(Color.BLACK);
+            if (levelVariable == 1) {
+                setUpImageEnergy(imageEnergy);
+            } else if (levelVariable == 2) {
+                setUpImageEnergy(imageEnergy2);
+            } else if (levelVariable == 3) {
+                setUpImageEnergy(imageEnergy3);
+            } else if (levelVariable == 4) {
+                setUpImageEnergy(imageEnergy4);
+            }
+            pizzaBoxIV1.setLayoutY(250);
+            pizzaBoxIV1.setLayoutX(1005);
+            pizzaBoxIV1.setFitWidth(65);
+            //TODO add second pizza counter
+            //TODO add counter of all pizzas
+            Label str1 = new Label("-------------------------------------------------");
+            controller.setLabel(str1, 1000, 500, 25, FontWeight.BOLD);
+            Label str2 = new Label("-------------------------------------------------");
+            controller.setLabel(str2, 1000, 400, 25, FontWeight.BOLD);
+            Label timeLeft = new Label("Time left ");
+            controller.setLabel(timeLeft, 1005, 450, 25, FontWeight.NORMAL);
+            Label timeStr = new Label("      ...");
+            controller.setLabel(timeStr, 1085, 455, 15, FontWeight.BOLD);
+            Label level = new Label("Level " + Main.levelVariable);
+            controller.setLabel(level, 1012, 80, 60, FontWeight.NORMAL);
+            mazePane.getChildren().addAll(settings, level, data, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check);
         }
-        pizzaBoxIV1.setLayoutY(250);
-        pizzaBoxIV1.setLayoutX(1005);
-        pizzaBoxIV1.setFitWidth(65);
-        //TODO add second pizza counter
-        //TODO add counter of all pizzas
-        Label str1 = new Label("-------------------------------------------------");
-        controller.setLabel(str1, 1000, 500, 25, FontWeight.BOLD);
-        Label str2 = new Label("-------------------------------------------------");
-        controller.setLabel(str2, 1000, 400, 25, FontWeight.BOLD);
-        Label timeLeft = new Label("Time left ");
-        controller.setLabel(timeLeft, 1005, 450, 25, FontWeight.NORMAL);
-        Label timeStr = new Label("      ...");
-        controller.setLabel(timeStr, 1085, 455, 15, FontWeight.BOLD);
-        Label level = new Label("Level " + Main.levelVariable);
-        controller.setLabel(level, 1012, 80, 60, FontWeight.NORMAL);
-        mazePane.getChildren().addAll(settings, level, data, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check);
-    }
+        else{
+            controller.setLabel(numOfOrder, 1243, 140, 17, FontWeight.NORMAL);
+            Label data = new Label(new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime()));
+            controller.setLabel(data, 1263, 50, 13, FontWeight.BOLD);
+            Label str = new Label("-------------------------------------------------");
+            controller.setLabel(str, 1200, 160, 25, FontWeight.BOLD);
+            Label energyLabel = new Label("   ..................");
+            controller.setLabel(energyLabel, 1235, 195, 15, FontWeight.BOLD);
+            Label pizzaLabel = new Label("   ..............");
+            controller.setLabel(pizzaLabel, 1260, 260, 15, FontWeight.BOLD);
+            energyLabel2 = new Label("x" + lives);
+            controller.setLabel(energyLabel2, 1360, 192, 25, FontWeight.NORMAL);
+            Rectangle check = new Rectangle(1360, 250, 25, 25);
+            check.setFill(Color.TRANSPARENT);
+            check.setStroke(Color.BLACK);
+            if (levelVariable == 1) {
+                setUpImageEnergy(imageEnergy);
+            } else if (levelVariable == 2) {
+                setUpImageEnergy(imageEnergy2);
+            } else if (levelVariable == 3) {
+                setUpImageEnergy(imageEnergy3);
+            } else if (levelVariable == 4) {
+                setUpImageEnergy(imageEnergy4);
+            }
+            pizzaBoxIV1.setLayoutY(250);
+            pizzaBoxIV1.setLayoutX(1205);
+            pizzaBoxIV1.setFitWidth(65);
+            //TODO add second pizza counter
+            //TODO add counter of all pizzas
+            Label str1 = new Label("-------------------------------------------------");
+            controller.setLabel(str1, 1200, 500, 25, FontWeight.BOLD);
+            Label str2 = new Label("-------------------------------------------------");
+            controller.setLabel(str2, 1200, 400, 25, FontWeight.BOLD);
+            Label timeLeft = new Label("Time left ");
+            controller.setLabel(timeLeft, 1205, 450, 25, FontWeight.NORMAL);
+            Label timeStr = new Label("      ...");
+            controller.setLabel(timeStr, 1285, 455, 15, FontWeight.BOLD);
+            Label level = new Label("Level " + Main.levelVariable);
+            controller.setLabel(level, 1212, 80, 60, FontWeight.NORMAL);
+            mazePane.getChildren().addAll(settings, level, data, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check);
+        }
+        }
+
 
     private void setUpImageEnergy(ImageView im) {
         im.setFitWidth(40);
         im.setFitHeight(50);
-        im.setLayoutX(1005);
+        if(levelVariable!=40) im.setLayoutX(1005);
+        else im.setLayoutX(1205);
         im.setLayoutY(185);
     }
 
@@ -853,7 +950,11 @@ public class Main extends Application {
                     e.printStackTrace();
                 }
             } else if (levelVariable == 5) {
-
+                try {
+                    fifthLevel(stage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             } else if (levelVariable == 6) {
 
             }
