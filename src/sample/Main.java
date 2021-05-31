@@ -38,10 +38,10 @@ public class Main extends Application {
     public static ArrayList<Rectangle> bonuses = new ArrayList<>();
     private final ArrayList<String> complimentArray = new ArrayList<>();
     private HashMap<KeyCode, Boolean> keys;
-    AnimationTimer timer, vanTimer, vanTimer2, vanTimer3;
+    AnimationTimer timer, vanTimer, vanTimer2, vanTimer3, deliveryEnemy1Timer, deliveryEnemy2Timer, deliveryEnemy3Timer;
     private Timeline timeline, chickenAndBurgerTimeLine, chocolateTineLine, sushiTimeline, enemy4Timeline,
-            burritoTimeLine, bagelTimeline, cheesePuffTimeline, hotDogTimeLine, nachoTimeLine, puddingTimeline,
-            pancakesTimeLine, sandwichTimeLine, tacoTimeLine, applePieTimeLine, baconDishTimeLine;
+            burritoTimeLine, bagelTimeline, cheesePuffTimeline, hotDogTimeLine, nachoTimeLine,
+            pancakesTimeLine, sandwichTimeLine, tacoTimeLine, baconDishTimeLine;
     private Duration time;
     public static Label energyLabel2;
     public static Music playlist = new Music(), sideSounds = new Music();
@@ -52,6 +52,9 @@ public class Main extends Application {
     double x = 0.7, x2 = -1.5, x3 = 1.2, property = 1, property2 = -1, property3 = 1;
 
     ImageView imageView = new ImageView(new Image(new FileInputStream("src/MyCollages__8_-removebg-preview (1) (3).png"))),
+            imageViewEnemy1 = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
+            imageViewEnemy2 = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
+            imageViewEnemy3 = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
             imageEnergy = new ImageView(new Image(new FileInputStream("src/Battery.png"))),
             imageEnergy2 = new ImageView(new Image(new FileInputStream("src/Battery3.png"))),
             imageEnergy3 = new ImageView(new Image(new FileInputStream("src/Battery4.png"))),
@@ -60,7 +63,7 @@ public class Main extends Application {
             enemy6I = new ImageView(new Image(new FileInputStream("src/van3.png"))),
             enemy6I2 = new ImageView(new Image(new FileInputStream("src/ice-cream-van_3.png"))),
             enemy6I3 = new ImageView(new Image(new FileInputStream("src/ice-cream-van_32.png")));
-    static Character player;
+    static Character player, deliveryEnemy1, deliveryEnemy2, deliveryEnemy3;
     Character burger = new Character(new ImageView(new Image(new FileInputStream("src/17_burger_napkin.png")))),
             chicken = new Character(new ImageView(new Image(new FileInputStream("src/86_roastedchicken_dish.png")))),
             sushi = new Character(new ImageView(new Image(new FileInputStream("src/98_sushi_dish.png")))),
@@ -104,7 +107,7 @@ public class Main extends Application {
     }
 
     Scene scene;
-    public static int levelVariable = 1, lives = 3;
+    public static int levelVariable = 1, lives = 3, countPizzas=0;
 
     public Main() throws FileNotFoundException {
     }
@@ -126,7 +129,6 @@ public class Main extends Application {
         play.setOnAction(actionEvent -> {
             try {
                 firstLevel(stage);
-                //fifthLevel(stage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -180,8 +182,9 @@ public class Main extends Application {
         primaryStage.setTitle("Delivery Maze");
         playlist.background(path);
         playlist.getMusicPlayer().play();
-        if (!musicStatus) playlist.setVolume(0);
-        else playlist.setVolume(0.5);
+        if(musicSlider!=null) playlist.setVolume(musicSlider.getValue());
+        else if (!musicStatus) playlist.setVolume(0);
+        else playlist.setVolume(0.2);
     }
 
     private void firstLevel(Stage primaryStage) throws FileNotFoundException {
@@ -245,7 +248,7 @@ public class Main extends Application {
                 }
                 van3.animation.play();
                 van3.animation.setOffsetY(0);
-                van3.moveVanX(x3);
+                van3.moveEnemyX(x3);
             }
         };
         vanTimer3.start();
@@ -254,6 +257,9 @@ public class Main extends Application {
     }
     private void fourthLevel(Stage primaryStage) throws FileNotFoundException {
         houseIm4 = new ImageView(new Image(new FileInputStream("src/house.png")));
+        deliveryEnemy1 = new Character(imageViewEnemy1, 41, 54);
+        deliveryEnemy2 = new Character(imageViewEnemy2, 41, 54);
+        deliveryEnemy3 = new Character(imageViewEnemy3, 41, 54);
         Pane mazePane = new Pane();
         houseIm = houseIm4;
         settingsForLevels(primaryStage, mazePane, Color.rgb(196, 232, 184), "src/Loyalty_Freak_Music_-_05_-_Ice_Cream_with_you.mp3");
@@ -261,8 +267,152 @@ public class Main extends Application {
         setUpCharacters4(mazePane);
         controller.setLayout(player, 674, 278);
         settingsForLevels2(primaryStage);
+        up = false;
+        down = true;
+        left = false;
+        right = false;
+        deliveryEnemy1Timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (up) {
+                    if (deliveryEnemy1.isExactWall(walls.get(0))) {
+                        up = false;
+                        down = true;
+                    } else {
+                        deliveryEnemy1.animation.play();
+                        deliveryEnemy1.animation.setOffsetY(162);
+                        deliveryEnemy1.moveEnemyY(-1.5);
+                    }
+                } else if (down) {
+                    if (deliveryEnemy1.isExactWall(walls.get(49))) {
+                        down = false;
+                        left = true;
+                    } else {
+                        deliveryEnemy1.animation.play();
+                        deliveryEnemy1.animation.setOffsetY(0);
+                        deliveryEnemy1.moveEnemyY(1.5);
+                    }
+                } else if (right) {
+                    if (deliveryEnemy1.isExactWall(walls.get(14))) {
+                        right = false;
+                        up = true;
+                    } else {
+                        deliveryEnemy1.animation.play();
+                        deliveryEnemy1.animation.setOffsetY(108);
+                        deliveryEnemy1.moveEnemyX(1.5);
+                    }
+                } else if (left) {
+                    if (deliveryEnemy1.isExactWall(walls.get(2))) {
+                        left = false;
+                        right = true;
+                    } else {
+                        deliveryEnemy1.animation.play();
+                        deliveryEnemy1.animation.setOffsetY(54);
+                        deliveryEnemy1.moveEnemyX(-1.5);
+                    }
+                } else deliveryEnemy1.animation.stop();
+
+            }
+        };
+        deliveryEnemy1Timer.start();
+        up2 = false;
+        down2 = false;
+        left2 = false;
+        right2 = true;
+        deliveryEnemy2Timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (up2) {
+                    if (deliveryEnemy2.isExactWall(walls.get(0))) {
+                        up2 = false;
+                        down2 = true;
+                    } else {
+                        deliveryEnemy2.animation.play();
+                        deliveryEnemy2.animation.setOffsetY(162);
+                        deliveryEnemy2.moveEnemyY(-2);
+                    }
+                } else if (down2) {
+                    if (deliveryEnemy2.isExactWall(walls.get(5))) {
+                        down2 = false;
+                        left2 = true;
+                    } else {
+                        deliveryEnemy2.animation.play();
+                        deliveryEnemy2.animation.setOffsetY(0);
+                        deliveryEnemy2.moveEnemyY(2);
+                    }
+                } else if (right2) {
+                    if (deliveryEnemy2.isExactWall(walls.get(4))) {
+                        right2 = false;
+                        up2 = true;
+                    } else {
+                        deliveryEnemy2.animation.play();
+                        deliveryEnemy2.animation.setOffsetY(108);
+                        deliveryEnemy2.moveEnemyX(2);
+                    }
+                } else if (left2) {
+                    if (deliveryEnemy2.isExactWall(walls.get(24))) {
+                        left2 = false;
+                        right2 = true;
+                    } else {
+                        deliveryEnemy2.animation.play();
+                        deliveryEnemy2.animation.setOffsetY(54);
+                        deliveryEnemy2.moveEnemyX(-2);
+                    }
+                } else deliveryEnemy2.animation.stop();
+
+            }
+        };
+        deliveryEnemy2Timer.start();
+        up3 = false;
+        down3 = false;
+        left3 = true;
+        right3 = false;
+        deliveryEnemy3Timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (up3) {
+                    if (deliveryEnemy3.isExactWall(walls.get(13))) {
+                        up3 = false;
+                        down3 = true;
+                    } else {
+                        deliveryEnemy3.animation.play();
+                        deliveryEnemy3.animation.setOffsetY(162);
+                        deliveryEnemy3.moveEnemyY(-1.2);
+                    }
+                } else if (down3) {
+                    if (deliveryEnemy3.isExactWall(walls.get(38))) {
+                        down3 = false;
+                        right3 = true;
+                    } else {
+                        deliveryEnemy3.animation.play();
+                        deliveryEnemy3.animation.setOffsetY(0);
+                        deliveryEnemy3.moveEnemyY(1.2);
+                    }
+                } else if (right3) {
+                    if (deliveryEnemy3.isExactWall(walls.get(9))) {
+                        right3 = false;
+                        left3 = true;
+                    } else {
+                        deliveryEnemy3.animation.play();
+                        deliveryEnemy3.animation.setOffsetY(108);
+                        deliveryEnemy3.moveEnemyX(1.2);
+                    }
+                } else if (left3) {
+                    if (deliveryEnemy3.isExactWall(walls.get(33))) {
+                        left3 = false;
+                        up3 = true;
+                    } else {
+                        deliveryEnemy3.animation.play();
+                        deliveryEnemy3.animation.setOffsetY(54);
+                        deliveryEnemy3.moveEnemyX(-1.2);
+                    }
+                } else deliveryEnemy3.animation.stop();
+
+            }
+        };
+        deliveryEnemy3Timer.start();
         controller.addRectanglesFourthLevel(mazePane);
-        root.getChildren().addAll(player, energyDrinkGreen, nacho, pudding, hotDog, energyDrinkYellow, houseIm4 /*,imageEnergy4*/, sandwich, pizza, pizza1, taco, applePie, enemy5);
+        root.getChildren().addAll(player, energyDrinkGreen, nacho, pudding, hotDog, energyDrinkYellow, houseIm4, imageEnergy4, sandwich, pizza, pizza1, taco, applePie, enemy5, deliveryEnemy1, deliveryEnemy2, deliveryEnemy3);
     }
 
     private void fifthLevel(Stage primaryStage) throws FileNotFoundException {
@@ -274,6 +424,223 @@ public class Main extends Application {
         setUpCharacters5(mazePane);
         controller.setLayout(player, 1127, 29);
         settingsForLevels2(primaryStage);
+        up = false;
+        down = true;
+        left = false;
+        right = false;
+        deliveryEnemy1Timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (up) {
+                    if (deliveryEnemy1.isExactWall(walls.get(27))) {
+                        up = false;
+                        down = true;
+                    } else {
+                        deliveryEnemy1.animation.play();
+                        deliveryEnemy1.animation.setOffsetY(162);
+                        deliveryEnemy1.moveEnemyY(-1.5);
+                    }
+                } else if (down) {
+                    if (deliveryEnemy1.isExactWall(walls.get(38))) {
+                        down = false;
+                        right = true;
+                    } else {
+                        deliveryEnemy1.animation.play();
+                        deliveryEnemy1.animation.setOffsetY(0);
+                        deliveryEnemy1.moveEnemyY(1.5);
+                    }
+                } else if (right) {
+                    if (deliveryEnemy1.isExactWall(walls.get(48))) {
+                        right = false;
+                        left = true;
+                    } else {
+                        deliveryEnemy1.animation.play();
+                        deliveryEnemy1.animation.setOffsetY(108);
+                        deliveryEnemy1.moveEnemyX(1.5);
+                    }
+                } else if (left) {
+                    if (deliveryEnemy1.isExactWall(walls.get(37))) {
+                        left = false;
+                        up = true;
+                    } else {
+                        deliveryEnemy1.animation.play();
+                        deliveryEnemy1.animation.setOffsetY(54);
+                        deliveryEnemy1.moveEnemyX(-1.5);
+                    }
+                } else deliveryEnemy1.animation.stop();
+
+            }
+        };
+        deliveryEnemy1Timer.start();
+        up2 = false;
+        down2 = false;
+        left2 = false;
+        right2 = true;
+        deliveryEnemy2Timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (up2) {
+                    if (deliveryEnemy2.isExactWall(walls.get(63))) {
+                        up2 = false;
+                        right2 = true;
+                    }else if(deliveryEnemy2.isExactWall(walls.get(0))) {
+                        up2 = false;
+                        down2 = true;
+                    }
+                    else {
+                        deliveryEnemy2.animation.play();
+                        deliveryEnemy2.animation.setOffsetY(162);
+                        deliveryEnemy2.moveEnemyY(-2);
+                    }
+                } else if (down2) {
+                    if (deliveryEnemy2.isExactWall(walls.get(72))||deliveryEnemy2.isExactWall(walls.get(73))) {
+                        down2 = false;
+                        left2 = true;
+                    } else {
+                        deliveryEnemy2.animation.play();
+                        deliveryEnemy2.animation.setOffsetY(0);
+                        deliveryEnemy2.moveEnemyY(2);
+                    }
+                } else if (right2) {
+                    if (deliveryEnemy2.isExactWall(walls.get(71))||deliveryEnemy2.isExactWall(walls.get(92))){
+                        right2 = false;
+                        up2 = true;
+                    }
+                    else {
+                        deliveryEnemy2.animation.play();
+                        deliveryEnemy2.animation.setOffsetY(108);
+                        deliveryEnemy2.moveEnemyX(2);
+                    }
+                } else if (left2) {
+                    if (deliveryEnemy2.isExactWall(walls.get(68))) {
+                        left2 = false;
+                        down2 = true;
+                    }
+                    else if (deliveryEnemy2.isExactWall(walls.get(65))) {
+                        left2 = false;
+                        right2 = true;
+                    } else {
+                        deliveryEnemy2.animation.play();
+                        deliveryEnemy2.animation.setOffsetY(54);
+                        deliveryEnemy2.moveEnemyX(-2);
+                    }
+                } else deliveryEnemy2.animation.stop();
+
+            }
+        };
+        deliveryEnemy2Timer.start();
+
+        up3 = false;
+        down3 = false;
+        left3 = true;
+        right3 = false;
+        deliveryEnemy3Timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (up3) {
+                    if (deliveryEnemy3.isExactWall(walls.get(70))) {
+                        up3 = false;
+                        right3 = true;
+                    } else {
+                        deliveryEnemy3.animation.play();
+                        deliveryEnemy3.animation.setOffsetY(162);
+                        deliveryEnemy3.moveEnemyY(-1.2);
+                    }
+                } else if (down3) {
+                    if (deliveryEnemy3.isExactWall(walls.get(2))) {
+                        down3 = false;
+                        left3 = true;
+                    } else {
+                        deliveryEnemy3.animation.play();
+                        deliveryEnemy3.animation.setOffsetY(0);
+                        deliveryEnemy3.moveEnemyY(1.2);
+                    }
+                } else if (right3) {
+                    if (deliveryEnemy3.isExactWall(walls.get(76))) {
+                        right3 = false;
+                        up3 = true;
+                    }
+                    else if (deliveryEnemy3.isExactWall(walls.get(80))) {
+                        right3 = false;
+                        left3 = true;
+                    }
+                    else {
+                        deliveryEnemy3.animation.play();
+                        deliveryEnemy3.animation.setOffsetY(108);
+                        deliveryEnemy3.moveEnemyX(1.2);
+                    }
+                } else if (left3) {
+                    if (deliveryEnemy3.isExactWall(walls.get(69))) {
+                        left3 = false;
+                        down3 = true;
+                    }
+                    else if (deliveryEnemy3.isExactWall(walls.get(47))) {
+                        left3 = false;
+                        right3 = true;
+                    }
+                    else {
+                        deliveryEnemy3.animation.play();
+                        deliveryEnemy3.animation.setOffsetY(54);
+                        deliveryEnemy3.moveEnemyX(-1.2);
+                    }
+                } else deliveryEnemy3.animation.stop();
+
+            }
+        };
+        deliveryEnemy3Timer.start();
+
+//        property = 1;
+//        property2 = -1;
+//        property3 = 1;
+        vanTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (van.isWall()) {
+                    x = -1 * x;
+                    if (property > 0) property = -1;
+                    else property = 1;
+                    van.setScaleX(property);
+                }
+                van.animation.play();
+                van.animation.setOffsetY(0);
+                van.moveEnemyX(x);
+            }
+        };
+        vanTimer.start();
+        van2.setScaleX(property2);
+        vanTimer2 = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (van2.isWall()) {
+                    x2 = -1 * x2;
+                    if (property2 > 0) property2 = -1;
+                    else property2 = 1;
+                    van2.setScaleX(property2);
+                }
+                van2.animation.play();
+                van2.animation.setOffsetY(0);
+                van2.moveEnemyX(x2);
+            }
+        };
+        vanTimer2.start();
+
+
+        van3.setScaleX(property3);
+        vanTimer3 = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (van3.isWall()) {
+                    x3 = -1 * x3;
+                    if (property3 > 0) property3 = -1;
+                    else property3 = 1;
+                    van3.setScaleX(property3);
+                }
+                van3.animation.play();
+                van3.animation.setOffsetY(0);
+                van3.moveEnemyX(x3);
+            }
+        };
+        vanTimer3.start();
         controller.addRectanglesFifthLevel(mazePane);
         root.getChildren().addAll(player, energyDrinkRed, baconDish, cheesePuff, chocolate, energyDrinkYellow, houseIm5 , burger, pizza, cheeseCake);
         primaryStage.setHeight(935);primaryStage.setWidth(1420);
@@ -420,6 +787,12 @@ public class Main extends Application {
         houseIm4.setLayoutY(30);
         houseIm4.setFitWidth(100);
         houseIm4.setFitHeight(100);
+        controller.setLayout(deliveryEnemy1, 235, 35);
+        controller.setLayout(deliveryEnemy2, 235, 536);
+        controller.setLayout(deliveryEnemy3, 925, 450);
+        deliveryEnemy1.al.add(player);
+        deliveryEnemy2.al.add(player);
+        deliveryEnemy3.al.add(player);
         Collections.addAll(energyBonuses, energyDrinkGreen, energyDrinkYellow);
         sushi.setVisible(false);
         root.getChildren().add(mazePane);
@@ -429,10 +802,12 @@ public class Main extends Application {
         Collections.addAll(monsters, cheeseCake, baconDish, cheesePuff, chocolate, burger);
         taco.setVisible(false);
         cheeseCake.setVisible(false);
-        enemy5.setVisible(false);
-        controller.setLayout(baconDish, 395, 350);
-        controller.setLayout(cheeseCake, 580, 530);
-        controller.setLayout(cheesePuff, 780, 530);
+        chocolate.setVisible(false);
+        controller.setLayout(baconDish, 67, 265);
+        controller.setLayout(cheeseCake, 41, 659);
+        controller.setLayout(cheesePuff, 631, 637);
+        controller.setLayout(chocolate, 1112, 596);
+        controller.setLayout(burger, 558, 285);
         controller.setLayout(energyDrinkYellow, 803, 306);
         controller.setLayout(energyDrinkRed, 120, 575);
         controller.setLayout(pizza, 512, 47);
@@ -442,7 +817,6 @@ public class Main extends Application {
         van.al.add(player);
         van2.al.add(player);
         van3.al.add(player);
-        controller.setLayout(chocolate, 655, 125);
         pizzas.add(pizza);
         houseIm5.setX(242);
         houseIm5.setLayoutY(263);
@@ -533,6 +907,7 @@ public class Main extends Application {
             energyLabel2 = new Label("x" + lives);
             controller.setLabel(energyLabel2, 1160, 192, 25, FontWeight.NORMAL);
             Rectangle check = new Rectangle(1160, 250, 25, 25);
+            Rectangle check2;
             check.setFill(Color.TRANSPARENT);
             check.setStroke(Color.BLACK);
             if (levelVariable == 1) {
@@ -547,8 +922,6 @@ public class Main extends Application {
             pizzaBoxIV1.setLayoutY(250);
             pizzaBoxIV1.setLayoutX(1005);
             pizzaBoxIV1.setFitWidth(65);
-            //TODO add second pizza counter
-            //TODO add counter of all pizzas
             Label str1 = new Label("-------------------------------------------------");
             controller.setLabel(str1, 1000, 500, 25, FontWeight.BOLD);
             Label str2 = new Label("-------------------------------------------------");
@@ -569,7 +942,8 @@ public class Main extends Application {
             controller.setLabel(str, 1200, 160, 25, FontWeight.BOLD);
             Label energyLabel = new Label("   ..................");
             controller.setLabel(energyLabel, 1235, 195, 15, FontWeight.BOLD);
-            Label pizzaLabel = new Label("   ..............");
+            Label pizzaLabel = new Label("   .........");
+
             controller.setLabel(pizzaLabel, 1260, 260, 15, FontWeight.BOLD);
             energyLabel2 = new Label("x" + lives);
             controller.setLabel(energyLabel2, 1360, 192, 25, FontWeight.NORMAL);
@@ -588,8 +962,6 @@ public class Main extends Application {
             pizzaBoxIV1.setLayoutY(250);
             pizzaBoxIV1.setLayoutX(1205);
             pizzaBoxIV1.setFitWidth(65);
-            //TODO add second pizza counter
-            //TODO add counter of all pizzas
             Label str1 = new Label("-------------------------------------------------");
             controller.setLabel(str1, 1200, 500, 25, FontWeight.BOLD);
             Label str2 = new Label("-------------------------------------------------");
@@ -600,7 +972,7 @@ public class Main extends Application {
             controller.setLabel(timeStr, 1285, 455, 15, FontWeight.BOLD);
             Label level = new Label("Level " + Main.levelVariable);
             controller.setLabel(level, 1212, 80, 60, FontWeight.NORMAL);
-            mazePane.getChildren().addAll(settings, level, data, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check);
+            mazePane.getChildren().addAll(settings, level, data, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check,check2);
         }
         }
 
@@ -716,7 +1088,7 @@ public class Main extends Application {
         controller.setButton(homeButton, 70, 70, 190, 127);
         controller.setButton(info, 70, 70, 370, 130);
 
-        Slider musicSlider = setMusicSliders(playlist.getMusicPlayer().getVolume(), playlist);
+        musicSlider = setMusicSliders(playlist.getMusicPlayer().getVolume(), playlist);
         if (sideSounds.getMusicPlayer() != null)
             sound = setMusicSliders(sideSounds.getMusicPlayer().getVolume(), sideSounds);
         else sound = setMusicSliders(1.0, sideSounds);
@@ -843,6 +1215,19 @@ public class Main extends Application {
         v.setFill(Color.DARKGREEN);
         root.getChildren().addAll(h, v);
     }
+    public static void drawCross2() {
+        Rectangle h,v;
+        if(levelVariable!=5) {
+            h = new Rectangle(1130, 260, 25, 5);
+            v = new Rectangle(1140, 250, 5, 25);
+        }else{
+            h = new Rectangle(1330, 260, 25, 5);
+            v = new Rectangle(1340, 250, 5, 25);
+        }
+        h.setFill(Color.DARKGREEN);
+        v.setFill(Color.DARKGREEN);
+        root.getChildren().addAll(h, v);
+    }
 
     private void setUpStartWindow() throws FileNotFoundException {
         if (playlist.getMusicPlayer() != null) playlist.getMusicPlayer().stop();
@@ -883,6 +1268,7 @@ public class Main extends Application {
         }
     }
 
+
     private void failScene(Stage stage) throws FileNotFoundException {
         Pane pane = new Pane();
         playlist.getMusicPlayer().stop();
@@ -901,6 +1287,8 @@ public class Main extends Application {
         controller.setBackgroundForButton("src/home.png", back);
         pane.getChildren().addAll(fail1, fail2, back);
         Scene scene = new Scene(pane);
+        stage.setWidth(1220);
+        stage.setHeight(735);
         stage.setScene(scene);
     }
 
@@ -961,6 +1349,8 @@ public class Main extends Application {
         });
         pane.getChildren().addAll(win1, win2, back, nextLevel, sound);
         Scene scene = new Scene(pane);
+        stage.setWidth(1220);
+        stage.setHeight(735);
         stage.setScene(scene);
     }
 

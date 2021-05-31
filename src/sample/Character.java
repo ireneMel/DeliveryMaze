@@ -55,7 +55,7 @@ public class Character extends Pane {
             isEnergy();
         }
     }
-    public void moveVanX(double x) {
+    public void moveEnemyX(double x) {
         boolean right = x > 0;
         for (int i = 0; i < Math.abs(x); i++) {
             if (right) this.setTranslateX(this.getTranslateX() + 1);
@@ -63,6 +63,15 @@ public class Character extends Pane {
         }
         isPlayer();
     }
+    public void moveEnemyY(double y) {
+        boolean down = y > 0;
+        for (int i = 0; i < Math.abs(y); i++) {
+            if (down) this.setTranslateY(this.getTranslateY() + 1);
+            else this.setTranslateY(this.getTranslateY() - 1);
+        }
+        isPlayer();
+    }
+
 
     public void finalMoveX(double x) {
         moveX(x);
@@ -152,7 +161,7 @@ public class Character extends Pane {
                             int index = this.al.indexOf(Main.players.get(i));
                             Main.root.getChildren().remove(this);
                             this.al.remove(index);
-                            Main.monsters.remove(this);
+                            //Main.monsters.remove(this);
                             Main.sideSounds.playEffectSound("src/lose_energy.mp3");
                         }
                         Main.sideSounds.getMusicPlayer().setVolume(Main.sound.getValue());
@@ -188,17 +197,26 @@ public class Character extends Pane {
             }
         }
     }
-
+boolean firstTook=false;
     public void isPizza() {
+        boolean took=false;
         if (Main.pizzas.size() > 0) {
             for (int i = 0; i < Main.pizzas.size(); i++) {
                 if (this.getBoundsInParent().intersects(Main.pizzas.get(i).getBoundsInParent())) {
                     int index = Main.pizzas.indexOf(Main.pizzas.get(i));
                     Main.root.getChildren().remove(Main.pizzas.get(index));
+                    if(Main.pizzas.size()==2&&!firstTook){
+                        Main.drawCross();firstTook=true;took=true;
+                    }
+                    if(Main.pizzas.size()==1) Main.drawCross();
                     Main.pizzas.remove(index);
                     Main.sideSounds.playEffectSound("src/for_pizza.mp3");
                     Main.sideSounds.getMusicPlayer().setVolume(Main.sound.getValue());
-                    Main.drawCross();
+                    System.out.println(i);
+
+                    if(firstTook&&!took){
+                    Main.drawCross2();}
+                    Main.countPizzas++;
                     if (Main.musicStatus) {
                         Main.playlist.getMusicPlayer().play();
                     }
@@ -212,6 +230,13 @@ public class Character extends Pane {
         if (this.getBoundsInParent().intersects(Main.houseIm.getBoundsInParent())) {
             Main.finishLevel = true;
         }
+    }
+    public boolean isExactWall(Rectangle rect){
+        check = true;
+            if (this.getBoundsInParent().intersects(rect.getBoundsInParent())) {
+                check = false; }
+
+        return !check;
     }
 
 }
