@@ -49,8 +49,9 @@ public class Main extends Application {
     Label numOfOrder = new Label();
     Random r = new Random();
     public static Slider sound = setMusicSliders(1.0, sideSounds);
-    double x = 0.7, x2 = -1.5, x3 = 1.2, property = 1, property2 = -1, property3 = 1;
-
+    Slider musicSlider;
+    double x = 0.7, x2 = -1.5, x3 = 1.0, property = 1, property2 = -1, property3 = 1;
+    boolean up, right, left, down, up2, right2, left2, down2, up3, right3, left3, down3;
     ImageView imageView = new ImageView(new Image(new FileInputStream("src/MyCollages__8_-removebg-preview (1) (3).png"))),
             imageViewEnemy1 = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
             imageViewEnemy2 = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
@@ -58,9 +59,11 @@ public class Main extends Application {
             imageEnergy = new ImageView(new Image(new FileInputStream("src/Battery.png"))),
             imageEnergy2 = new ImageView(new Image(new FileInputStream("src/Battery3.png"))),
             imageEnergy3 = new ImageView(new Image(new FileInputStream("src/Battery4.png"))),
-            imageEnergy4 = new ImageView(new Image(new FileInputStream("src/Battery4.png"))),
+            imageEnergy4 = new ImageView(new Image(new FileInputStream("src/Battery5.png"))),
+            imageEnergy5 = new ImageView(new Image(new FileInputStream("src/Battery6.png"))),
             pizzaBoxIV1 = new ImageView(new Image(new FileInputStream("src/New_Piskel__2_-removebg-preview2.png"))),
             enemy6I = new ImageView(new Image(new FileInputStream("src/van3.png"))),
+            enemy6I4 = new ImageView(new Image(new FileInputStream("src/ice-cream-van_33.png"))),
             enemy6I2 = new ImageView(new Image(new FileInputStream("src/ice-cream-van_3.png"))),
             enemy6I3 = new ImageView(new Image(new FileInputStream("src/ice-cream-van_32.png")));
     static Character player, deliveryEnemy1, deliveryEnemy2, deliveryEnemy3;
@@ -123,7 +126,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws FileNotFoundException {
         sideSounds.background("src/silent.wav");
-        sideSounds.setVolume(0.5);
+        sideSounds.setVolume(0.2);
 
         setUpStartWindow();
         play.setOnAction(actionEvent -> {
@@ -150,31 +153,31 @@ public class Main extends Application {
 
     private void settingsForLevels(Stage primaryStage, Pane mazePane, Color color, String path) throws FileNotFoundException {
         playlist.getMusicPlayer().stop();
-        sideSounds.setVolume(0.5);
+        sideSounds.setVolume(0.2);
         fail = false;
         finishLevel = false;
         root = new Pane();
         initialize();
         player = new Character(imageView, 41, 54);
         Rectangle settings;
-        if(levelVariable!=5){
-        settings = new Rectangle(200, 700);
-        settings.setLayoutX(1000);}
-        else{
-            settings = new Rectangle(200, 900);
+        if (levelVariable != 5) {
+            settings = new Rectangle(300, 700);
+            settings.setLayoutX(1000);
+        } else {
+            settings = new Rectangle(300, 900);
             settings.setLayoutX(1200);
         }
         settings.setFill(color);
         keys = new HashMap<>();
         numOfOrder.setText("O.N. " + (r.nextInt(9999999) + 1000000));
         Rectangle rec;
-        if(levelVariable!=5)rec = new Rectangle(1050, 550, 100, 100);
+        if (levelVariable != 5) rec = new Rectangle(1050, 550, 100, 100);
         else rec = new Rectangle(1250, 550, 100, 100);
         rec.setFill(new ImagePattern(new Image(new FileInputStream("src/pause.png"))));
         rec.setOnMouseClicked(mouseEvent -> pauseWindow(primaryStage, color));
-        if(levelVariable==5) root.setPrefSize(1400, 900);
+        if (levelVariable == 5) root.setPrefSize(1400, 900);
         else root.setPrefSize(1200, 700);
-        if(levelVariable==5) mazePane.setPrefSize(1200, 900);
+        if (levelVariable == 5) mazePane.setPrefSize(1200, 900);
         else mazePane.setPrefSize(1000, 700);
         setLabelsForSideMenu(mazePane, settings);
         mazePane.getChildren().add(rec);
@@ -215,7 +218,39 @@ public class Main extends Application {
         x = 0.4;
         property2 = -1;
         property = 1;
-        startVanTimers();
+        //  startVanTimers();
+        vanTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (van.isWall()) {
+                    x = -1 * x;
+                    if (property > 0) property = -1;
+                    else property = 1;
+                    van.setScaleX(property);
+                }
+                van.animation.play();
+                van.animation.setOffsetY(0);
+                van.moveEnemyX(x);
+            }
+        };
+        vanTimer.start();
+
+        van2.setScaleX(property2);
+        vanTimer2 = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (van2.isWall()) {
+                    x2 = -1 * x2;
+                    if (property2 > 0) property2 = -1;
+                    else property2 = 1;
+                    van2.setScaleX(property2);
+                }
+                van2.animation.play();
+                van2.animation.setOffsetY(0);
+                van2.moveEnemyX(x2);
+            }
+        };
+        vanTimer2.start();
         controller.addRectanglesSecondLevel(mazePane);
         root.getChildren().addAll(player, burger, burrito, baconDish, sushi, cheeseCake, energyDrinkRed, energyDrinkBlue, houseIm2, imageEnergy2, pizza, van, van2);
     }
@@ -231,12 +266,45 @@ public class Main extends Application {
         setUpTimeLines(mazePane);
         setUpCharacters3(mazePane);
         controller.setLayout(player, 915, 40);
-        property = 1;
-        property2 = -1;
-        property3 = 1;
         settingsForLevels2(primaryStage);
-        startVanTimers();
+//        property = 1;
+//        property2 = -1;
+//        property3 = 1;
 
+        vanTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (van.isWall()) {
+                    x = -1 * x;
+                    if (property > 0) property = -1;
+                    else property = 1;
+                    van.setScaleX(property);
+                }
+                van.animation.play();
+                van.animation.setOffsetY(0);
+                van.moveEnemyX(x);
+            }
+        };
+        vanTimer.start();
+        van2.setScaleX(property2);
+        vanTimer2 = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (van2.isWall()) {
+                    x2 = -1 * x2;
+                    if (property2 > 0) property2 = -1;
+                    else property2 = 1;
+                    van2.setScaleX(property2);
+                }
+                van2.animation.play();
+                van2.animation.setOffsetY(0);
+                van2.moveEnemyX(x2);
+            }
+        };
+        vanTimer2.start();
+
+
+        van3.setScaleX(property3);
         vanTimer3 = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -255,6 +323,7 @@ public class Main extends Application {
         controller.addRectanglesThirdLevel(mazePane);
         root.getChildren().addAll(player, energyDrinkGreen, energyDrinkYellow, energyDrinkRed, houseIm3, imageEnergy3, sandwich, pizza, cheeseCake, taco, applePie, enemy5, van, van2, van3);
     }
+
     private void fourthLevel(Stage primaryStage) throws FileNotFoundException {
         houseIm4 = new ImageView(new Image(new FileInputStream("src/house.png")));
         deliveryEnemy1 = new Character(imageViewEnemy1, 41, 54);
@@ -262,7 +331,7 @@ public class Main extends Application {
         deliveryEnemy3 = new Character(imageViewEnemy3, 41, 54);
         Pane mazePane = new Pane();
         houseIm = houseIm4;
-        settingsForLevels(primaryStage, mazePane, Color.rgb(196, 232, 184), "src/Loyalty_Freak_Music_-_05_-_Ice_Cream_with_you.mp3");
+        settingsForLevels(primaryStage, mazePane, Color.rgb(196, 232, 184), "src/keys-of-moon-the-success.mp3");
         setUpTimeLines(mazePane);
         setUpCharacters4(mazePane);
         controller.setLayout(player, 674, 278);
@@ -418,8 +487,14 @@ public class Main extends Application {
     private void fifthLevel(Stage primaryStage) throws FileNotFoundException {
         houseIm5 = new ImageView(new Image(new FileInputStream("src/house_blue.png")));
         Pane mazePane = new Pane();
+        deliveryEnemy1 = new Character(imageViewEnemy1, 41, 54);
+        deliveryEnemy2 = new Character(imageViewEnemy2, 41, 54);
+        deliveryEnemy3 = new Character(imageViewEnemy3, 41, 54);
+        van = new Character(enemy6I4, 53, 60);
+        van2 = new Character(enemy6I2, 53, 60);
+        van3 = new Character(enemy6I3, 53, 60);
         houseIm = houseIm5;
-        settingsForLevels(primaryStage, mazePane, Color.rgb(147, 205, 221), "src/Loyalty_Freak_Music_-_05_-_Ice_Cream_with_you.mp3");
+        settingsForLevels(primaryStage, mazePane, Color.rgb(147, 205, 221), "src/keys-of-moon-cheer-up.mp3");
         setUpTimeLines(mazePane);
         setUpCharacters5(mazePane);
         controller.setLayout(player, 1127, 29);
@@ -642,43 +717,9 @@ public class Main extends Application {
         };
         vanTimer3.start();
         controller.addRectanglesFifthLevel(mazePane);
-        root.getChildren().addAll(player, energyDrinkRed, baconDish, cheesePuff, chocolate, energyDrinkYellow, houseIm5 , burger, pizza, cheeseCake);
-        primaryStage.setHeight(935);primaryStage.setWidth(1420);
-    }
-
-    private void startVanTimers() {
-        vanTimer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (van.isWall()) {
-                    x = -1 * x;
-                    if (property > 0) property = -1;
-                    else property = 1;
-                    van.setScaleX(property);
-                }
-                van.animation.play();
-                van.animation.setOffsetY(0);
-                van.moveVanX(x);
-            }
-        };
-        vanTimer.start();
-
-        van2.setScaleX(property2);
-        vanTimer2 = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (van2.isWall()) {
-                    x2 = -1 * x2;
-                    if (property2 > 0) property2 = -1;
-                    else property2 = 1;
-                    van2.setScaleX(property2);
-                }
-                van2.animation.play();
-                van2.animation.setOffsetY(0);
-                van2.moveVanX(x2);
-            }
-        };
-        vanTimer2.start();
+        root.getChildren().addAll(player, energyDrinkRed, pizza1, baconDish, cheesePuff, chocolate, energyDrinkYellow, imageEnergy5, houseIm5, burger, pizza, cheeseCake, van, van2, van3,deliveryEnemy1, deliveryEnemy2, deliveryEnemy3);
+        primaryStage.setHeight(935);
+        primaryStage.setWidth(1420);
     }
 
     private void settingsForLevels2(Stage primaryStage) {
@@ -797,10 +838,9 @@ public class Main extends Application {
         sushi.setVisible(false);
         root.getChildren().add(mazePane);
     }
+
     private void setUpCharacters5(Pane mazePane) {
-        controller.setLayout(taco, 362, 125);
         Collections.addAll(monsters, cheeseCake, baconDish, cheesePuff, chocolate, burger);
-        taco.setVisible(false);
         cheeseCake.setVisible(false);
         chocolate.setVisible(false);
         controller.setLayout(baconDish, 67, 265);
@@ -811,28 +851,35 @@ public class Main extends Application {
         controller.setLayout(energyDrinkYellow, 803, 306);
         controller.setLayout(energyDrinkRed, 120, 575);
         controller.setLayout(pizza, 512, 47);
-        controller.setLayout(van, 170, 519);
-        controller.setLayout(van2, 308, 353);
-        controller.setLayout(van3, 30, 104);
+        controller.setLayout(pizza1, 313, 834);
+        controller.setLayout(van, 30, 819);
+        controller.setLayout(van2, 1118, 375);
+        controller.setLayout(van3, 422, 22);
         van.al.add(player);
         van2.al.add(player);
         van3.al.add(player);
         pizzas.add(pizza);
+        pizzas.add(pizza1);
         houseIm5.setX(242);
         houseIm5.setLayoutY(263);
         houseIm5.setFitWidth(100);
         houseIm5.setFitHeight(100);
-        Collections.addAll(energyBonuses, energyDrinkGreen, energyDrinkYellow, energyDrinkRed);
+        controller.setLayout(deliveryEnemy1, 375, 254);
+        controller.setLayout(deliveryEnemy2, 726, 212);
+        controller.setLayout(deliveryEnemy3, 1010, 703);
+        deliveryEnemy1.al.add(player);
+        deliveryEnemy2.al.add(player);
+        deliveryEnemy3.al.add(player);
+        Collections.addAll(energyBonuses, energyDrinkRed, energyDrinkYellow);
         root.getChildren().add(mazePane);
     }
-
 
     private void setUpTimeLines(Pane mazePane) {
         stopTimeLines();
         DoubleProperty timeSeconds = new SimpleDoubleProperty(5.0);
         time = Duration.minutes(5.00);
         Label timerLabel = new Label();
-        if(levelVariable!=5) controller.setLabel(timerLabel, 1130, 445, 30, FontWeight.BOLD);
+        if (levelVariable != 5) controller.setLabel(timerLabel, 1130, 445, 30, FontWeight.BOLD);
         else controller.setLabel(timerLabel, 1330, 445, 30, FontWeight.BOLD);
         timerLabel.textProperty().bind(timeSeconds.asString());
         timerLabel.setTextFill(Color.BLACK);
@@ -868,6 +915,7 @@ public class Main extends Application {
                             } else chickenAndBurgerTimeLine.stop();
                         }));
         baconDishTimeLine = controller.setOneTimeLine(baconDish, 9, baconDishTimeLine);
+        cheesePuffTimeline = controller.setOneTimeLine(cheesePuff, 8, cheesePuffTimeline);
         nachoTimeLine = controller.setOneTimeLine(nacho, 8, nachoTimeLine);
         hotDogTimeLine = controller.setOneTimeLine(hotDog, 6, hotDogTimeLine);
         chocolateTineLine = controller.setOneTimeLine(chocolate, 7, chocolateTineLine);
@@ -890,11 +938,12 @@ public class Main extends Application {
         sandwichTimeLine.setCycleCount(Timeline.INDEFINITE);
         tacoTimeLine.setCycleCount(Timeline.INDEFINITE);
         sushiTimeline.setCycleCount(Timeline.INDEFINITE);
+        cheesePuffTimeline.setCycleCount(Timeline.INDEFINITE);
         startTimeLines();
     }
 
     private void setLabelsForSideMenu(Pane mazePane, Rectangle settings) {
-        if(levelVariable!=5) {
+        if (levelVariable != 5) {
             controller.setLabel(numOfOrder, 1043, 140, 17, FontWeight.NORMAL);
             Label data = new Label(new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime()));
             controller.setLabel(data, 1063, 50, 13, FontWeight.BOLD);
@@ -910,14 +959,11 @@ public class Main extends Application {
             Rectangle check2;
             check.setFill(Color.TRANSPARENT);
             check.setStroke(Color.BLACK);
-            if (levelVariable == 1) {
-                setUpImageEnergy(imageEnergy);
-            } else if (levelVariable == 2) {
-                setUpImageEnergy(imageEnergy2);
-            } else if (levelVariable == 3) {
-                setUpImageEnergy(imageEnergy3);
-            } else if (levelVariable == 4) {
-                setUpImageEnergy(imageEnergy4);
+            if(levelVariable==4){
+                check2 = new Rectangle(1130, 250, 25, 25);
+                check2.setFill(Color.TRANSPARENT);check2.setStroke(Color.BLACK);
+                mazePane.getChildren().add(check2);
+                pizzaLabel.setText("   .........");
             }
             pizzaBoxIV1.setLayoutY(250);
             pizzaBoxIV1.setLayoutX(1005);
@@ -933,8 +979,7 @@ public class Main extends Application {
             Label level = new Label("Level " + Main.levelVariable);
             controller.setLabel(level, 1012, 80, 60, FontWeight.NORMAL);
             mazePane.getChildren().addAll(settings, level, data, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check);
-        }
-        else{
+        } else {
             controller.setLabel(numOfOrder, 1243, 140, 17, FontWeight.NORMAL);
             Label data = new Label(new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime()));
             controller.setLabel(data, 1263, 50, 13, FontWeight.BOLD);
@@ -950,15 +995,8 @@ public class Main extends Application {
             Rectangle check = new Rectangle(1360, 250, 25, 25);
             check.setFill(Color.TRANSPARENT);
             check.setStroke(Color.BLACK);
-            if (levelVariable == 1) {
-                setUpImageEnergy(imageEnergy);
-            } else if (levelVariable == 2) {
-                setUpImageEnergy(imageEnergy2);
-            } else if (levelVariable == 3) {
-                setUpImageEnergy(imageEnergy3);
-            } else if (levelVariable == 4) {
-                setUpImageEnergy(imageEnergy4);
-            }
+            Rectangle check2 = new Rectangle(1330, 250, 25, 25);
+            check2.setFill(Color.TRANSPARENT);check2.setStroke(Color.BLACK);
             pizzaBoxIV1.setLayoutY(250);
             pizzaBoxIV1.setLayoutX(1205);
             pizzaBoxIV1.setFitWidth(65);
@@ -974,15 +1012,25 @@ public class Main extends Application {
             controller.setLabel(level, 1212, 80, 60, FontWeight.NORMAL);
             mazePane.getChildren().addAll(settings, level, data, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check,check2);
         }
+        if (levelVariable == 1) {
+            setUpImageEnergy(imageEnergy);
+        } else if (levelVariable == 2) {
+            setUpImageEnergy(imageEnergy2);
+        } else if (levelVariable == 3) {
+            setUpImageEnergy(imageEnergy3);
+        } else if (levelVariable == 4) {
+            setUpImageEnergy(imageEnergy4);
+        } else if (levelVariable == 5) {
+            setUpImageEnergy(imageEnergy5);
         }
-
+    }
 
     private void setUpImageEnergy(ImageView im) {
-        im.setFitWidth(40);
-        im.setFitHeight(50);
-        if(levelVariable!=40) im.setLayoutX(1005);
-        else im.setLayoutX(1205);
-        im.setLayoutY(185);
+            im.setFitWidth(40);
+            im.setFitHeight(50);
+            if (levelVariable != 5) im.setLayoutX(1005);
+            else im.setLayoutX(1205);
+            im.setLayoutY(185);
     }
 
     private static Slider setMusicSliders(Double getVolume, Music musicList) {
@@ -1004,7 +1052,7 @@ public class Main extends Application {
             } catch (FileNotFoundException f) {
                 f.printStackTrace();
             }
-            playlist.getMusicPlayer().setVolume(1);
+            playlist.getMusicPlayer().setVolume(0.2);
         } else {
             try {
                 controller.setBackgroundForButton("src/music_off.png", button);
@@ -1050,6 +1098,7 @@ public class Main extends Application {
         bagelTimeline.play();
         nachoTimeLine.play();
         hotDogTimeLine.play();
+        cheesePuffTimeline.play();
     }
 
     private void stopTimeLines() {
@@ -1059,7 +1108,9 @@ public class Main extends Application {
         if (enemy4Timeline != null) enemy4Timeline.stop();
         if (sandwichTimeLine != null) sandwichTimeLine.stop();
         if (tacoTimeLine != null) tacoTimeLine.stop();
-        if (applePieTimeLine != null) applePieTimeLine.stop();
+        if (deliveryEnemy1Timer != null) deliveryEnemy1Timer.stop();
+        if (deliveryEnemy2Timer != null) deliveryEnemy2Timer.stop();
+        if (deliveryEnemy3Timer != null) deliveryEnemy3Timer.stop();
         if (vanTimer != null) vanTimer.stop();
         if (vanTimer2 != null) vanTimer2.stop();
         if (vanTimer3 != null) vanTimer3.stop();
@@ -1069,6 +1120,7 @@ public class Main extends Application {
         if (pancakesTimeLine != null) pancakesTimeLine.stop();
         if (nachoTimeLine != null) nachoTimeLine.stop();
         if (hotDogTimeLine != null) hotDogTimeLine.stop();
+        if (cheesePuffTimeline != null) cheesePuffTimeline.stop();
     }
 
     private void pauseWindow(Stage primaryStage, Color color) {
@@ -1102,7 +1154,7 @@ public class Main extends Application {
             if (sideSounds.musicPlayer != null)
                 sideSounds.musicPlayer.setVolume(sound.getValue());
             else {
-                sideSounds.musicPlayer.setVolume(0.5);
+                sideSounds.musicPlayer.setVolume(0.2);
             }
         });
         musicSlider.setLayoutY(240);
@@ -1149,6 +1201,12 @@ public class Main extends Application {
                 vanTimer2.start();
             if (vanTimer3 != null)
                 vanTimer3.start();
+            if (deliveryEnemy1Timer != null)
+                deliveryEnemy1Timer.start();
+            if (deliveryEnemy2Timer != null)
+                deliveryEnemy2Timer.start();
+            if (deliveryEnemy3Timer != null)
+                deliveryEnemy3Timer.start();
             startTimeLines();
             timer.start();
         });
@@ -1209,8 +1267,14 @@ public class Main extends Application {
     }
 
     public static void drawCross() {
-        Rectangle h = new Rectangle(1160, 260, 25, 5),
-                v = new Rectangle(1170, 250, 5, 25);
+        Rectangle h,v;
+        if(levelVariable!=5) {
+             h = new Rectangle(1160, 260, 25, 5);
+                    v = new Rectangle(1170, 250, 5, 25);
+        }else{
+             h = new Rectangle(1360, 260, 25, 5);
+                    v = new Rectangle(1370, 250, 5, 25);
+        }
         h.setFill(Color.DARKGREEN);
         v.setFill(Color.DARKGREEN);
         root.getChildren().addAll(h, v);
@@ -1234,7 +1298,7 @@ public class Main extends Application {
         pane.setBackground(new Background(new BackgroundImage(new Image(new FileInputStream("src/photo_2021-05-24_15-17-36_auto_x2.jpg")),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
-        pane.setPrefSize(1200, 680);
+        pane.setPrefSize(1200, 700);
         Text name = new Text(50, 160, "Delivery maze");
         name.setFont(Font.font("Berlin Sans FB Demi", FontWeight.BOLD, 60));
         name.setFill(Color.WHITE);
@@ -1258,9 +1322,11 @@ public class Main extends Application {
         controller.setBackgroundForButton("src/unfavourited.png", compliment);
 
         playlist.background("src/Komiku_-_04_-_Shopping_List.mp3");
-        playlist.setVolume(0.5);
-        if (musicStatus) playlist.setVolume(0.5);
+        //playlist.setVolume(0.2);
+        if(musicSlider!=null) playlist.setVolume(musicSlider.getValue());
+        else if (musicStatus) playlist.setVolume(0.2);
         else playlist.setVolume(0);
+
         playlist.getMusicPlayer().play();
         if (!pane.getChildren().contains(play) && !pane.getChildren().contains(name) && !pane.getChildren().contains(compliment)
                 && !pane.getChildren().contains(instruction) && !pane.getChildren().contains(music)) {
@@ -1282,7 +1348,17 @@ public class Main extends Application {
         Label fail2 = new Label("There is no chance to get a job here");
         controller.setLabel(fail1, 275, 230);
         controller.setLabel(fail2, 150, 330);
-        actionOnBack(stage);
+        back = new Button();
+        controller.setBackgroundForButton("src/home.png", back);
+        back.setOnAction(actionEvent -> {
+            lives = 3;
+            try {
+                setUpStartWindow();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(scene);
+        });
         controller.setButton(back, 100, 100, 530, 450);
         controller.setBackgroundForButton("src/home.png", back);
         pane.getChildren().addAll(fail1, fail2, back);
@@ -1343,8 +1419,6 @@ public class Main extends Application {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-            } else if (levelVariable == 6) {
-
             }
         });
         pane.getChildren().addAll(win1, win2, back, nextLevel, sound);
