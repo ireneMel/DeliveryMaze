@@ -116,7 +116,7 @@ public class Main extends Application {
     }
 
     Scene scene;
-    public static int levelVariable = 1, lives = 3, countPizzas=0;
+    public static int levelVariable = 1, lives = 3, countPizzas = 0;
 
     public Main() throws FileNotFoundException {
     }
@@ -194,13 +194,14 @@ public class Main extends Application {
         primaryStage.setTitle("Delivery Maze");
         playlist.background(path);
         playlist.getMusicPlayer().play();
-        if(musicSlider!=null) playlist.setVolume(musicSlider.getValue());
+        if (musicSlider != null) playlist.setVolume(musicSlider.getValue());
         else if (!musicStatus) playlist.setVolume(0);
         else playlist.setVolume(0.2);
     }
 
     private void firstLevel(Stage primaryStage) throws FileNotFoundException {
         velocity = 2;
+        countPizzas = 0;
         houseIm = new ImageView(new Image(new FileInputStream("src/photo_2021-05-25_12-02-30-removebg-preview.png")));
         Pane mazePane = new Pane();
         levelVariable = 1;
@@ -225,9 +226,9 @@ public class Main extends Application {
         controller.setLayout(player, 915, 40);
         settingsForLevels2(primaryStage);
         x = 0.4;
+        x2 = -1.5;
         property2 = -1;
         property = 1;
-        //  startVanTimers();
         vanTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -566,17 +567,16 @@ public class Main extends Application {
                     if (deliveryEnemy2.isExactWall(walls.get(63))) {
                         up2 = false;
                         right2 = true;
-                    }else if(deliveryEnemy2.isExactWall(walls.get(0))) {
+                    } else if (deliveryEnemy2.isExactWall(walls.get(0))) {
                         up2 = false;
                         down2 = true;
-                    }
-                    else {
+                    } else {
                         deliveryEnemy2.animation.play();
                         deliveryEnemy2.animation.setOffsetY(162);
                         deliveryEnemy2.moveEnemyY(-2);
                     }
                 } else if (down2) {
-                    if (deliveryEnemy2.isExactWall(walls.get(72))||deliveryEnemy2.isExactWall(walls.get(73))) {
+                    if (deliveryEnemy2.isExactWall(walls.get(72)) || deliveryEnemy2.isExactWall(walls.get(73))) {
                         down2 = false;
                         left2 = true;
                     } else {
@@ -585,11 +585,10 @@ public class Main extends Application {
                         deliveryEnemy2.moveEnemyY(2);
                     }
                 } else if (right2) {
-                    if (deliveryEnemy2.isExactWall(walls.get(71))||deliveryEnemy2.isExactWall(walls.get(92))){
+                    if (deliveryEnemy2.isExactWall(walls.get(71)) || deliveryEnemy2.isExactWall(walls.get(92))) {
                         right2 = false;
                         up2 = true;
-                    }
-                    else {
+                    } else {
                         deliveryEnemy2.animation.play();
                         deliveryEnemy2.animation.setOffsetY(108);
                         deliveryEnemy2.moveEnemyX(2);
@@ -598,8 +597,7 @@ public class Main extends Application {
                     if (deliveryEnemy2.isExactWall(walls.get(68))) {
                         left2 = false;
                         down2 = true;
-                    }
-                    else if (deliveryEnemy2.isExactWall(walls.get(65))) {
+                    } else if (deliveryEnemy2.isExactWall(walls.get(65))) {
                         left2 = false;
                         right2 = true;
                     } else {
@@ -642,12 +640,10 @@ public class Main extends Application {
                     if (deliveryEnemy3.isExactWall(walls.get(76))) {
                         right3 = false;
                         up3 = true;
-                    }
-                    else if (deliveryEnemy3.isExactWall(walls.get(80))) {
+                    } else if (deliveryEnemy3.isExactWall(walls.get(80))) {
                         right3 = false;
                         left3 = true;
-                    }
-                    else {
+                    } else {
                         deliveryEnemy3.animation.play();
                         deliveryEnemy3.animation.setOffsetY(108);
                         deliveryEnemy3.moveEnemyX(1.2);
@@ -656,12 +652,10 @@ public class Main extends Application {
                     if (deliveryEnemy3.isExactWall(walls.get(69))) {
                         left3 = false;
                         down3 = true;
-                    }
-                    else if (deliveryEnemy3.isExactWall(walls.get(47))) {
+                    } else if (deliveryEnemy3.isExactWall(walls.get(47))) {
                         left3 = false;
                         right3 = true;
-                    }
-                    else {
+                    } else {
                         deliveryEnemy3.animation.play();
                         deliveryEnemy3.animation.setOffsetY(54);
                         deliveryEnemy3.moveEnemyX(-1.2);
@@ -723,7 +717,7 @@ public class Main extends Application {
         };
         vanTimer3.start();
         controller.addRectanglesFifthLevel(mazePane);
-        root.getChildren().addAll(player, energyDrinkRed, pizza1, baconDish, cheesePuff, chocolate, energyDrinkYellow, imageEnergy5, houseIm5, burger, pizza, cheeseCake, van, van2, van3,deliveryEnemy1, deliveryEnemy2, deliveryEnemy3);
+        root.getChildren().addAll(player, energyDrinkRed, pizza1, baconDish, cheesePuff, chocolate, energyDrinkYellow, imageEnergy5, houseIm5, burger, pizza, cheeseCake, van, van2, van3, deliveryEnemy1, deliveryEnemy2, deliveryEnemy3);
         primaryStage.setHeight(935);
         primaryStage.setWidth(1420);
     }
@@ -968,13 +962,13 @@ public class Main extends Application {
             energyLabel2 = new Label("x" + lives);
             controller.setLabel(energyLabel2, 1160, 192, 25, FontWeight.NORMAL);
             Rectangle check = new Rectangle(1160, 250, 25, 25);
-            Rectangle check2;
+            Rectangle check2 = new Rectangle();
             check.setFill(Color.TRANSPARENT);
             check.setStroke(Color.BLACK);
-            if(levelVariable==4){
+            if (levelVariable == 4) {
                 check2 = new Rectangle(1130, 250, 25, 25);
-                check2.setFill(Color.TRANSPARENT);check2.setStroke(Color.BLACK);
-                mazePane.getChildren().add(check2);
+                check2.setFill(Color.TRANSPARENT);
+                check2.setStroke(Color.BLACK);
                 pizzaLabel.setText("   .........");
             }
             pizzaBoxIV1.setLayoutY(250);
@@ -992,7 +986,7 @@ public class Main extends Application {
             controller.setLabel(timeStr, 1085, 455, 15, FontWeight.BOLD);
             Label level = new Label("Level " + Main.levelVariable);
             controller.setLabel(level, 1012, 80, 60, FontWeight.NORMAL);
-            mazePane.getChildren().addAll(settings, level, data, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check);
+            mazePane.getChildren().addAll(settings, level, data, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check, check2, numberPizza);
         } else {
             controller.setLabel(numOfOrder, 1243, 140, 17, FontWeight.NORMAL);
             Label data = new Label(new SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().getTime()));
@@ -1002,15 +996,17 @@ public class Main extends Application {
             Label energyLabel = new Label("   ..................");
             controller.setLabel(energyLabel, 1235, 195, 15, FontWeight.BOLD);
             Label pizzaLabel = new Label("   .........");
-
             controller.setLabel(pizzaLabel, 1260, 260, 15, FontWeight.BOLD);
             energyLabel2 = new Label("x" + lives);
             controller.setLabel(energyLabel2, 1360, 192, 25, FontWeight.NORMAL);
             Rectangle check = new Rectangle(1360, 250, 25, 25);
+            numberPizza = new Label("Total pizza count: " + countPizzas + "/7");
+            controller.setLabel(numberPizza, 1214, 370, 17, FontWeight.NORMAL);
             check.setFill(Color.TRANSPARENT);
             check.setStroke(Color.BLACK);
             Rectangle check2 = new Rectangle(1330, 250, 25, 25);
-            check2.setFill(Color.TRANSPARENT);check2.setStroke(Color.BLACK);
+            check2.setFill(Color.TRANSPARENT);
+            check2.setStroke(Color.BLACK);
             pizzaBoxIV1.setLayoutY(250);
             pizzaBoxIV1.setLayoutX(1205);
             pizzaBoxIV1.setFitWidth(65);
@@ -1024,7 +1020,7 @@ public class Main extends Application {
             controller.setLabel(timeStr, 1285, 455, 15, FontWeight.BOLD);
             Label level = new Label("Level " + Main.levelVariable);
             controller.setLabel(level, 1212, 80, 60, FontWeight.NORMAL);
-            mazePane.getChildren().addAll(settings, level, data, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check,check2);
+            mazePane.getChildren().addAll(settings, level, data, numberPizza, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check, check2);
         }
         if (levelVariable == 1) {
             setUpImageEnergy(imageEnergy);
@@ -1138,11 +1134,11 @@ public class Main extends Application {
     }
 
     private void setUpImageEnergy(ImageView im) {
-            im.setFitWidth(40);
-            im.setFitHeight(50);
-            if (levelVariable != 5) im.setLayoutX(1005);
-            else im.setLayoutX(1205);
-            im.setLayoutY(185);
+        im.setFitWidth(40);
+        im.setFitHeight(50);
+        if (levelVariable != 5) im.setLayoutX(1005);
+        else im.setLayoutX(1205);
+        im.setLayoutY(185);
     }
 
     private static Slider setMusicSliders(Double getVolume, Music musicList) {
@@ -1388,24 +1384,25 @@ public class Main extends Application {
     }
 
     public static void drawCross() {
-        Rectangle h,v;
-        if(levelVariable!=5) {
-             h = new Rectangle(1160, 260, 25, 5);
-                    v = new Rectangle(1170, 250, 5, 25);
-        }else{
-             h = new Rectangle(1360, 260, 25, 5);
-                    v = new Rectangle(1370, 250, 5, 25);
+        Rectangle h, v;
+        if (levelVariable != 5 && levelVariable != 6) {
+            h = new Rectangle(1160, 260, 25, 5);
+            v = new Rectangle(1170, 250, 5, 25);
+        } else {
+            h = new Rectangle(1360, 260, 25, 5);
+            v = new Rectangle(1370, 250, 5, 25);
         }
         h.setFill(Color.DARKGREEN);
         v.setFill(Color.DARKGREEN);
         root.getChildren().addAll(h, v);
     }
+
     public static void drawCross2() {
         Rectangle h, v;
         if (levelVariable != 5 && levelVariable != 6) {
             h = new Rectangle(1130, 260, 25, 5);
             v = new Rectangle(1140, 250, 5, 25);
-        }else{
+        } else {
             h = new Rectangle(1330, 260, 25, 5);
             v = new Rectangle(1340, 250, 5, 25);
         }
@@ -1441,10 +1438,8 @@ public class Main extends Application {
         controller.setBackgroundForButton("src/cursor_right.png", play);
         controller.setBackgroundForButton("src/info_2.png", instruction);
         controller.setBackgroundForButton("src/unfavourited.png", compliment);
-
         playlist.background("src/Komiku_-_04_-_Shopping_List.mp3");
-        //playlist.setVolume(0.2);
-        if(musicSlider!=null) playlist.setVolume(musicSlider.getValue());
+        if (musicSlider != null) playlist.setVolume(musicSlider.getValue());
         else if (musicStatus) playlist.setVolume(0.2);
         else playlist.setVolume(0);
 
@@ -1455,10 +1450,9 @@ public class Main extends Application {
         }
     }
 
-
     private void failScene(Stage stage) throws FileNotFoundException {
         Pane pane = new Pane();
-        playlist.getMusicPlayer().stop();
+       // playlist.getMusicPlayer().stop();
         controller.middleScene("src/pizza2.jpg", "src/mixkit-player-losing-or-failing-2042.wav", pane);
         Rectangle r = new Rectangle(1000, 360);
         r.setFill(Color.rgb(185, 185, 185));
@@ -1491,7 +1485,7 @@ public class Main extends Application {
 
     private void betweenLevelScene(Stage stage) throws FileNotFoundException {
         Pane pane = new Pane();
-        playlist.getMusicPlayer().stop();
+     //   playlist.getMusicPlayer().stop();
         controller.middleScene("src/pizza1.jpg", "src/mixkit-ethereal-fairy-win-sound-2019.wav", pane);
         Rectangle r = new Rectangle(930, 360);
         r.setFill(Color.rgb(69, 191, 202));

@@ -204,11 +204,9 @@ public class Controller {
                 r29 = new Rectangle(795, 595, 199, 20),
                 r30 = new Rectangle(946, 70, 54, 20),
                 r35 = new Rectangle(720, 170, 92, 20),
-
                 r36 = new Rectangle(648, 85, 92, 20),
                 r37 = new Rectangle(648, 337, 92, 20),
                 r38 = new Rectangle(648, 424, 92, 20),
-
                 r39 = new Rectangle(576, 255, 92, 20),
                 r40 = new Rectangle(432, 85, 164, 20),
                 r41 = new Rectangle(360, 170, 236, 20),
@@ -375,19 +373,25 @@ public class Controller {
     }
 
     /**
+     * helper method
+     * create pop up window
+     */
+    protected void popUpWindow(String header, String content, Alert.AlertType alert) {
+        Alert errorAlert = new Alert(alert);
+        errorAlert.setHeaderText(header);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
+    }
+
+    /**
      * set background and music for middle scenes
      */
     protected void middleScene(String pathImg, String pathMusic, Pane pane) throws FileNotFoundException {
+        playlist.getMusicPlayer().stop();
         playlist.playEffectSound(pathMusic);
         playlist.getMusicPlayer().play();
         playlist.setVolume(0.3);
-        FileInputStream str = new FileInputStream(pathImg);
-        Image image = new Image(str);
-        BackgroundImage myBI = new BackgroundImage(image,
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT);
-        pane.setBackground(new Background(myBI));
-        pane.setPrefSize(1200, 700);
+        middleScene(pathImg,pane);
     }
     /**
      * set background for middle scenes
@@ -496,7 +500,7 @@ public class Controller {
                 r33 = new Rectangle(73, 415, 458, 20),
                 r35 = new Rectangle(657, 415, 270, 20),
                 r36 = new Rectangle(907, 332, 20, 103),
-                r37 = new Rectangle(14, 498, 79, 20),
+                r37 = new Rectangle(14, 498, 69, 20),
                 r38 = new Rectangle(146, 498, 20, 103),
                 r39 = new Rectangle(146, 498, 531, 20),
                 r40 = new Rectangle(511, 415, 20, 176),
@@ -504,7 +508,7 @@ public class Controller {
                 r42 = new Rectangle(748, 498, 242, 20),
                 r43 = new Rectangle(73, 581, 93, 20),
                 r45 = new Rectangle(219, 583, 20, 103),
-                r46 = new Rectangle(292, 591, 239, 20),
+                r46 = new Rectangle(312, 591, 219, 20),
                 r47 = new Rectangle(584, 583, 20, 103),
                 r48 = new Rectangle(657, 581, 111, 20),
                 r49 = new Rectangle(821, 583, 20, 103),
