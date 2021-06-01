@@ -22,8 +22,13 @@ import java.util.Random;
 
 import static sample.Main.*;
 
+/**
+ * contains methods for optimizing code and adding some objects onto screen
+ */
 public class Controller {
-
+    /**
+     * set layout and font for labels
+     */
     protected void setLabel(Label label, double layoutX, double layoutY, int fontSize, FontWeight fontWeigh) {
         label.setFont(Font.font("Bauhaus 93", fontWeigh, fontSize));
         label.setTextFill(Color.BLACK);
@@ -31,6 +36,9 @@ public class Controller {
         label.setLayoutY(layoutY);
     }
 
+    /**
+     * set layout of label
+     */
     protected void setLabel(Label label, double layoutX, double layoutY) {
         label.setFont(Font.font("Bauhaus 93", FontWeight.BOLD, 60));
         label.setTextFill(Color.WHITE);
@@ -38,6 +46,9 @@ public class Controller {
         label.setLayoutY(layoutY);
     }
 
+    /**
+     * set all parameters for timelines
+     */
     protected Timeline setOneTimeLine(Character character, double duration, Timeline tl) {
         return new Timeline(
                 new KeyFrame(Duration.seconds(duration),
@@ -51,17 +62,26 @@ public class Controller {
                         }));
     }
 
+    /**
+     * set parameters of button
+     */
     protected void setButton(Button b, double width, double height, double xLayout, double yLayout) {
         b.setPrefSize(width, height);
         b.setLayoutX(xLayout);
         b.setLayoutY(yLayout);
     }
 
+    /**
+     * set characters layouts
+     */
     protected void setLayout(Character ch, double x, double y) {
         ch.setLayoutX(x);
         ch.setLayoutY(y);
     }
 
+    /**
+     * create first level maze
+     */
     protected void addRectanglesFirstLevel(Pane mazePane) {
         Rectangle r1 = new Rectangle(0, 0, 1000, 20),
                 r2 = new Rectangle(0, 0, 20, 700),
@@ -105,6 +125,9 @@ public class Controller {
         }
     }
 
+    /**
+     * create second level maze
+     */
     protected void addRectanglesSecondLevel(Pane mazePane) {
         Rectangle r1 = new Rectangle(0, 0, 1000, 20),
                 r2 = new Rectangle(0, 97, 196, 20),
@@ -144,6 +167,9 @@ public class Controller {
         }
     }
 
+    /**
+     * create fourth level maze
+     */
     protected void addRectanglesFourthLevel(Pane mazePane) {
         Rectangle r1 = new Rectangle(0, 0, 1000, 20),
                 r2 = new Rectangle(0, 0, 20, 700),
@@ -208,6 +234,9 @@ public class Controller {
         }
     }
 
+    /**
+     * create fifth level maze
+     */
     protected void addRectanglesFifthLevel(Pane mazePane) {
         Rectangle r1 = new Rectangle(0, 0, 1200, 20),
                 r2 = new Rectangle(0, 0, 20, 900),
@@ -316,6 +345,9 @@ public class Controller {
         System.out.println(walls.indexOf(r38));
     }
 
+    /**
+     * method generates a message for compliment windo
+     */
     protected void generateCompliment(ArrayList<String> complimentArray) {
         complimentArray.add("You're someone's reason to smile :)");
         complimentArray.add("You're strong!");
@@ -331,6 +363,9 @@ public class Controller {
         complimentArray.add("If music be the food of love, play on");
     }
 
+    /**
+     * method set image as a background for butto
+     */
     protected void setBackgroundForButton(String path, Button button) throws FileNotFoundException {
         FileInputStream fis = new FileInputStream(path);
         Image im = new Image(fis);
@@ -339,6 +374,9 @@ public class Controller {
         button.setBackground(bg);
     }
 
+    /**
+     * set background and music for middle scenes
+     */
     protected void middleScene(String pathImg, String pathMusic, Pane pane) throws FileNotFoundException {
         playlist.playEffectSound(pathMusic);
         playlist.getMusicPlayer().play();
@@ -351,7 +389,31 @@ public class Controller {
         pane.setBackground(new Background(myBI));
         pane.setPrefSize(1200, 700);
     }
+    /**
+     * set background for middle scenes
+     */
+    protected void middleScene(String pathImg, Pane pane) throws FileNotFoundException {
+        FileInputStream str = new FileInputStream(pathImg);
+        Image image = new Image(str);
+        BackgroundImage myBI = new BackgroundImage(image,
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        pane.setBackground(new Background(myBI));
+        if(levelVariable!=6) pane.setPrefSize(1200, 700);
+    }
+    /**
+     * set background and music for middle scenes
+     */
+    protected void middleScene(String pathMusic) throws FileNotFoundException {
+        playlist.getMusicPlayer().stop();
+        playlist.playEffectSound(pathMusic);
+        playlist.getMusicPlayer().play();
+        playlist.setVolume(0.3);
+    }
 
+    /**
+     * set music images for sliders on pause window
+     */
     protected void configureSlidersImage(Pane pane) throws FileNotFoundException {
         ImageView soundSliderOff = new ImageView(new Image(new FileInputStream("src/sound_off.png"))),
                 musicSliderOn = new ImageView(new Image(new FileInputStream("src/music_on.png"))),
@@ -381,6 +443,9 @@ public class Controller {
         pane.getChildren().addAll(musicSliderOff, musicSliderOn, soundSliderOff, soundSliderOn);
     }
 
+    /**
+     * set compliment windo
+     */
     protected void setOnComplimentButton(ArrayList<String> complimentArray) {
         Random random = new Random();
         int randomNum;
@@ -392,6 +457,9 @@ public class Controller {
         alert.showAndWait();
     }
 
+    /**
+     * create third level maze
+     */
     protected void addRectanglesThirdLevel(Pane mazePane) {
         Rectangle r1 = new Rectangle(0, 0, 1000, 20),
                 r2 = new Rectangle(0, 0, 20, 700),
@@ -405,7 +473,7 @@ public class Controller {
                 r10 = new Rectangle(219, 83, 93, 20),
                 r11 = new Rectangle(292, 83, 20, 96),
                 r12 = new Rectangle(438, 83, 20, 268),
-                r13 = new Rectangle(511, 83, 93, 20),
+                r13 = new Rectangle(531, 83, 73, 20),
                 r14 = new Rectangle(584, 83, 20, 103),
                 r15 = new Rectangle(730, 83, 93, 20),
                 r16 = new Rectangle(803, 166, 93, 20),

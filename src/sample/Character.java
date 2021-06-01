@@ -8,6 +8,9 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 
+/**
+ * contains methods for moving characters and checking for obstacles, pizzas, energies, walls
+ */
 public class Character extends Pane {
 
     ImageView imageView;
@@ -45,6 +48,10 @@ public class Character extends Pane {
         getChildren().addAll(imageView);
     }
 
+    /**
+     * move player by x
+     * @param x
+     */
     public void moveX(double x) {
         boolean right = x > 0;
         for (int i = 0; i < Math.abs(x); i++) {
@@ -55,6 +62,11 @@ public class Character extends Pane {
             isEnergy();
         }
     }
+
+    /**
+     * move enemy by x
+     * @param x
+     */
     public void moveEnemyX(double x) {
         boolean right = x > 0;
         for (int i = 0; i < Math.abs(x); i++) {
@@ -63,6 +75,11 @@ public class Character extends Pane {
         }
         isPlayer();
     }
+
+    /**
+     * move enemy by y
+     * @param y
+     */
     public void moveEnemyY(double y) {
         boolean down = y > 0;
         for (int i = 0; i < Math.abs(y); i++) {
@@ -72,7 +89,10 @@ public class Character extends Pane {
         isPlayer();
     }
 
-
+    /**
+     * move player by x and check for walls
+     * @param x
+     */
     public void finalMoveX(double x) {
         moveX(x);
         if (isWall()) {
@@ -83,6 +103,10 @@ public class Character extends Pane {
         isPizza();
     }
 
+    /**
+     * move player by y
+     * @param y
+     */
     public void moveY(double y) {
         boolean down = y > 0;
         for (int i = 0; i < Math.abs(y); i++) {
@@ -93,7 +117,10 @@ public class Character extends Pane {
             isEnergy();
         }
     }
-
+    /**
+     * move player by y and check for walls
+     * @param y
+     */
     public void finalMoveY(double y) {
         moveY(y);
         if (isWall()) {
@@ -117,6 +144,10 @@ public class Character extends Pane {
         Main.root.getChildren().remove(removeRect);
     }
 
+    /**
+     * check for walls
+     * @return
+     */
     public boolean isWall() {
         check = true;
         Main.walls.forEach((rect) -> {
@@ -128,6 +159,9 @@ public class Character extends Pane {
         return !check;
     }
 
+    /**
+     * check for obstacles
+     */
     public void isMonster() {
         if (Main.monsters.size() > 0) {
             for (int i = 0; i < Main.monsters.size(); i++) {
@@ -150,6 +184,10 @@ public class Character extends Pane {
             }
         }
     }
+
+    /**
+     * check for player (special method used on moving obstacles)
+     */
     public void isPlayer(){
         if (this.al.size() > 0) {
             for (int i = 0; i < this.al.size(); i++) {
@@ -176,6 +214,10 @@ public class Character extends Pane {
 
     }
 
+    /**
+     * check for energy picture
+     */
+
     public void isEnergy() {
         if (Main.energyBonuses.size() > 0) {
             for (int i = 0; i < Main.energyBonuses.size(); i++) {
@@ -198,6 +240,10 @@ public class Character extends Pane {
         }
     }
 boolean firstTook=false;
+
+    /**
+     * check for pizza
+     */
     public void isPizza() {
         boolean took=false;
         if (Main.pizzas.size() > 0) {
@@ -217,6 +263,7 @@ boolean firstTook=false;
                     if(firstTook&&!took){
                     Main.drawCross2();}
                     Main.countPizzas++;
+                    Main.numberPizza.setText("Total pizza count: "+Main.countPizzas+"/7");
                     if (Main.musicStatus) {
                         Main.playlist.getMusicPlayer().play();
                     }
@@ -226,11 +273,20 @@ boolean firstTook=false;
         }
     }
 
+    /**
+     * check for finish house
+     */
     public void isFinish() {
         if (this.getBoundsInParent().intersects(Main.houseIm.getBoundsInParent())) {
             Main.finishLevel = true;
         }
     }
+
+    /**
+     * check for specific wall (only for obstacles)
+     * @param rect
+     * @return
+     */
     public boolean isExactWall(Rectangle rect){
         check = true;
             if (this.getBoundsInParent().intersects(rect.getBoundsInParent())) {

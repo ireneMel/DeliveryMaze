@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,14 +10,17 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
@@ -25,6 +29,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import javax.imageio.ImageIO;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
@@ -43,7 +49,7 @@ public class Main extends Application {
             burritoTimeLine, bagelTimeline, cheesePuffTimeline, hotDogTimeLine, nachoTimeLine,
             pancakesTimeLine, sandwichTimeLine, tacoTimeLine, baconDishTimeLine;
     private Duration time;
-    public static Label energyLabel2;
+    public static Label energyLabel2, numberPizza;
     public static Music playlist = new Music(), sideSounds = new Music();
     static Controller controller = new Controller();
     Label numOfOrder = new Label();
@@ -98,7 +104,7 @@ public class Main extends Application {
     static Pane root;
     Button play = new Button(), instruction = new Button(), compliment = new Button(), music = new Button(), back;
     public static ImageView houseIm, houseIm2, houseIm3, houseIm4, houseIm5;
-
+    DoubleProperty timeSeconds;
     private double velocity = 2;
 
     static {
@@ -131,7 +137,10 @@ public class Main extends Application {
         setUpStartWindow();
         play.setOnAction(actionEvent -> {
             try {
-                firstLevel(stage);
+                levelVariable=6;
+                countPizzas=5;
+                finalStage(stage);
+                //firstLevel(stage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -267,9 +276,7 @@ public class Main extends Application {
         setUpCharacters3(mazePane);
         controller.setLayout(player, 915, 40);
         settingsForLevels2(primaryStage);
-//        property = 1;
-//        property2 = -1;
-//        property3 = 1;
+
 
         vanTimer = new AnimationTimer() {
             @Override
@@ -499,6 +506,7 @@ public class Main extends Application {
         setUpCharacters5(mazePane);
         controller.setLayout(player, 1127, 29);
         settingsForLevels2(primaryStage);
+        levelVariable++;
         up = false;
         down = true;
         left = false;
@@ -664,9 +672,7 @@ public class Main extends Application {
         };
         deliveryEnemy3Timer.start();
 
-//        property = 1;
-//        property2 = -1;
-//        property3 = 1;
+
         vanTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -876,8 +882,14 @@ public class Main extends Application {
 
     private void setUpTimeLines(Pane mazePane) {
         stopTimeLines();
-        DoubleProperty timeSeconds = new SimpleDoubleProperty(5.0);
-        time = Duration.minutes(5.00);
+        if (levelVariable == 1) timeSeconds = new SimpleDoubleProperty(2.50);
+        else if (levelVariable == 2) timeSeconds = new SimpleDoubleProperty(3.00);
+        else if (levelVariable == 3) timeSeconds = new SimpleDoubleProperty(4.00);
+        else timeSeconds = new SimpleDoubleProperty(5.00);
+        if (levelVariable == 1) time = Duration.minutes(2.50);
+        else if (levelVariable == 2) time = Duration.minutes(3.00);
+        else if (levelVariable == 3) time = Duration.minutes(4.00);
+        else time = Duration.minutes(5.00);
         Label timerLabel = new Label();
         if (levelVariable != 5) controller.setLabel(timerLabel, 1130, 445, 30, FontWeight.BOLD);
         else controller.setLabel(timerLabel, 1330, 445, 30, FontWeight.BOLD);
@@ -968,6 +980,8 @@ public class Main extends Application {
             pizzaBoxIV1.setLayoutY(250);
             pizzaBoxIV1.setLayoutX(1005);
             pizzaBoxIV1.setFitWidth(65);
+            numberPizza = new Label("Total pizza count: " + countPizzas + "/7");
+            controller.setLabel(numberPizza, 1014, 370, 17, FontWeight.NORMAL);
             Label str1 = new Label("-------------------------------------------------");
             controller.setLabel(str1, 1000, 500, 25, FontWeight.BOLD);
             Label str2 = new Label("-------------------------------------------------");
@@ -1022,6 +1036,104 @@ public class Main extends Application {
             setUpImageEnergy(imageEnergy4);
         } else if (levelVariable == 5) {
             setUpImageEnergy(imageEnergy5);
+        }
+    }
+
+    FileChooser fileChooser;
+
+    private void finalStage(Stage stage) throws FileNotFoundException {
+        Scene win, fail;
+        Pane failPane = new Pane(), winPane = new Pane(),wholeWinPane=new Pane();
+        Label l1 = new Label("Thank you for trial!");
+        Label l2 = new Label("Unfortunately, you didn't pick enough pizza");
+        Label l3 = new Label("We can`t offer you this job");
+        Label l4 = new Label("You can try again");
+        Label l5 = new Label("Good luck!");
+        Rectangle rec = new Rectangle(127, 79, 984, 484);
+        rec.setFill(Color.rgb(250, 219, 4));
+        controller.setLabel(l1, 394, 79, 50, FontWeight.NORMAL);
+        controller.setLabel(l2, 127, 158, 50, FontWeight.NORMAL);
+        controller.setLabel(l3, 311, 242, 50, FontWeight.NORMAL);
+        controller.setLabel(l4, 413, 318, 50, FontWeight.NORMAL);
+        controller.setLabel(l5, 486, 397, 50, FontWeight.NORMAL);
+        playlist.getMusicPlayer().stop();
+        if(countPizzas<5) controller.middleScene("src/finalFail1.jpg", "src/simple-fanfare-horn-2-sound-effect-32891846.mp3", failPane);
+        else {
+            controller.middleScene("src/simple-fanfare-horn-2-sound-effect-32891846.mp3");
+            BackgroundFill myBF = new BackgroundFill(Color.rgb(165,102,5), new CornerRadii(1), //203,253,142
+                    new Insets(0.0,0.0,0.0,0.0));// or null for the padding
+            wholeWinPane.setBackground(new Background(myBF));
+        }
+        Button homeButton = new Button();
+        try {
+            controller.setBackgroundForButton("src/home.png", homeButton);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Button shareButton = new Button();
+        try {
+            controller.setBackgroundForButton("src/share.png", shareButton);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        homeButton.setOnAction(actionEvent -> {
+            lives = 3;
+            try {
+                setUpStartWindow();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(scene);
+        });
+        shareButton.setOnAction(actionEvent -> {
+            if (fileChooser == null) {
+                fileChooser = new FileChooser();
+                String currentDir = System.getProperty("user.dir") + File.separator;
+                File f = new File(currentDir);
+                fileChooser.setInitialDirectory(f);
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image", "*.png"));
+                fileChooser.setTitle("Оберiть папку для збереження");
+            }
+            WritableImage image = winPane.snapshot(new SnapshotParameters(), null);
+            File file = fileChooser.showSaveDialog(null);
+            if (file != null) {
+                try {
+                    ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+                   controller. popUpWindow("Your image was successfully saved", "It`s path: " + file.getPath(), Alert.AlertType.INFORMATION);
+                } catch (Exception e) {
+                    controller.popUpWindow("Your image was successfully saved", "It`s path: " + file.getPath(), Alert.AlertType.INFORMATION);
+                }
+            }
+        });
+
+        controller.setButton(shareButton,70,70,929,625);
+        if(countPizzas<5) controller.setButton(homeButton, 70, 70, 575, 468);
+        else controller.setButton(homeButton, 70, 70, 222, 625);
+        failPane.getChildren().addAll(rec, l1, l2, l3, l4, l5, homeButton);
+        fail = new Scene(failPane);
+        controller.middleScene("src/shareScreenshootPane.jpg",  winPane);
+        winPane.setPrefSize(777,409);
+        winPane.setLayoutX(222);winPane.setLayoutY(205);
+        stage.setWidth(1220);
+        stage.setHeight(735);
+        Label l11=new Label("Congratulations!");
+        Label l12=new Label("You are the best candidate! You are hired");
+        Label l13=new Label("Successfully  completed 5 levels");
+        Label l14=new Label("Therefore is hired for a job");
+        controller.setLabel(l11, 419, 50, 50, FontWeight.NORMAL);
+        controller.setLabel(l12, 148, 118, 50, FontWeight.NORMAL);
+        l11.setTextFill(Color.WHITE);
+        l12.setTextFill(Color.WHITE);
+        controller.setLabel(l13, 69, 85, 45, FontWeight.NORMAL);
+        controller.setLabel(l14, 74, 230, 53, FontWeight.NORMAL);
+        winPane.getChildren().addAll(l13,l14);
+        wholeWinPane.setPrefSize(1220,735);
+        wholeWinPane.getChildren().addAll(winPane,homeButton,l11,l12,shareButton);
+        win=new Scene(wholeWinPane);
+        if (countPizzas < 5) {
+            stage.setScene(fail);
+        } else {
+            stage.setScene(win);
         }
     }
 
@@ -1241,10 +1353,19 @@ public class Main extends Application {
                     timer.stop();
                     player.animation.stop();
                     van.animation.stop();
-                    try {
-                        betweenLevelScene(primaryStage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                    stopTimeLines();
+                    if (levelVariable != 6) {
+                        try {
+                            betweenLevelScene(primaryStage);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            finalStage(primaryStage);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     if (vanTimer != null)
@@ -1280,8 +1401,8 @@ public class Main extends Application {
         root.getChildren().addAll(h, v);
     }
     public static void drawCross2() {
-        Rectangle h,v;
-        if(levelVariable!=5) {
+        Rectangle h, v;
+        if (levelVariable != 5 && levelVariable != 6) {
             h = new Rectangle(1130, 260, 25, 5);
             v = new Rectangle(1140, 250, 5, 25);
         }else{

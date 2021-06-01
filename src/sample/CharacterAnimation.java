@@ -7,6 +7,9 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
+/**
+ * Class helps to create a sprite animation
+ */
 public class CharacterAnimation extends Transition {
     private final ImageView imageView;
     private final int count;
@@ -16,6 +19,17 @@ public class CharacterAnimation extends Transition {
     private final int width;
     private final int height;
 
+    /**
+     * constructor set all parameters of an image
+     * @param imageView
+     * @param duration
+     * @param count
+     * @param columns
+     * @param offsetX
+     * @param offsetY
+     * @param width
+     * @param height
+     */
     public CharacterAnimation(ImageView imageView,
                               Duration duration,
                               int count, int columns,
@@ -34,12 +48,16 @@ public class CharacterAnimation extends Transition {
         this.imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
     }
 
-    public void setOffsetX(int x){
-        this.offsetX = x;
-    }
+    /**
+     * set an image on the correct row of animation
+     */
     public void setOffsetY(int y){
         this.offsetY = y;
     }
+
+    /**
+     * set sprites
+     */
     protected void interpolate(double frac) {
         final int index = Math.min((int)Math.floor(count*frac), count-1);
         final int x = (index%columns)*width+offsetX;
