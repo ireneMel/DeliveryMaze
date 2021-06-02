@@ -1,8 +1,10 @@
 package sample;
 
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
 /**
@@ -20,8 +22,10 @@ public class Music {
      * play background music without interruptions
      * @param path
      */
-    public void background(String path) {
-        Media hit = new Media(Paths.get(path).toUri().toString());
+    public void background(String path) throws URISyntaxException {
+//        Media hit = new Media(Paths.get(path).toUri().toString());
+        Media hit = new Media(Music.class.getResource(path).toURI().toString());
+        AudioClip clip = new AudioClip(hit.getSource());
         musicPlayer = new MediaPlayer(hit);
         setPlayCount(MediaPlayer.INDEFINITE);
         musicPlayer.play();
