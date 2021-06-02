@@ -1189,10 +1189,7 @@ public class Main extends Application {
         });
 
         controller.setButton(shareButton, 70, 70, 929, 625);
-        if (countPizzas < 5) controller.setButton(homeButton, 70, 70, 575, 468);
-        else controller.setButton(homeButton, 70, 70, 222, 625);
-        failPane.getChildren().addAll(rec, l1, l2, l3, l4, l5, homeButton);
-        fail = new Scene(failPane);
+
         controller.middleScene("src/shareScreenshootPane.jpg", winPane);
         winPane.setPrefSize(777, 409);
         winPane.setLayoutX(222);
@@ -1211,7 +1208,15 @@ public class Main extends Application {
         controller.setLabel(l14, 74, 230, 53, FontWeight.NORMAL);
         winPane.getChildren().addAll(l13, l14);
         wholeWinPane.setPrefSize(1220, 735);
-        wholeWinPane.getChildren().addAll(winPane, homeButton, l11, l12, shareButton);
+        if (countPizzas < 5) {
+            controller.setButton(homeButton, 70, 70, 575, 468);
+            failPane.getChildren().addAll(rec, l1, l2, l3, l4, l5, homeButton);
+        }
+        else {
+            controller.setButton(homeButton, 70, 70, 222, 625);
+            wholeWinPane.getChildren().addAll(winPane, homeButton, l11, l12, shareButton);
+        }
+        fail = new Scene(failPane);
         win = new Scene(wholeWinPane);
         if (countPizzas < 5) {
             stage.setScene(fail);
@@ -1297,6 +1302,10 @@ public class Main extends Application {
         return music;
     }
 
+    /**
+     * changes music icon depending on the fact whether music is off or on
+     * @param button
+     */
     private void changeMusicIcon(Button button) {
         musicStatus = !musicStatus;
         if (musicStatus) {
@@ -1316,6 +1325,9 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * sets button back on action
+     */
     private void actionOnBack(Stage stage) throws FileNotFoundException {
         back = new Button();
         controller.setBackgroundForButton("src/home.png", back);
@@ -1338,6 +1350,9 @@ public class Main extends Application {
         });
     }
 
+    /**
+     * starts all the timelines
+     */
     private void startTimeLines() {
         baconDishTimeLine.play();
         chickenAndBurgerTimeLine.play();
@@ -1354,6 +1369,9 @@ public class Main extends Application {
         cheesePuffTimeline.play();
     }
 
+    /**
+     * stop all the timelines
+     */
     private void stopTimeLines() {
         if (chickenAndBurgerTimeLine != null) chickenAndBurgerTimeLine.stop();
         if (chocolateTineLine != null) chocolateTineLine.stop();
@@ -1376,6 +1394,10 @@ public class Main extends Application {
         if (cheesePuffTimeline != null) cheesePuffTimeline.stop();
     }
 
+    /**
+     * creates and sets up pause window
+     * @param  - background color
+     */
     private void pauseWindow(Stage primaryStage, Color color) {
         timeline.stop();
         stopTimeLines();
@@ -1484,6 +1506,10 @@ public class Main extends Application {
         pauseStage.show();
     }
 
+    /**
+     * generates main timer
+     * adding timer for animation
+     */
     private void generateTimer(Stage primaryStage) {
         timer = new AnimationTimer() {
             @Override
@@ -1535,6 +1561,9 @@ public class Main extends Application {
         };
     }
 
+    /**
+     * draws cross if a player has picked a pizza
+     */
     public static void drawCross() {
         Rectangle h, v;
         if (levelVariable != 5 && levelVariable != 6) {
@@ -1549,6 +1578,9 @@ public class Main extends Application {
         root.getChildren().addAll(h, v);
     }
 
+    /**
+     * draws cross if a player has picked a pizza
+     */
     public static void drawCross2() {
         Rectangle h, v;
         if (levelVariable != 5 && levelVariable != 6) {
@@ -1563,6 +1595,9 @@ public class Main extends Application {
         root.getChildren().addAll(h, v);
     }
 
+    /**
+     * sets parameters and objects for the main menu window
+     */
     private void setUpStartWindow() throws FileNotFoundException {
         if (playlist.getMusicPlayer() != null) playlist.getMusicPlayer().stop();
         pane.setBackground(new Background(new BackgroundImage(new Image(new FileInputStream("src/photo_2021-05-24_15-17-36_auto_x2.jpg")),
@@ -1602,6 +1637,11 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * sets up fail scene
+     * sets parameters for window if a player have lost one level
+     * due to loosing all energy or being late
+     */
     private void failScene(Stage stage) throws FileNotFoundException {
         Pane pane = new Pane();
         // playlist.getMusicPlayer().stop();
@@ -1635,9 +1675,12 @@ public class Main extends Application {
         stage.setScene(scene);
     }
 
+    /**
+     * sets up between level scene
+     * sets parameters for window if a player have won one level
+     */
     private void betweenLevelScene(Stage stage) throws FileNotFoundException {
         Pane pane = new Pane();
-        //   playlist.getMusicPlayer().stop();
         controller.middleScene("src/pizza1.jpg", "src/mixkit-ethereal-fairy-win-sound-2019.wav", pane);
         Rectangle r = new Rectangle(930, 360);
         r.setFill(Color.rgb(69, 191, 202));
@@ -1695,6 +1738,9 @@ public class Main extends Application {
         stage.setScene(scene);
     }
 
+    /**
+     * defines action and logic after pressing keys
+     */
     public void update() {
         if (isPressed(KeyCode.A)) {
             if (velocity <= 10) velocity += 0.25;
@@ -1726,10 +1772,16 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * defines action after specific key was pressed
+     */
     public boolean isPressed(KeyCode key) {
         return keys.getOrDefault(key, false);
     }
 
+    /**
+     * launch the programm
+     */
     public static void main(String[] args) {
         launch(args);
     }
