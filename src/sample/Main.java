@@ -1133,12 +1133,60 @@ public class Main extends Application {
         }
     }
 
-    private void setUpImageEnergy(ImageView im) {
-        im.setFitWidth(40);
-        im.setFitHeight(50);
-        if (levelVariable != 5) im.setLayoutX(1005);
-        else im.setLayoutX(1205);
-        im.setLayoutY(185);
+    private void instructionWindow() throws FileNotFoundException {
+        Stage stage = new Stage();
+        Pane pane = new Pane();
+        stage.setTitle("Insrtuction");
+        pane.setPrefSize(1220, 735);
+        Scene scene = new Scene(pane);
+        BackgroundFill myBF = new BackgroundFill(Color.rgb(19, 30, 58), new CornerRadii(1),
+                new Insets(0.0, 0.0, 0.0, 0.0));// or null for the padding
+        pane.setBackground(new Background(myBF));
+        Label l1 = new Label("Instruction");
+        Label l10=new Label("Your goal is to complete 5 levels and pick at least 5 pizzas");
+        Label l2 = new Label("To control your character you should use these keys");
+        Label l3 = new Label("To change your speed you should use these keys : A - acceleration,");
+        Label l4 = new Label("During your journey through our mazes you should avoid obstacles ");
+        Label l5 = new Label("because they consume one point of your energy");
+        Label l6 = new Label("You can restore you energy by picking energy drinks");
+        Label l7 = new Label("To finish level you need to get to the house");
+        Label l8 = new Label("D - deceleration,");
+        Label l9 = new Label("S - default speed");
+        controller.setLabel(l1, 514, 23, 40, FontWeight.NORMAL, Color.WHITE);
+        controller.setLabel(l10, 14, 97, 30, FontWeight.NORMAL, Color.WHITE);
+        controller.setLabel(l2,14,184,30, FontWeight.NORMAL, Color.WHITE);
+        controller.setLabel(l3, 14, 292, 30, FontWeight.NORMAL, Color.WHITE);
+        controller.setLabel(l4, 14, 432, 30, FontWeight.NORMAL, Color.WHITE);
+        controller.setLabel(l5, 101, 464, 30, FontWeight.NORMAL, Color.WHITE);
+        controller.setLabel(l6, 14, 544, 30, FontWeight.NORMAL, Color.WHITE);
+        controller.setLabel(l7, 14, 639, 30, FontWeight.NORMAL, Color.WHITE);
+        controller.setLabel(l8, 680, 334, 30, FontWeight.NORMAL, Color.WHITE);
+        controller.setLabel(l9, 680, 374, 30, FontWeight.NORMAL, Color.WHITE);
+        energy1=new ImageView(new Image(new FileInputStream("src/soft_drink_blue.png")));
+        energy2=new ImageView(new Image(new FileInputStream("src/soft_drink_green.png")));
+        energy3=new ImageView(new Image(new FileInputStream("src/soft_drink_yellow.png")));
+        energy4=new ImageView(new Image(new FileInputStream("src/soft_drink_red.png")));
+        energy1.setLayoutX(918);energy1.setLayoutY(545);
+        controller.setLayout(burgerInstruction, 918, 448);
+        energy2.setLayoutX(991);energy2.setLayoutY(545);
+        controller.setLayout(pizzaInstruction, 885, 99);
+        houseInstruction.setLayoutY(606);
+        houseInstruction.setLayoutX(642);
+        houseInstruction.setFitWidth(100);
+        houseInstruction.setFitHeight(100);
+        energy4.setLayoutX(1129);energy4.setLayoutY(545);
+        energy3.setLayoutX(1059);energy3.setLayoutY(545);
+        controller.setLayout(vanInstruction, 1075,433);
+      deliveryInstruction = new Character(imageViewEnemyInstruction, 41, 54);
+        controller.setLayout(deliveryInstruction,991,436);
+        ImageView iv = new ImageView(new Image(new FileInputStream("src/pngwing.com-removebg-preview (1).png")));
+        iv.setLayoutX(858);
+        iv.setLayoutY(153);
+        pane.getChildren().addAll(l1, l2, l3, l4, l5, l6, l7, l8, l9,l10,
+                energy1, energy2, energy4, energy3, burgerInstruction, pizzaInstruction, houseInstruction, iv,vanInstruction,deliveryInstruction);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     private static Slider setMusicSliders(Double getVolume, Music musicList) {

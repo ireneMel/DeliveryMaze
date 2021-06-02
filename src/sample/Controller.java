@@ -510,7 +510,7 @@ public class Controller {
                 r45 = new Rectangle(219, 583, 20, 103),
                 r46 = new Rectangle(312, 591, 219, 20),
                 r47 = new Rectangle(584, 583, 20, 103),
-                r48 = new Rectangle(657, 581, 111, 20),
+                r48 = new Rectangle(675, 581, 111, 20),
                 r49 = new Rectangle(821, 583, 20, 103),
                 r50 = new Rectangle(73, 166, 385, 20),
                 r51 = new Rectangle(584, 166, 166, 20),
