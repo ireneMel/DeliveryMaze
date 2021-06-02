@@ -12,6 +12,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -30,11 +32,15 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 public class Main extends Application {
 
@@ -59,67 +65,63 @@ public class Main extends Application {
     FileChooser fileChooser;
     double x = 0.7, x2 = -1.5, x3 = 1.0, property = 1, property2 = -1, property3 = 1;
     boolean up, right, left, down, up2, right2, left2, down2, up3, right3, left3, down3;
-    ImageView imageView = new ImageView(new Image(new FileInputStream("src/MyCollages__8_-removebg-preview (1) (3).png"))),
-            imageViewEnemy1 = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
-            imageViewEnemy2 = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
-            imageViewEnemy3 = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
-            imageViewEnemyInstruction = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
-            imageEnergy = new ImageView(new Image(new FileInputStream("src/Battery.png"))),
-            imageEnergy2 = new ImageView(new Image(new FileInputStream("src/Battery3.png"))),
-            imageEnergy3 = new ImageView(new Image(new FileInputStream("src/Battery4.png"))),
-            imageEnergy4 = new ImageView(new Image(new FileInputStream("src/Battery5.png"))),
-            imageEnergy5 = new ImageView(new Image(new FileInputStream("src/Battery6.png"))),
-            pizzaBoxIV1 = new ImageView(new Image(new FileInputStream("src/New_Piskel__2_-removebg-preview2.png"))),
-            enemy6I = new ImageView(new Image(new FileInputStream("src/van3.png"))),
-            enemy6I4 = new ImageView(new Image(new FileInputStream("src/ice-cream-van_33.png"))),
-            enemy6I2 = new ImageView(new Image(new FileInputStream("src/ice-cream-van_3.png"))),
-            enemy6II = new ImageView(new Image(new FileInputStream("src/van3.png"))),
-            enemy6I3 = new ImageView(new Image(new FileInputStream("src/ice-cream-van_32.png")));
+    ImageView  imageEnergy4 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/Battery5.png")))),
+            imageView = new ImageView(new Image(String.valueOf(this.getClass().getResource("/MyCollages__8_-removebg-preview (1) (3).png")))),
+            imageViewEnemy1 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/person_delivery (1).png")))),
+            imageViewEnemy2 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/person_delivery (1).png")))),
+            imageViewEnemy3 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/person_delivery (1).png")))),
+            imageViewEnemyInstruction = new ImageView(new Image(String.valueOf(this.getClass().getResource("/person_delivery (1).png")))),
+            imageEnergy = new ImageView(new Image(String.valueOf(this.getClass().getResource("/Battery.png")))),
+            imageEnergy2 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/Battery3.png")))),
+            imageEnergy3 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/Battery4.png")))),
+            imageEnergy5 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/battery6.png")))),
+            pizzaBoxIV1 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/New_Piskel__2_-removebg-preview2.png")))),
+            enemy6I = new ImageView(new Image(String.valueOf(this.getClass().getResource("/van3.png")))),
+            enemy6I4 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/ice-cream-van_33.png")))),
+            enemy6I2 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/ice-cream-van_3.png")))),
+            enemy6II = new ImageView(new Image(String.valueOf(this.getClass().getResource("/van3.png")))),
+            enemy6I3 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/ice-cream-van_32.png"))));
     static Character player, deliveryEnemy1, deliveryEnemy2, deliveryEnemy3, deliveryInstruction;
-    Character burger = new Character(new ImageView(new Image(new FileInputStream("src/17_burger_napkin.png")))),
-            burgerInstruction = new Character(new ImageView(new Image(new FileInputStream("src/17_burger_napkin.png")))),
-            chicken = new Character(new ImageView(new Image(new FileInputStream("src/86_roastedchicken_dish.png")))),
-            sushi = new Character(new ImageView(new Image(new FileInputStream("src/98_sushi_dish.png")))),
-            chocolate = new Character(new ImageView(new Image(new FileInputStream("src/31_chocolatecake_dish.png")))),
-            enemy5 = new Character(new ImageView(new Image(new FileInputStream("src/45_frenchfries_dish.png")))),
-            applePie = new Character(new ImageView(new Image(new FileInputStream("src/06_apple_pie_dish.png")))),
-            baconDish = new Character(new ImageView(new Image(new FileInputStream("src/14_bacon_dish.png")))),
-            burrito = new Character(new ImageView(new Image(new FileInputStream("src/19_burrito_dish.png")))),
-            bagel = new Character(new ImageView(new Image(new FileInputStream("src/21_bagel_dish.png")))),
-            cheeseCake = new Character(new ImageView(new Image(new FileInputStream("src/23_cheesecake_dish.png")))),
-            cheesePuff = new Character(new ImageView(new Image(new FileInputStream("src/25_cheesepuff_bowl.png")))),
-            hotDog = new Character(new ImageView(new Image(new FileInputStream("src/56_hotdog_dish.png")))),
-            nacho = new Character(new ImageView(new Image(new FileInputStream("src/72_nacho_dish.png")))),
-            pudding = new Character(new ImageView(new Image(new FileInputStream("src/76_pudding_dish.png")))),
-            pancakes = new Character(new ImageView(new Image(new FileInputStream("src/80_pancakes_dish.png")))),
-            sandwich = new Character(new ImageView(new Image(new FileInputStream("src/93_sandwich_dish.png")))),
-            taco = new Character(new ImageView(new Image(new FileInputStream("src/100_taco_dish.png")))),
-            energyDrinkRed = new Character(new ImageView(new Image(new FileInputStream("src/soft_drink_red.png")))),
-            energyDrinkBlue = new Character(new ImageView(new Image(new FileInputStream("src/soft_drink_blue.png")))),
-            energyDrinkYellow = new Character(new ImageView(new Image(new FileInputStream("src/soft_drink_yellow.png")))),
-            energyDrinkGreen = new Character(new ImageView(new Image(new FileInputStream("src/soft_drink_green.png")))),
+    Character burger = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/17_burger_napkin.png"))))),
+            burgerInstruction = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/17_burger_napkin.png"))))),
+            chicken = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/86_roastedchicken_dish.png"))))),
+            sushi = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/98_sushi_dish.png"))))),
+            chocolate = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/31_chocolatecake_dish.png"))))),
+            enemy5 = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/45_frenchfries_dish.png"))))),
+            applePie = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/06_apple_pie_dish.png"))))),
+            baconDish = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/14_bacon_dish.png"))))),
+            burrito = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/19_burrito_dish.png"))))),
+            bagel = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/21_bagel_dish.png"))))),
+            cheeseCake = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/23_cheesecake_dish.png"))))),
+            cheesePuff = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/25_cheesepuff_bowl.png"))))),
+            hotDog = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/56_hotdog_dish.png"))))),
+            nacho = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/72_nacho_dish.png"))))),
+            pudding = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/76_pudding_dish.png"))))),
+            pancakes = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/80_pancakes_dish.png"))))),
+            sandwich = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/93_sandwich_dish.png"))))),
+            taco = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/100_taco_dish.png"))))),
+            energyDrinkRed = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/soft_drink_red.png"))))),
+            energyDrinkBlue = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/soft_drink_blue.png"))))),
+            energyDrinkYellow = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/soft_drink_yellow.png"))))),
+            energyDrinkGreen = new Character(new ImageView(new Image(String.valueOf(this.getClass().getResource("/soft_drink_green.png"))))),
             van = new Character(enemy6I, 1, 1),
             vanInstruction = new Character(enemy6II, 53, 63),
             van2 = new Character(enemy6I2, 1, 1),
             van3 = new Character(enemy6I3, 1, 1),
-            pizzaInstruction = new Character(70, 30, new ImageView(new Image(new FileInputStream("src/PizzaIm3.png")))),
-            pizza1 = new Character(70, 30, new ImageView(new Image(new FileInputStream("src/PizzaIm3.png")))),
-            pizza = new Character(70, 30, new ImageView(new Image(new FileInputStream("src/New_Piskel__2_-removebg-preview.png"))));
+            pizzaInstruction = new Character(70, 30, new ImageView(new Image(String.valueOf(this.getClass().getResource("/PizzaIm3.png"))))),
+            pizza1 = new Character(70, 30, new ImageView(new Image(String.valueOf(this.getClass().getResource("/PizzaIm3.png"))))),
+            pizza = new Character(70, 30, new ImageView(new Image(String.valueOf(this.getClass().getResource("/New_Piskel__2_-removebg-preview.png")))));
 
     Pane pane = new Pane();
     static Pane root;
     Button play = new Button(), instruction = new Button(), compliment = new Button(), music = new Button(), back;
-    public static ImageView houseIm, houseIm2, houseIm3, houseIm4, houseIm5, houseInstruction,energy1,energy2,energy3,energy4;
+    public static ImageView houseIm, houseIm2, houseIm3, houseIm4, houseIm5, houseInstruction, energy1, energy2, energy3, energy4;
     DoubleProperty timeSeconds;
     private double velocity = 2;
 
-    static {
-        try {
-            houseIm = new ImageView(new Image(new FileInputStream("src/photo_2021-05-25_12-02-30-removebg-preview.png")));
-            houseInstruction = new ImageView(new Image(new FileInputStream("src/photo_2021-05-25_12-02-30-removebg-preview.png")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    {
+        houseIm = new ImageView(new Image(String.valueOf(this.getClass().getResource("/photo_2021-05-25_12-02-30-removebg-preview.png"))));
+        houseInstruction = new ImageView(new Image(String.valueOf(this.getClass().getResource("/photo_2021-05-25_12-02-30-removebg-preview.png"))));
     }
 
     Scene scene;
@@ -141,12 +143,13 @@ public class Main extends Application {
 
     /**
      * create main stage and set up main menu scene
+     *
      * @param stage
      * @throws FileNotFoundException
      */
     @Override
-    public void start(Stage stage) throws FileNotFoundException {
-        sideSounds.background("src/silent.wav");
+    public void start(Stage stage) throws FileNotFoundException, URISyntaxException {
+        sideSounds.background("/silent.wav");
         sideSounds.setVolume(0.2);
 
         setUpStartWindow();
@@ -159,12 +162,12 @@ public class Main extends Application {
         });
 
         instruction.setOnAction(actionEvent -> {
-                try {
-                    instructionWindow();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-       });
+            try {
+                instructionWindow();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
         music.setOnAction(actionEvent -> changeMusicIcon(music));
         controller.generateCompliment(complimentArray);
@@ -178,13 +181,14 @@ public class Main extends Application {
 
     /**
      * basic settings similar for all levels
+     *
      * @param primaryStage
      * @param mazePane
      * @param color
      * @param path
      * @throws FileNotFoundException
      */
-    private void settingsForLevels(Stage primaryStage, Pane mazePane, Color color, String path) throws FileNotFoundException {
+    private void settingsForLevels(Stage primaryStage, Pane mazePane, Color color, String path) throws FileNotFoundException, URISyntaxException {
         playlist.getMusicPlayer().stop();
         sideSounds.setVolume(0.2);
         fail = false;
@@ -206,7 +210,7 @@ public class Main extends Application {
         Rectangle rec;
         if (levelVariable != 5) rec = new Rectangle(1050, 550, 100, 100);
         else rec = new Rectangle(1250, 550, 100, 100);
-        rec.setFill(new ImagePattern(new Image(new FileInputStream("src/pause.png"))));
+        rec.setFill(new ImagePattern(new Image(String.valueOf(this.getClass().getResource("/pause.png")))));
         rec.setOnMouseClicked(mouseEvent -> pauseWindow(primaryStage, color));
         if (levelVariable == 5) root.setPrefSize(1400, 900);
         else root.setPrefSize(1200, 700);
@@ -225,16 +229,17 @@ public class Main extends Application {
 
     /**
      * special settings for first level
+     *
      * @param primaryStage
      * @throws FileNotFoundException
      */
-    private void firstLevel(Stage primaryStage) throws FileNotFoundException {
+    private void firstLevel(Stage primaryStage) throws FileNotFoundException, URISyntaxException {
         velocity = 2;
         countPizzas = 0;
-        houseIm = new ImageView(new Image(new FileInputStream("src/photo_2021-05-25_12-02-30-removebg-preview.png")));
+        houseIm = new ImageView(new Image(String.valueOf(this.getClass().getResource("/photo_2021-05-25_12-02-30-removebg-preview.png"))));
         Pane mazePane = new Pane();
         levelVariable = 1;
-        settingsForLevels(primaryStage, mazePane, Color.rgb(230, 222, 202), "src/Farming-By-Moonlight.mp3");
+        settingsForLevels(primaryStage, mazePane, Color.rgb(230, 222, 202), "/Farming-By-Moonlight.mp3");
         setUpTimeLines(mazePane);
         setUpCharacters(mazePane);
         controller.setLayout(player, 118, 170);
@@ -245,16 +250,17 @@ public class Main extends Application {
 
     /**
      * special settings for second level
+     *
      * @param primaryStage
      * @throws FileNotFoundException
      */
-    private void secondLevel(Stage primaryStage) throws FileNotFoundException {
-        houseIm2 = new ImageView(new Image(new FileInputStream("src/IMG_20210527_181324.png")));
+    private void secondLevel(Stage primaryStage) throws FileNotFoundException, URISyntaxException {
+        houseIm2 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/IMG_20210527_181324.png"))));
         Pane mazePane = new Pane();
         van = new Character(enemy6I, 53, 63);
         van2 = new Character(enemy6I2, 53, 63);
         houseIm = houseIm2;
-        settingsForLevels(primaryStage, mazePane, Color.rgb(245, 210, 227), "src/Wavecont-Inspire-2-Full-Lenght.mp3");
+        settingsForLevels(primaryStage, mazePane, Color.rgb(245, 210, 227), "/Wavecont-Inspire-2-Full-Lenght.mp3");
         setUpTimeLines(mazePane);
         setUpCharacters2(mazePane);
         controller.setLayout(player, 915, 40);
@@ -301,17 +307,18 @@ public class Main extends Application {
 
     /**
      * special settings for third level
+     *
      * @param primaryStage
      * @throws FileNotFoundException
      */
-    private void thirdLevel(Stage primaryStage) throws FileNotFoundException {
-        houseIm3 = new ImageView(new Image(new FileInputStream("src/IMG_20210529_160339.png")));
+    private void thirdLevel(Stage primaryStage) throws FileNotFoundException, URISyntaxException {
+        houseIm3 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/IMG_20210529_160339.png"))));
         Pane mazePane = new Pane();
         van = new Character(enemy6I, 53, 63);
         van2 = new Character(enemy6I2, 53, 60);
         van3 = new Character(enemy6I3, 53, 60);
         houseIm = houseIm3;
-        settingsForLevels(primaryStage, mazePane, Color.rgb(118, 176, 186), "src/Wavecont-Motivate-Full-Length.mp3");
+        settingsForLevels(primaryStage, mazePane, Color.rgb(118, 176, 186), "/Wavecont-Motivate-Full-Length.mp3");
         setUpTimeLines(mazePane);
         setUpCharacters3(mazePane);
         controller.setLayout(player, 915, 40);
@@ -373,17 +380,18 @@ public class Main extends Application {
 
     /**
      * special settings for fourth level
+     *
      * @param primaryStage
      * @throws FileNotFoundException
      */
-    private void fourthLevel(Stage primaryStage) throws FileNotFoundException {
-        houseIm4 = new ImageView(new Image(new FileInputStream("src/house.png")));
+    private void fourthLevel(Stage primaryStage) throws FileNotFoundException, URISyntaxException {
+        houseIm4 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/house.png"))));
         deliveryEnemy1 = new Character(imageViewEnemy1, 41, 54);
         deliveryEnemy2 = new Character(imageViewEnemy2, 41, 54);
         deliveryEnemy3 = new Character(imageViewEnemy3, 41, 54);
         Pane mazePane = new Pane();
         houseIm = houseIm4;
-        settingsForLevels(primaryStage, mazePane, Color.rgb(196, 232, 184), "src/keys-of-moon-the-success.mp3");
+        settingsForLevels(primaryStage, mazePane, Color.rgb(196, 232, 184), "/keys-of-moon-the-success.mp3");
         setUpTimeLines(mazePane);
         setUpCharacters4(mazePane);
         controller.setLayout(player, 674, 278);
@@ -538,11 +546,12 @@ public class Main extends Application {
 
     /**
      * special settings for fifth level
+     *
      * @param primaryStage
      * @throws FileNotFoundException
      */
-    private void fifthLevel(Stage primaryStage) throws FileNotFoundException {
-        houseIm5 = new ImageView(new Image(new FileInputStream("src/house_blue.png")));
+    private void fifthLevel(Stage primaryStage) throws FileNotFoundException, URISyntaxException {
+        houseIm5 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/house_blue.png"))));
         Pane mazePane = new Pane();
         deliveryEnemy1 = new Character(imageViewEnemy1, 41, 54);
         deliveryEnemy2 = new Character(imageViewEnemy2, 41, 54);
@@ -551,7 +560,7 @@ public class Main extends Application {
         van2 = new Character(enemy6I2, 53, 60);
         van3 = new Character(enemy6I3, 53, 60);
         houseIm = houseIm5;
-        settingsForLevels(primaryStage, mazePane, Color.rgb(147, 205, 221), "src/keys-of-moon-cheer-up.mp3");
+        settingsForLevels(primaryStage, mazePane, Color.rgb(147, 205, 221), "/keys-of-moon-cheer-up.mp3");
         setUpTimeLines(mazePane);
         setUpCharacters5(mazePane);
         controller.setLayout(player, 1127, 29);
@@ -773,6 +782,7 @@ public class Main extends Application {
 
     /**
      * scene settings for all levels
+     *
      * @param primaryStage
      */
     private void settingsForLevels2(Stage primaryStage) {
@@ -787,6 +797,7 @@ public class Main extends Application {
 
     /**
      * set layouts for all characters in first level
+     *
      * @param mazePane
      */
     private void setUpCharacters(Pane mazePane) {
@@ -811,6 +822,7 @@ public class Main extends Application {
 
     /**
      * set layouts for all characters in second level
+     *
      * @param mazePane
      */
     private void setUpCharacters2(Pane mazePane) {
@@ -840,6 +852,7 @@ public class Main extends Application {
 
     /**
      * set layouts for all characters in third level
+     *
      * @param mazePane
      */
     private void setUpCharacters3(Pane mazePane) {
@@ -874,6 +887,7 @@ public class Main extends Application {
 
     /**
      * set layouts for all characters in fourth level
+     *
      * @param mazePane
      */
     private void setUpCharacters4(Pane mazePane) {
@@ -910,6 +924,7 @@ public class Main extends Application {
 
     /**
      * set layouts for all characters in fifth level
+     *
      * @param mazePane
      */
     private void setUpCharacters5(Pane mazePane) {
@@ -949,6 +964,7 @@ public class Main extends Application {
 
     /**
      * set all time line animations
+     *
      * @param mazePane
      */
     private void setUpTimeLines(Pane mazePane) {
@@ -1027,6 +1043,7 @@ public class Main extends Application {
 
     /**
      * set user menu on levels
+     *
      * @param mazePane
      * @param settings
      */
@@ -1119,6 +1136,7 @@ public class Main extends Application {
 
     /**
      * set final stage (final win or final fail)
+     *
      * @param stage
      * @throws FileNotFoundException
      */
@@ -1139,22 +1157,22 @@ public class Main extends Application {
         controller.setLabel(l5, 486, 397, 50, FontWeight.NORMAL);
         playlist.getMusicPlayer().stop();
         if (countPizzas < 5)
-            controller.middleScene("src/finalFail1.jpg", "src/simple-fanfare-horn-2-sound-effect-32891846.mp3", failPane);
+            controller.middleScene("/finalFail1.jpg", "/simple-fanfare-horn-2-sound-effect-32891846.mp3", failPane);
         else {
-            controller.middleScene("src/simple-fanfare-horn-2-sound-effect-32891846.mp3");
+            controller.middleScene("/simple-fanfare-horn-2-sound-effect-32891846.mp3");
             BackgroundFill myBF = new BackgroundFill(Color.rgb(165, 102, 5), new CornerRadii(1), //203,253,142
                     new Insets(0.0, 0.0, 0.0, 0.0));// or null for the padding
             wholeWinPane.setBackground(new Background(myBF));
         }
         Button homeButton = new Button();
         try {
-            controller.setBackgroundForButton("src/home.png", homeButton);
+            controller.setBackgroundForButton("/home.png", homeButton);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         Button shareButton = new Button();
         try {
-            controller.setBackgroundForButton("src/share.png", shareButton);
+            controller.setBackgroundForButton("/share.png", shareButton);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -1162,7 +1180,7 @@ public class Main extends Application {
             lives = 3;
             try {
                 setUpStartWindow();
-            } catch (FileNotFoundException e) {
+            } catch (FileNotFoundException | URISyntaxException e) {
                 e.printStackTrace();
             }
             stage.setScene(scene);
@@ -1190,7 +1208,7 @@ public class Main extends Application {
 
         controller.setButton(shareButton, 70, 70, 929, 625);
 
-        controller.middleScene("src/shareScreenshootPane.jpg", winPane);
+        controller.middleScene("/shareScreenshootPane.jpg", winPane);
         winPane.setPrefSize(777, 409);
         winPane.setLayoutX(222);
         winPane.setLayoutY(205);
@@ -1211,8 +1229,7 @@ public class Main extends Application {
         if (countPizzas < 5) {
             controller.setButton(homeButton, 70, 70, 575, 468);
             failPane.getChildren().addAll(rec, l1, l2, l3, l4, l5, homeButton);
-        }
-        else {
+        } else {
             controller.setButton(homeButton, 70, 70, 222, 625);
             wholeWinPane.getChildren().addAll(winPane, homeButton, l11, l12, shareButton);
         }
@@ -1227,6 +1244,7 @@ public class Main extends Application {
 
     /**
      * set instruction window
+     *
      * @throws FileNotFoundException
      */
     private void instructionWindow() throws FileNotFoundException {
@@ -1239,7 +1257,7 @@ public class Main extends Application {
                 new Insets(0.0, 0.0, 0.0, 0.0));// or null for the padding
         pane.setBackground(new Background(myBF));
         Label l1 = new Label("Instruction");
-        Label l10=new Label("Your goal is to complete 5 levels and pick at least 5 pizzas");
+        Label l10 = new Label("Your goal is to complete 5 levels and pick at least 5 pizzas");
         Label l2 = new Label("To control your character you should use these keys");
         Label l3 = new Label("To change your speed you should use these keys : A - acceleration,");
         Label l4 = new Label("During your journey through our mazes you should avoid obstacles ");
@@ -1250,7 +1268,7 @@ public class Main extends Application {
         Label l9 = new Label("S - default speed");
         controller.setLabel(l1, 514, 23, 40, FontWeight.NORMAL, Color.WHITE);
         controller.setLabel(l10, 14, 97, 30, FontWeight.NORMAL, Color.WHITE);
-        controller.setLabel(l2,14,184,30, FontWeight.NORMAL, Color.WHITE);
+        controller.setLabel(l2, 14, 184, 30, FontWeight.NORMAL, Color.WHITE);
         controller.setLabel(l3, 14, 292, 30, FontWeight.NORMAL, Color.WHITE);
         controller.setLabel(l4, 14, 432, 30, FontWeight.NORMAL, Color.WHITE);
         controller.setLabel(l5, 101, 464, 30, FontWeight.NORMAL, Color.WHITE);
@@ -1258,28 +1276,32 @@ public class Main extends Application {
         controller.setLabel(l7, 14, 639, 30, FontWeight.NORMAL, Color.WHITE);
         controller.setLabel(l8, 680, 334, 30, FontWeight.NORMAL, Color.WHITE);
         controller.setLabel(l9, 680, 374, 30, FontWeight.NORMAL, Color.WHITE);
-        energy1=new ImageView(new Image(new FileInputStream("src/soft_drink_blue.png")));
-        energy2=new ImageView(new Image(new FileInputStream("src/soft_drink_green.png")));
-        energy3=new ImageView(new Image(new FileInputStream("src/soft_drink_yellow.png")));
-        energy4=new ImageView(new Image(new FileInputStream("src/soft_drink_red.png")));
-        energy1.setLayoutX(918);energy1.setLayoutY(545);
+        energy1 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/soft_drink_blue.png"))));
+        energy2 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/soft_drink_green.png"))));
+        energy3 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/soft_drink_yellow.png"))));
+        energy4 = new ImageView(new Image(String.valueOf(this.getClass().getResource("/soft_drink_red.png"))));
+        energy1.setLayoutX(918);
+        energy1.setLayoutY(545);
         controller.setLayout(burgerInstruction, 918, 448);
-        energy2.setLayoutX(991);energy2.setLayoutY(545);
+        energy2.setLayoutX(991);
+        energy2.setLayoutY(545);
         controller.setLayout(pizzaInstruction, 885, 99);
         houseInstruction.setLayoutY(606);
         houseInstruction.setLayoutX(642);
         houseInstruction.setFitWidth(100);
         houseInstruction.setFitHeight(100);
-        energy4.setLayoutX(1129);energy4.setLayoutY(545);
-        energy3.setLayoutX(1059);energy3.setLayoutY(545);
-        controller.setLayout(vanInstruction, 1075,433);
-      deliveryInstruction = new Character(imageViewEnemyInstruction, 41, 54);
-        controller.setLayout(deliveryInstruction,991,436);
-        ImageView iv = new ImageView(new Image(new FileInputStream("src/pngwing.com-removebg-preview (1).png")));
+        energy4.setLayoutX(1129);
+        energy4.setLayoutY(545);
+        energy3.setLayoutX(1059);
+        energy3.setLayoutY(545);
+        controller.setLayout(vanInstruction, 1075, 433);
+        deliveryInstruction = new Character(imageViewEnemyInstruction, 41, 54);
+        controller.setLayout(deliveryInstruction, 991, 436);
+        ImageView iv = new ImageView(new Image(String.valueOf(this.getClass().getResource(("/pngwing.com-removebg-preview (1).png")))));
         iv.setLayoutX(858);
         iv.setLayoutY(153);
-        pane.getChildren().addAll(l1, l2, l3, l4, l5, l6, l7, l8, l9,l10,
-                energy1, energy2, energy4, energy3, burgerInstruction, pizzaInstruction, houseInstruction, iv,vanInstruction,deliveryInstruction);
+        pane.getChildren().addAll(l1, l2, l3, l4, l5, l6, l7, l8, l9, l10,
+                energy1, energy2, energy4, energy3, burgerInstruction, pizzaInstruction, houseInstruction, iv, vanInstruction, deliveryInstruction);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -1287,6 +1309,7 @@ public class Main extends Application {
 
     /**
      * set sliders for music and sounds
+     *
      * @param getVolume
      * @param musicList
      * @return
@@ -1304,20 +1327,21 @@ public class Main extends Application {
 
     /**
      * changes music icon depending on the fact whether music is off or on
+     *
      * @param button
      */
     private void changeMusicIcon(Button button) {
         musicStatus = !musicStatus;
         if (musicStatus) {
             try {
-                controller.setBackgroundForButton("src/music_on.png", button);
+                controller.setBackgroundForButton("/music_on.png", button);
             } catch (FileNotFoundException f) {
                 f.printStackTrace();
             }
             playlist.getMusicPlayer().setVolume(0.2);
         } else {
             try {
-                controller.setBackgroundForButton("src/music_off.png", button);
+                controller.setBackgroundForButton("/music_off.png", button);
             } catch (FileNotFoundException f) {
                 f.printStackTrace();
             }
@@ -1330,7 +1354,7 @@ public class Main extends Application {
      */
     private void actionOnBack(Stage stage) throws FileNotFoundException {
         back = new Button();
-        controller.setBackgroundForButton("src/home.png", back);
+        controller.setBackgroundForButton("/home.png", back);
         back.setOnAction(actionEvent -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
@@ -1341,7 +1365,7 @@ public class Main extends Application {
                 lives = 3;
                 try {
                     setUpStartWindow();
-                } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException | URISyntaxException e) {
                     e.printStackTrace();
                 }
                 stage.setScene(scene);
@@ -1396,7 +1420,8 @@ public class Main extends Application {
 
     /**
      * creates and sets up pause window
-     * @param  - background color
+     *
+     * @param - background color
      */
     private void pauseWindow(Stage primaryStage, Color color) {
         timeline.stop();
@@ -1405,9 +1430,9 @@ public class Main extends Application {
         timer.stop();
         Button homeButton = new Button(), playButton = new Button(), info = new Button();
         try {
-            controller.setBackgroundForButton("src/cursor_right.png", playButton);
-            controller.setBackgroundForButton("src/home.png", homeButton);
-            controller.setBackgroundForButton("src/info_2.png", info);
+            controller.setBackgroundForButton("/cursor_right.png", playButton);
+            controller.setBackgroundForButton("/home.png", homeButton);
+            controller.setBackgroundForButton("/info_2.png", info);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -1415,10 +1440,10 @@ public class Main extends Application {
         controller.setButton(homeButton, 70, 70, 190, 127);
         controller.setButton(info, 70, 70, 370, 130);
 
-        info.setOnAction(actionEvent ->{
-            try{
+        info.setOnAction(actionEvent -> {
+            try {
                 instructionWindow();
-            }catch(FileNotFoundException e){
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         });
@@ -1467,7 +1492,7 @@ public class Main extends Application {
                 lives = 3;
                 try {
                     setUpStartWindow();
-                } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException | URISyntaxException e) {
                     e.printStackTrace();
                 }
                 primaryStage.setScene(scene);
@@ -1598,9 +1623,9 @@ public class Main extends Application {
     /**
      * sets parameters and objects for the main menu window
      */
-    private void setUpStartWindow() throws FileNotFoundException {
+    private void setUpStartWindow() throws FileNotFoundException, URISyntaxException {
         if (playlist.getMusicPlayer() != null) playlist.getMusicPlayer().stop();
-        pane.setBackground(new Background(new BackgroundImage(new Image(new FileInputStream("src/photo_2021-05-24_15-17-36_auto_x2.jpg")),
+        pane.setBackground(new Background(new BackgroundImage(new Image(String.valueOf(this.getClass().getResource("/photo_2021-05-24_15-17-36_auto_x2.jpg"))),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
         pane.setPrefSize(1200, 700);
@@ -1618,14 +1643,14 @@ public class Main extends Application {
         controller.setButton(compliment, 70, 70, 175, 470);
         controller.setButton(music, 70, 70, 175, 570);
         if (musicStatus) {
-            controller.setBackgroundForButton("src/music_on.png", music);
+            controller.setBackgroundForButton("/music_on.png", music);
         } else {
-            controller.setBackgroundForButton("src/music_off.png", music);
+            controller.setBackgroundForButton("/music_off.png", music);
         }
-        controller.setBackgroundForButton("src/cursor_right.png", play);
-        controller.setBackgroundForButton("src/info_2.png", instruction);
-        controller.setBackgroundForButton("src/unfavourited.png", compliment);
-        playlist.background("src/Komiku_-_04_-_Shopping_List.mp3");
+        controller.setBackgroundForButton("/cursor_right.png", play);
+        controller.setBackgroundForButton("/info_2.png", instruction);
+        controller.setBackgroundForButton("/unfavourited.png", compliment);
+        playlist.background("/Komiku_-_04_-_Shopping_List.mp3");
         if (musicSlider != null) playlist.setVolume(musicSlider.getValue());
         else if (musicStatus) playlist.setVolume(0.2);
         else playlist.setVolume(0);
@@ -1644,8 +1669,7 @@ public class Main extends Application {
      */
     private void failScene(Stage stage) throws FileNotFoundException {
         Pane pane = new Pane();
-        // playlist.getMusicPlayer().stop();
-        controller.middleScene("src/pizza2.jpg", "src/mixkit-player-losing-or-failing-2042.wav", pane);
+        controller.middleScene("/pizza2.jpg", "/mixkit-player-losing-or-failing-2042.wav", pane);
         Rectangle r = new Rectangle(1000, 360);
         r.setFill(Color.rgb(185, 185, 185));
         r.setLayoutX(120);
@@ -1656,18 +1680,18 @@ public class Main extends Application {
         controller.setLabel(fail1, 275, 230);
         controller.setLabel(fail2, 150, 330);
         back = new Button();
-        controller.setBackgroundForButton("src/home.png", back);
+        controller.setBackgroundForButton("/home.png", back);
         back.setOnAction(actionEvent -> {
             lives = 3;
             try {
                 setUpStartWindow();
-            } catch (FileNotFoundException e) {
+            } catch (FileNotFoundException | URISyntaxException e) {
                 e.printStackTrace();
             }
             stage.setScene(scene);
         });
         controller.setButton(back, 100, 100, 530, 450);
-        controller.setBackgroundForButton("src/home.png", back);
+        controller.setBackgroundForButton("/home.png", back);
         pane.getChildren().addAll(fail1, fail2, back);
         Scene scene = new Scene(pane);
         stage.setWidth(1220);
@@ -1681,7 +1705,7 @@ public class Main extends Application {
      */
     private void betweenLevelScene(Stage stage) throws FileNotFoundException {
         Pane pane = new Pane();
-        controller.middleScene("src/pizza1.jpg", "src/mixkit-ethereal-fairy-win-sound-2019.wav", pane);
+        controller.middleScene("/pizza1.jpg", "/mixkit-ethereal-fairy-win-sound-2019.wav", pane);
         Rectangle r = new Rectangle(930, 360);
         r.setFill(Color.rgb(69, 191, 202));
         r.setLayoutX(160);
@@ -1697,36 +1721,36 @@ public class Main extends Application {
         controller.setButton(back, 70, 70, 465, 465);
         controller.setButton(nextLevel, 100, 100, 565, 450);
         controller.setButton(sound, 70, 70, 665, 465);
-        controller.setBackgroundForButton("src/home.png", back);
-        controller.setBackgroundForButton("src/fast_forward.png", nextLevel);
+        controller.setBackgroundForButton("/home.png", back);
+        controller.setBackgroundForButton("/fast_forward.png", nextLevel);
         if (musicStatus)
-            controller.setBackgroundForButton("src/music_on.png", sound);
-        else controller.setBackgroundForButton("src/music_off.png", sound);
+            controller.setBackgroundForButton("/music_on.png", sound);
+        else controller.setBackgroundForButton("/music_off.png", sound);
 
         sound.setOnAction(actionEvent -> changeMusicIcon(sound));
         nextLevel.setOnAction(actionEvent -> {
             if (levelVariable == 2) {
                 try {
                     secondLevel(stage);
-                } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException | URISyntaxException e) {
                     e.printStackTrace();
                 }
             } else if (levelVariable == 3) {
                 try {
                     thirdLevel(stage);
-                } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException | URISyntaxException e) {
                     e.printStackTrace();
                 }
             } else if (levelVariable == 4) {
                 try {
                     fourthLevel(stage);
-                } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException | URISyntaxException e) {
                     e.printStackTrace();
                 }
             } else if (levelVariable == 5) {
                 try {
                     fifthLevel(stage);
-                } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException | URISyntaxException e) {
                     e.printStackTrace();
                 }
             }

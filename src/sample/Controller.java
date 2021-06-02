@@ -386,8 +386,7 @@ public class Controller {
      * method set image as a background for butto
      */
     protected void setBackgroundForButton(String path, Button button) throws FileNotFoundException {
-        FileInputStream fis = new FileInputStream(path);
-        Image im = new Image(fis);
+        Image im = new Image(String.valueOf(this.getClass().getResource(path)));
         BackgroundImage bi = new BackgroundImage(im, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(button.getWidth(), button.getHeight(), true, true, true, false));
         Background bg = new Background(bi);
         button.setBackground(bg);
@@ -418,8 +417,7 @@ public class Controller {
      * set background for middle scenes
      */
     protected void middleScene(String pathImg, Pane pane) throws FileNotFoundException {
-        FileInputStream str = new FileInputStream(pathImg);
-        Image image = new Image(str);
+        Image image = new Image(String.valueOf(this.getClass().getResource(pathImg)));
         BackgroundImage myBI = new BackgroundImage(image,
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
