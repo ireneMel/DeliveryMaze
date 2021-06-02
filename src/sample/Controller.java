@@ -37,6 +37,27 @@ public class Controller {
     }
 
     /**
+     * set layout and font for labels
+     */
+    protected void setLabel(Label label, double layoutX, double layoutY, int fontSize, FontWeight fontWeigh, Color color) {
+        label.setFont(Font.font("Bauhaus 93", fontWeigh, fontSize));
+        label.setTextFill(color);
+        label.setLayoutX(layoutX);
+        label.setLayoutY(layoutY);
+    }
+
+    /**
+     * set energy image for each level
+     */
+    protected void setUpImageEnergy(ImageView im) {
+        im.setFitWidth(40);
+        im.setFitHeight(50);
+        if (levelVariable != 5) im.setLayoutX(1005);
+        else im.setLayoutX(1205);
+        im.setLayoutY(185);
+    }
+
+    /**
      * set layout of label
      */
     protected void setLabel(Label label, double layoutX, double layoutY) {

@@ -56,12 +56,14 @@ public class Main extends Application {
     Random r = new Random();
     public static Slider sound = setMusicSliders(1.0, sideSounds);
     Slider musicSlider;
+    FileChooser fileChooser;
     double x = 0.7, x2 = -1.5, x3 = 1.0, property = 1, property2 = -1, property3 = 1;
     boolean up, right, left, down, up2, right2, left2, down2, up3, right3, left3, down3;
     ImageView imageView = new ImageView(new Image(new FileInputStream("src/MyCollages__8_-removebg-preview (1) (3).png"))),
             imageViewEnemy1 = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
             imageViewEnemy2 = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
             imageViewEnemy3 = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
+            imageViewEnemyInstruction = new ImageView(new Image(new FileInputStream("src/person_delivery (1).png"))),
             imageEnergy = new ImageView(new Image(new FileInputStream("src/Battery.png"))),
             imageEnergy2 = new ImageView(new Image(new FileInputStream("src/Battery3.png"))),
             imageEnergy3 = new ImageView(new Image(new FileInputStream("src/Battery4.png"))),
@@ -71,9 +73,11 @@ public class Main extends Application {
             enemy6I = new ImageView(new Image(new FileInputStream("src/van3.png"))),
             enemy6I4 = new ImageView(new Image(new FileInputStream("src/ice-cream-van_33.png"))),
             enemy6I2 = new ImageView(new Image(new FileInputStream("src/ice-cream-van_3.png"))),
+            enemy6II = new ImageView(new Image(new FileInputStream("src/van3.png"))),
             enemy6I3 = new ImageView(new Image(new FileInputStream("src/ice-cream-van_32.png")));
-    static Character player, deliveryEnemy1, deliveryEnemy2, deliveryEnemy3;
+    static Character player, deliveryEnemy1, deliveryEnemy2, deliveryEnemy3, deliveryInstruction;
     Character burger = new Character(new ImageView(new Image(new FileInputStream("src/17_burger_napkin.png")))),
+            burgerInstruction = new Character(new ImageView(new Image(new FileInputStream("src/17_burger_napkin.png")))),
             chicken = new Character(new ImageView(new Image(new FileInputStream("src/86_roastedchicken_dish.png")))),
             sushi = new Character(new ImageView(new Image(new FileInputStream("src/98_sushi_dish.png")))),
             chocolate = new Character(new ImageView(new Image(new FileInputStream("src/31_chocolatecake_dish.png")))),
@@ -95,21 +99,24 @@ public class Main extends Application {
             energyDrinkYellow = new Character(new ImageView(new Image(new FileInputStream("src/soft_drink_yellow.png")))),
             energyDrinkGreen = new Character(new ImageView(new Image(new FileInputStream("src/soft_drink_green.png")))),
             van = new Character(enemy6I, 1, 1),
+            vanInstruction = new Character(enemy6II, 53, 63),
             van2 = new Character(enemy6I2, 1, 1),
             van3 = new Character(enemy6I3, 1, 1),
+            pizzaInstruction = new Character(70, 30, new ImageView(new Image(new FileInputStream("src/PizzaIm3.png")))),
             pizza1 = new Character(70, 30, new ImageView(new Image(new FileInputStream("src/PizzaIm3.png")))),
             pizza = new Character(70, 30, new ImageView(new Image(new FileInputStream("src/New_Piskel__2_-removebg-preview.png"))));
 
     Pane pane = new Pane();
     static Pane root;
     Button play = new Button(), instruction = new Button(), compliment = new Button(), music = new Button(), back;
-    public static ImageView houseIm, houseIm2, houseIm3, houseIm4, houseIm5;
+    public static ImageView houseIm, houseIm2, houseIm3, houseIm4, houseIm5, houseInstruction,energy1,energy2,energy3,energy4;
     DoubleProperty timeSeconds;
     private double velocity = 2;
 
     static {
         try {
             houseIm = new ImageView(new Image(new FileInputStream("src/photo_2021-05-25_12-02-30-removebg-preview.png")));
+            houseInstruction = new ImageView(new Image(new FileInputStream("src/photo_2021-05-25_12-02-30-removebg-preview.png")));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -137,18 +144,19 @@ public class Main extends Application {
         setUpStartWindow();
         play.setOnAction(actionEvent -> {
             try {
-                levelVariable=6;
-                countPizzas=5;
-                finalStage(stage);
-                //firstLevel(stage);
+                firstLevel(stage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
 
         instruction.setOnAction(actionEvent -> {
-
-        });
+                try {
+                    instructionWindow();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+       });
 
         music.setOnAction(actionEvent -> changeMusicIcon(music));
         controller.generateCompliment(complimentArray);
@@ -1023,23 +1031,21 @@ public class Main extends Application {
             mazePane.getChildren().addAll(settings, level, data, numberPizza, numOfOrder, str, str1, str2, energyLabel, energyLabel2, timeLeft, timeStr, pizzaBoxIV1, pizzaLabel, check, check2);
         }
         if (levelVariable == 1) {
-            setUpImageEnergy(imageEnergy);
+            controller.setUpImageEnergy(imageEnergy);
         } else if (levelVariable == 2) {
-            setUpImageEnergy(imageEnergy2);
+            controller.setUpImageEnergy(imageEnergy2);
         } else if (levelVariable == 3) {
-            setUpImageEnergy(imageEnergy3);
+            controller.setUpImageEnergy(imageEnergy3);
         } else if (levelVariable == 4) {
-            setUpImageEnergy(imageEnergy4);
+            controller.setUpImageEnergy(imageEnergy4);
         } else if (levelVariable == 5) {
-            setUpImageEnergy(imageEnergy5);
+            controller.setUpImageEnergy(imageEnergy5);
         }
     }
 
-    FileChooser fileChooser;
-
     private void finalStage(Stage stage) throws FileNotFoundException {
         Scene win, fail;
-        Pane failPane = new Pane(), winPane = new Pane(),wholeWinPane=new Pane();
+        Pane failPane = new Pane(), winPane = new Pane(), wholeWinPane = new Pane();
         Label l1 = new Label("Thank you for trial!");
         Label l2 = new Label("Unfortunately, you didn't pick enough pizza");
         Label l3 = new Label("We can`t offer you this job");
@@ -1053,11 +1059,12 @@ public class Main extends Application {
         controller.setLabel(l4, 413, 318, 50, FontWeight.NORMAL);
         controller.setLabel(l5, 486, 397, 50, FontWeight.NORMAL);
         playlist.getMusicPlayer().stop();
-        if(countPizzas<5) controller.middleScene("src/finalFail1.jpg", "src/simple-fanfare-horn-2-sound-effect-32891846.mp3", failPane);
+        if (countPizzas < 5)
+            controller.middleScene("src/finalFail1.jpg", "src/simple-fanfare-horn-2-sound-effect-32891846.mp3", failPane);
         else {
             controller.middleScene("src/simple-fanfare-horn-2-sound-effect-32891846.mp3");
-            BackgroundFill myBF = new BackgroundFill(Color.rgb(165,102,5), new CornerRadii(1), //203,253,142
-                    new Insets(0.0,0.0,0.0,0.0));// or null for the padding
+            BackgroundFill myBF = new BackgroundFill(Color.rgb(165, 102, 5), new CornerRadii(1), //203,253,142
+                    new Insets(0.0, 0.0, 0.0, 0.0));// or null for the padding
             wholeWinPane.setBackground(new Background(myBF));
         }
         Button homeButton = new Button();
@@ -1095,37 +1102,38 @@ public class Main extends Application {
             if (file != null) {
                 try {
                     ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-                   controller. popUpWindow("Your image was successfully saved", "It`s path: " + file.getPath(), Alert.AlertType.INFORMATION);
+                    controller.popUpWindow("Your image was successfully saved", "It`s path: " + file.getPath(), Alert.AlertType.INFORMATION);
                 } catch (Exception e) {
                     controller.popUpWindow("Your image was successfully saved", "It`s path: " + file.getPath(), Alert.AlertType.INFORMATION);
                 }
             }
         });
 
-        controller.setButton(shareButton,70,70,929,625);
-        if(countPizzas<5) controller.setButton(homeButton, 70, 70, 575, 468);
+        controller.setButton(shareButton, 70, 70, 929, 625);
+        if (countPizzas < 5) controller.setButton(homeButton, 70, 70, 575, 468);
         else controller.setButton(homeButton, 70, 70, 222, 625);
         failPane.getChildren().addAll(rec, l1, l2, l3, l4, l5, homeButton);
         fail = new Scene(failPane);
-        controller.middleScene("src/shareScreenshootPane.jpg",  winPane);
-        winPane.setPrefSize(777,409);
-        winPane.setLayoutX(222);winPane.setLayoutY(205);
+        controller.middleScene("src/shareScreenshootPane.jpg", winPane);
+        winPane.setPrefSize(777, 409);
+        winPane.setLayoutX(222);
+        winPane.setLayoutY(205);
         stage.setWidth(1220);
         stage.setHeight(735);
-        Label l11=new Label("Congratulations!");
-        Label l12=new Label("You are the best candidate! You are hired");
-        Label l13=new Label("Successfully  completed 5 levels");
-        Label l14=new Label("Therefore is hired for a job");
+        Label l11 = new Label("Congratulations!");
+        Label l12 = new Label("You are the best candidate! You are hired");
+        Label l13 = new Label("Successfully  completed 5 levels");
+        Label l14 = new Label("Therefore is hired for a job");
         controller.setLabel(l11, 419, 50, 50, FontWeight.NORMAL);
         controller.setLabel(l12, 148, 118, 50, FontWeight.NORMAL);
         l11.setTextFill(Color.WHITE);
         l12.setTextFill(Color.WHITE);
         controller.setLabel(l13, 69, 85, 45, FontWeight.NORMAL);
         controller.setLabel(l14, 74, 230, 53, FontWeight.NORMAL);
-        winPane.getChildren().addAll(l13,l14);
-        wholeWinPane.setPrefSize(1220,735);
-        wholeWinPane.getChildren().addAll(winPane,homeButton,l11,l12,shareButton);
-        win=new Scene(wholeWinPane);
+        winPane.getChildren().addAll(l13, l14);
+        wholeWinPane.setPrefSize(1220, 735);
+        wholeWinPane.getChildren().addAll(winPane, homeButton, l11, l12, shareButton);
+        win = new Scene(wholeWinPane);
         if (countPizzas < 5) {
             stage.setScene(fail);
         } else {
@@ -1296,6 +1304,13 @@ public class Main extends Application {
         controller.setButton(homeButton, 70, 70, 190, 127);
         controller.setButton(info, 70, 70, 370, 130);
 
+        info.setOnAction(actionEvent ->{
+            try{
+                instructionWindow();
+            }catch(FileNotFoundException e){
+                e.printStackTrace();
+            }
+        });
         musicSlider = setMusicSliders(playlist.getMusicPlayer().getVolume(), playlist);
         if (sideSounds.getMusicPlayer() != null)
             sound = setMusicSliders(sideSounds.getMusicPlayer().getVolume(), sideSounds);
@@ -1500,7 +1515,7 @@ public class Main extends Application {
 
     private void failScene(Stage stage) throws FileNotFoundException {
         Pane pane = new Pane();
-       // playlist.getMusicPlayer().stop();
+        // playlist.getMusicPlayer().stop();
         controller.middleScene("src/pizza2.jpg", "src/mixkit-player-losing-or-failing-2042.wav", pane);
         Rectangle r = new Rectangle(1000, 360);
         r.setFill(Color.rgb(185, 185, 185));
@@ -1533,7 +1548,7 @@ public class Main extends Application {
 
     private void betweenLevelScene(Stage stage) throws FileNotFoundException {
         Pane pane = new Pane();
-     //   playlist.getMusicPlayer().stop();
+        //   playlist.getMusicPlayer().stop();
         controller.middleScene("src/pizza1.jpg", "src/mixkit-ethereal-fairy-win-sound-2019.wav", pane);
         Rectangle r = new Rectangle(930, 360);
         r.setFill(Color.rgb(69, 191, 202));
