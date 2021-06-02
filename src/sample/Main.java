@@ -128,6 +128,9 @@ public class Main extends Application {
     public Main() throws FileNotFoundException {
     }
 
+    /**
+     * initialize all collections
+     */
     private void initialize() {
         monsters = new ArrayList<>();
         walls = new ArrayList<>();
@@ -136,6 +139,11 @@ public class Main extends Application {
         players = new ArrayList<>();
     }
 
+    /**
+     * create main stage and set up main menu scene
+     * @param stage
+     * @throws FileNotFoundException
+     */
     @Override
     public void start(Stage stage) throws FileNotFoundException {
         sideSounds.background("src/silent.wav");
@@ -168,6 +176,14 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * basic settings similar for all levels
+     * @param primaryStage
+     * @param mazePane
+     * @param color
+     * @param path
+     * @throws FileNotFoundException
+     */
     private void settingsForLevels(Stage primaryStage, Pane mazePane, Color color, String path) throws FileNotFoundException {
         playlist.getMusicPlayer().stop();
         sideSounds.setVolume(0.2);
@@ -207,6 +223,11 @@ public class Main extends Application {
         else playlist.setVolume(0.2);
     }
 
+    /**
+     * special settings for first level
+     * @param primaryStage
+     * @throws FileNotFoundException
+     */
     private void firstLevel(Stage primaryStage) throws FileNotFoundException {
         velocity = 2;
         countPizzas = 0;
@@ -222,6 +243,11 @@ public class Main extends Application {
         root.getChildren().addAll(player, bagel, chicken, pancakes, chocolate, energyDrinkRed, energyDrinkYellow, houseIm, imageEnergy, pizza);
     }
 
+    /**
+     * special settings for second level
+     * @param primaryStage
+     * @throws FileNotFoundException
+     */
     private void secondLevel(Stage primaryStage) throws FileNotFoundException {
         houseIm2 = new ImageView(new Image(new FileInputStream("src/IMG_20210527_181324.png")));
         Pane mazePane = new Pane();
@@ -273,6 +299,11 @@ public class Main extends Application {
         root.getChildren().addAll(player, burger, burrito, baconDish, sushi, cheeseCake, energyDrinkRed, energyDrinkBlue, houseIm2, imageEnergy2, pizza, van, van2);
     }
 
+    /**
+     * special settings for third level
+     * @param primaryStage
+     * @throws FileNotFoundException
+     */
     private void thirdLevel(Stage primaryStage) throws FileNotFoundException {
         houseIm3 = new ImageView(new Image(new FileInputStream("src/IMG_20210529_160339.png")));
         Pane mazePane = new Pane();
@@ -340,6 +371,11 @@ public class Main extends Application {
         root.getChildren().addAll(player, energyDrinkGreen, energyDrinkYellow, energyDrinkRed, houseIm3, imageEnergy3, sandwich, pizza, cheeseCake, taco, applePie, enemy5, van, van2, van3);
     }
 
+    /**
+     * special settings for fourth level
+     * @param primaryStage
+     * @throws FileNotFoundException
+     */
     private void fourthLevel(Stage primaryStage) throws FileNotFoundException {
         houseIm4 = new ImageView(new Image(new FileInputStream("src/house.png")));
         deliveryEnemy1 = new Character(imageViewEnemy1, 41, 54);
@@ -500,6 +536,11 @@ public class Main extends Application {
         root.getChildren().addAll(player, energyDrinkGreen, nacho, pudding, hotDog, energyDrinkYellow, houseIm4, imageEnergy4, sandwich, pizza, pizza1, taco, applePie, enemy5, deliveryEnemy1, deliveryEnemy2, deliveryEnemy3);
     }
 
+    /**
+     * special settings for fifth level
+     * @param primaryStage
+     * @throws FileNotFoundException
+     */
     private void fifthLevel(Stage primaryStage) throws FileNotFoundException {
         houseIm5 = new ImageView(new Image(new FileInputStream("src/house_blue.png")));
         Pane mazePane = new Pane();
@@ -730,6 +771,10 @@ public class Main extends Application {
         primaryStage.setWidth(1420);
     }
 
+    /**
+     * scene settings for all levels
+     * @param primaryStage
+     */
     private void settingsForLevels2(Stage primaryStage) {
         players.add(player);
         Scene sceneFirstLevel = new Scene(root);
@@ -740,6 +785,10 @@ public class Main extends Application {
         primaryStage.setScene(sceneFirstLevel);
     }
 
+    /**
+     * set layouts for all characters in first level
+     * @param mazePane
+     */
     private void setUpCharacters(Pane mazePane) {
         controller.setLayout(burger, 500, 500);
         Collections.addAll(monsters, pancakes, chicken, bagel, chocolate);
@@ -760,6 +809,10 @@ public class Main extends Application {
         root.getChildren().add(mazePane);
     }
 
+    /**
+     * set layouts for all characters in second level
+     * @param mazePane
+     */
     private void setUpCharacters2(Pane mazePane) {
         controller.setLayout(sushi, 720, 340);
         Collections.addAll(monsters, burger, burrito, sushi, cheeseCake, baconDish);
@@ -785,6 +838,10 @@ public class Main extends Application {
         root.getChildren().add(mazePane);
     }
 
+    /**
+     * set layouts for all characters in third level
+     * @param mazePane
+     */
     private void setUpCharacters3(Pane mazePane) {
         controller.setLayout(taco, 362, 125);
         Collections.addAll(monsters, cheeseCake, taco, applePie, enemy5, sandwich);
@@ -815,6 +872,10 @@ public class Main extends Application {
         root.getChildren().add(mazePane);
     }
 
+    /**
+     * set layouts for all characters in fourth level
+     * @param mazePane
+     */
     private void setUpCharacters4(Pane mazePane) {
         controller.setLayout(taco, 423, 360);
         Collections.addAll(monsters, pudding, nacho, taco, applePie, enemy5, sandwich, hotDog);
@@ -847,6 +908,10 @@ public class Main extends Application {
         root.getChildren().add(mazePane);
     }
 
+    /**
+     * set layouts for all characters in fifth level
+     * @param mazePane
+     */
     private void setUpCharacters5(Pane mazePane) {
         Collections.addAll(monsters, cheeseCake, baconDish, cheesePuff, chocolate, burger);
         cheeseCake.setVisible(false);
@@ -882,6 +947,10 @@ public class Main extends Application {
         root.getChildren().add(mazePane);
     }
 
+    /**
+     * set all time line animations
+     * @param mazePane
+     */
     private void setUpTimeLines(Pane mazePane) {
         stopTimeLines();
         if (levelVariable == 1) timeSeconds = new SimpleDoubleProperty(2.50);
@@ -956,6 +1025,11 @@ public class Main extends Application {
         startTimeLines();
     }
 
+    /**
+     * set user menu on levels
+     * @param mazePane
+     * @param settings
+     */
     private void setLabelsForSideMenu(Pane mazePane, Rectangle settings) {
         if (levelVariable != 5) {
             controller.setLabel(numOfOrder, 1043, 140, 17, FontWeight.NORMAL);
@@ -1043,6 +1117,11 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * set final stage (final win or final fail)
+     * @param stage
+     * @throws FileNotFoundException
+     */
     private void finalStage(Stage stage) throws FileNotFoundException {
         Scene win, fail;
         Pane failPane = new Pane(), winPane = new Pane(), wholeWinPane = new Pane();
@@ -1141,6 +1220,10 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * set instruction window
+     * @throws FileNotFoundException
+     */
     private void instructionWindow() throws FileNotFoundException {
         Stage stage = new Stage();
         Pane pane = new Pane();
@@ -1197,6 +1280,12 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * set sliders for music and sounds
+     * @param getVolume
+     * @param musicList
+     * @return
+     */
     private static Slider setMusicSliders(Double getVolume, Music musicList) {
         Slider music = new Slider(0.0, 1.0, getVolume);
         music.setShowTickMarks(true);
